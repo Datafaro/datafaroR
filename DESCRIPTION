@@ -1,15 +1,17 @@
 Package: domar
-Title: What the Package Does (One Line, Title Case)
+Title: Dominican Admnistrative Registries
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "First",
-           family = "Last",
+    person(given = "Daniel E.",
+           family = "de la Rosa",
            role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to
-    pick a license
+           email = "drdsdaniel@gmail.com"),
+           person(
+           family = 'GCPareto',
+           role = 'cph'
+           )
+Description: This package collect administratives registries data from a variety of sites and formats, restructure them in a tabular form and save in an specific url address.
+License: CC BY 4.0
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
