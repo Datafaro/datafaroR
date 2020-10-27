@@ -4,7 +4,7 @@
 \alias{gsheet_storage}
 \title{Storage domar data in Google Sheets}
 \usage{
-gsheet_storage(id, kvars, bound)
+gsheet_storage(id, kvars, bound = 0.95)
 }
 \arguments{
 \item{id}{character ID of variable in the domar data list}
@@ -18,14 +18,17 @@ Indicate the min fraction of rows where the key variables need to match.}
 Storage domar data in Google Sheets
 }
 \details{
+Don't use if you don't have access to \code{\link{domar_list}}.
+
 \code{dmr_list} list of variables available in domar.
 
 Through \code{id} is selected the current variable key info.
 
 If \code{\link{Sys.time}} greather than \code{Próxima actualización}
- See \url{https://docs.google.com/spreadsheets/d/1svANACeWShYC--wm7wwSKaUn_bF_xXuF81SnV8yMeb8/edit#gid=0}
-through the \code{id} the corresponding function is executed, returning the
-\code{newData}, and the \code{oldData} is retrieve from Google Sheets.
+ See \code{\link{domar_list}}
+
+Through the \code{id}, the corresponding function is executed, returning the
+\code{newData}, besides the \code{oldData} is retrieve from Google Sheets.
 
 If \code{\link{nrow}} of \code{oldData} is 0. Write \code{newData} to
 Google Sheet. The needed arguments are presents in indicator information.

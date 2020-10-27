@@ -7,14 +7,14 @@
 #'
 #'@details
 #'
-#'  Don't use if you don't have access to \doce{\link{domar_list}}.
+#'  Don't use if you don't have access to \code{\link{domar_list}}.
 #'
 #'  \code{dmr_list} list of variables available in domar.
 #'
 #'  Through \code{id} is selected the current variable key info.
 #'
 #'  If \code{\link{Sys.time}} greather than \code{Próxima actualización}
-#'  See \doce{\link{domar_list}}
+#'  See \code{\link{domar_list}}
 #'
 #'  Through the \code{id}, the corresponding function is executed, returning the
 #'   \code{newData}, besides the \code{oldData} is retrieve from Google Sheets.
@@ -60,7 +60,7 @@
 #' \dontrun{
 #' gsheet_storage(id = 'imae_month', kvars = c('fecha', 'serie', 'Indice'))
 #' }
-gsheet_storage <- function(id, kvars, bound) {
+gsheet_storage <- function(id, kvars, bound = 0.95) {
   dmr_list <- domar_list()
   indicador <- dmr_list[dmr_list$ID == id,]
 
@@ -76,15 +76,15 @@ gsheet_storage <- function(id, kvars, bound) {
       googlesheets4::sheet_write(newData, ss, sheet)
     } else {
       combData <- dplyr::left_join(
+        dplyr::select(newData, tidyselect::all_of(kvars)),
         dplyr::select(oldData, tidyselect::all_of(kvars)),
-        dplyr::select(newData, tidyselect::all_of(kvars),
-        by = tidyselect::all_of(kvars[1:(length(kvars)-1)]))
+        by = kvars[1:(length(kvars)-1)]
       )
       combData$matches <- combData[,paste0(kvars[length(kvars)], '.x')] == combData[,paste0(kvars[length(kvars)], '.y')]
-      matchRows <- sum(combData$matches)/nrow(combData)
+      matchRows <- sum(tidyr::replace_na(combData$matches, 0))/nrow(combData)
       matchNames <- sum(names(oldData) %in% names(newData))/ncol(newData)
       if(matchNames != 1){
-        stop('IMAE: colnames not match')
+        stop('colnames not match')
       } else if(matchRows == 1){
         dmr_list[dmr_list$ID == id, "Pr\u00F3xima actualizaci\u00F3n"] <- dplyr::case_when(
           frecuency == 'Diaria'  ~ Sys.time()+1800,
@@ -93,7 +93,7 @@ gsheet_storage <- function(id, kvars, bound) {
         )
         googlesheets4::sheet_write(dmr_list, '1svANACeWShYC--wm7wwSKaUn_bF_xXuF81SnV8yMeb8', 'Index')
       } else if(matchRows < bound){
-        stop('IMAE: too much changes')
+        stop('too much changes')
       } else {
         googlesheets4::sheet_write(newData, ss, sheet)
         dmr_list[dmr_list$ID == id, "Pr\u00F3xima actualizaci\u00F3n"] <- dplyr::case_when(

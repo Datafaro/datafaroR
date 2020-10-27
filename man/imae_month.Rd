@@ -12,6 +12,14 @@ data.frame data of monthly IMAE
 \description{
 Monthly IMAE
 }
+\details{
+\code{kvars}
+\itemize{
+\item \code{fecha}
+\item \code{serie}
+\item \code{Indice}
+}
+}
 \examples{
 \dontrun{
 imae <- imae_month()

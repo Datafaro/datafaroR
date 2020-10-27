@@ -31,7 +31,8 @@ Imports:
     zoo,
     dplyr,
     googlesheets4,
-    tidyselect
+    tidyselect,
+    blastula
 Suggests: 
     knitr,
     rmarkdown
