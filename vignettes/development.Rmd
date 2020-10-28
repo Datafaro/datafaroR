@@ -78,3 +78,17 @@ Fill the fields in `domar_list`. Pick the ID carefully, the ID will play a very 
 For the moment, the name of the file in which the function is defined, and the function will to have the same name has the `id` specified in the `domar_list` file. This is important for the way that work the `gsheet_storage` and the `secure_gss` functions.
 
 On every function specify the `kvars` in the documentation `details` section. See `gsheet_storage` for more on `kvars`.
+
+If your are working in an indicator it's importan that you put you name in the `Working` field.
+
+#### Destination file
+
+They are a Google Drive directory ([domar](https://drive.google.com/drive/u/0/folders/1HLbwqX4NgAVnXjchut9roCC6Zn6mH3Xb))
+where are storage the Google Sheets tha contain the domar data exported by `gsheet_storage` function. It's irrelevant the name given to this files, but it's hightly recommended to use the indicator `id` in the domar list file as the file name, this way it's easy find aditional information for the content of the file.
+
+This file need to be created with the following features:
+
+- `Metadata` sheet: a sheet where to write all the relevant information about the indicator.
+- `id` sheet: a sheet with the indicator id as name where `gsheet_storage` function will to write the data.
+
+In the domar list put a direct url to the file in the `Metadata` field. Besides publish to the web the `id` sheet and put the public url in the domar list in the `Datos` field.
