@@ -4,7 +4,10 @@
 \alias{imae_month}
 \title{Monthly IMAE}
 \usage{
-imae_month()
+imae_month(url)
+}
+\arguments{
+\item{url}{the url of the original file in \code{dmr_list}. See \code{\link{domar_list}}}
 }
 \value{
 data.frame data of monthly IMAE

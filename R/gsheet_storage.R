@@ -68,12 +68,11 @@ gsheet_storage <- function(id, kvars, bound = 0.95) {
   frecuency <- indicador[,"Frecuencia"][[1]]
 
   if(Sys.time() > nextTry){
-    newData <- get(id)()
+    newData <- get(id)(indicador$`Enlace original`)
     ss <- indicador$Metadatos
-    sheet <- indicador$`Datos sheet`
-    oldData <- googlesheets4::read_sheet(ss, sheet)
+    oldData <- googlesheets4::read_sheet(ss, id)
     if(nrow(oldData) == 0){
-      googlesheets4::sheet_write(data = newData, ss = ss, sheet = sheet)
+      googlesheets4::sheet_write(data = newData, ss = ss, sheet = id)
     } else {
       combData <- dplyr::left_join(
         dplyr::select(newData, tidyselect::all_of(kvars)),
@@ -95,7 +94,7 @@ gsheet_storage <- function(id, kvars, bound = 0.95) {
       } else if(matchRows < bound){
         stop('too much changes')
       } else {
-        googlesheets4::sheet_write(data = newData, ss = ss, sheet = sheet)
+        googlesheets4::sheet_write(data = newData, ss = ss, sheet = id)
         dmr_list[dmr_list$ID == id, "Pr\u00F3xima actualizaci\u00F3n"] <- dplyr::case_when(
           frecuency == 'Diaria'  ~ Sys.time()+82800,
           frecuency == 'Mensual' ~ Sys.time()+2.592e+6,

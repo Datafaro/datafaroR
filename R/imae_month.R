@@ -1,5 +1,7 @@
 #' Monthly IMAE
 #'
+#' @param url the url of the original file in \code{dmr_list}. See \code{\link{domar_list}}
+#'
 #' @return data.frame data of monthly IMAE
 #'
 #' @export
@@ -16,9 +18,9 @@
 #' \dontrun{
 #' imae <- imae_month()
 #' }
-imae_month <- function() {
+imae_month <- function(url) {
   imae <- readxl::read_excel(
-    downloader('https://cdn.bancentral.gov.do/documents/estadisticas/sector-real/documents/imae.xlsx', 'xlsx'),
+    downloader(url, 'xlsx'),
     skip = 5)
   # Serie original
   imaeso <- imae[,1:6]
