@@ -3,4 +3,5 @@
 ^LICENSE\.md$
 ^README\.Rmd$
 ^domar_run\.R$
+^domar_run\.log$
 ^domar\.email$
