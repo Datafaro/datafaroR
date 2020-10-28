@@ -25,10 +25,10 @@ devtools::install_github("drdsdaniel/domar", build_vignettes=TRUE)
 
 If you have a binary build, which is likely, install it.
 
-<!-- me logueo con googlesheets4::gs4_auth('drdsdaniel@gmail.com') -->
-
 ## Starting
 
 Once you have followed the above instructions and installed the package.
-Run `browse.vignettes('domar')` in the R console to get more detailed
+Run `browseVignettes('domar')` in the R console to get more detailed
 instructions on the use of the package.
+
+<!-- Asegurate de tener una sola instancia corriendo al mismo tiempo en el cron. O aún mejor, que cada instancia sea la que crea un nuevo cron al salir -->

@@ -17,3 +17,16 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(domar)
 ```
+
+create blastula creds file.
+
+auth googlesheets4 with account with access to dmr_list file.
+<!-- me logueo con googlesheets4::gs4_auth('drdsdaniel@gmail.com') -->
+
+configure cron task.
+
+https://stevenmortimer.com/automating-r-scripts-with-cron/
+
+crontab -e
+
+@hourly /usr/lib/R/bin/Rscript '/home/drdsdaniel/domar/domar_run.R'

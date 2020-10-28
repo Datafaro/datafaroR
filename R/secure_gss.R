@@ -4,7 +4,7 @@
 #'   If error, then an email is send to specified email address.
 #'
 #' @param to_email email for send the error
-#' @param creds_file_name See \code{\link[blastula]{creds_file}}
+#' @param creds_file_name  a file name pointer. See \code{\link[blastula]{creds_file}}
 #' @param id See \code{\link{gsheet_storage}}
 #' @param ... See \code{\link{gsheet_storage}}
 #'#'

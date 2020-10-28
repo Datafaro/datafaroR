@@ -1,6 +1,6 @@
 #' DOMAR indicators list
 #'
-#' @return data.frame corresponding the list of variables in domar
+#' @return data.frame corresponding the list of indicatos in domar list
 #'
 #'@details
 #'

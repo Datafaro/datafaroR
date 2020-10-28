@@ -1,20 +1,80 @@
 ---
 title: "Development"
-output: rmarkdown::html_vignette
+output: 
+  rmarkdown::html_vignette:
+    toc: yes
 vignette: >
   %\VignetteIndexEntry{Development}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 ```
 
-```{r setup}
-library(domar)
-```
 
+Once you have installed the package and can view this vignette you system meet with the requirements for contribute with the develoment of the package.
+
+## Extra requirements
+
+For contributing to the development the first thing that you need is to have access to the [domar file](https://docs.google.com/spreadsheets/d/1svANACeWShYC--wm7wwSKaUn_bF_xXuF81SnV8yMeb8/edit#gid=0), where can be find and set information about the indicators.
+
+> If you have the access, don't change the file structure unless you know what do you do.
+
+Almost every field in the list need to be fill in order to succesfully deploy an indicator.
+
+## Methodology
+
+Asides it is not mandatory, is hightly recommended follow the methodology presented in the book [R Packages](https://r-pkgs.org/) from Hadley Wickham.
+
+## Workflow
+
+### Common functions
+
+#### downloader()
+
+You need to use this function into the indicator functions. See the `downloader` function documentation to know how it works.
+
+If `downloader` don't meet you needs you can proposed a modified versión of `downloader`, granting this continue working for others indicators.
+
+If the above can be do it is hightly recommended that you discuss with the other current developers before to proceed with an alternative.
+
+#### to_date()
+
+If the indicator which are working is a time series you rather than providing separate variables for year, month and so on, you will need to use this function to merge multiple variables into one unique date variable.
+
+It's hightly recommended you verify `to_date` meet the requirements for your current working indicator.
+
+See `to_date` function documentation.
+
+#### domar_list()
+
+The `domar_list` function download the list of all domar indicator used into another functions. See `gsheet_storage`.
+
+See `domar_list` function documentarion.
+
+#### gsheet_storage()
+
+The `gsheet_storage` function storage the output of indicators functions (dataframes) in the corresponding Google Sheet. The needed arguments are presents in the `domar_list` file.
+
+On the process, this function make some extra validations in the data to grant the correctness of the update.
+
+See `gsheet_storage` for aditional details.
+
+#### secure_gss()
+
+This function is a wrapper for a `tryCatch` function and the `gsheet_storage` function. If an error occur, then an email is send to the especified email address.
+
+See `secure_gss` for aditional details.
+
+### New indicators
+
+Fill the fields in `domar_list`. Pick the ID carefully, the ID will play a very important role in the development process.
+
+For the moment, the name of the file in which the function is defined, and the function will to have the same name has the `id` specified in the `domar_list` file. This is important for the way that work the `gsheet_storage` and the `secure_gss` functions.
+
+On every function specify the `kvars` in the documentation `details` section. See `gsheet_storage` for more on `kvars`.

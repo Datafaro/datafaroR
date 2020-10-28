@@ -7,7 +7,7 @@
 domar_list()
 }
 \value{
-data.frame corresponding the list of variables in domar
+data.frame corresponding the list of indicatos in domar list
 }
 \description{
 DOMAR indicators list

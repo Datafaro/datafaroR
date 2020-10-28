@@ -9,7 +9,7 @@ secure_gss(to_email, creds_file_name, id, ...)
 \arguments{
 \item{to_email}{email for send the error}
 
-\item{creds_file_name}{See \code{\link[blastula]{creds_file}}}
+\item{creds_file_name}{a file name pointer. See \code{\link[blastula]{creds_file}}}
 
 \item{id}{See \code{\link{gsheet_storage}}}
 
