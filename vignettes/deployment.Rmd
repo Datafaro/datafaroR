@@ -18,6 +18,10 @@ knitr::opts_chunk$set(
 library(domar)
 ```
 
+git>clone
+R>check
+R>install
+
 create blastula creds file.
 
 auth googlesheets4 with account with access to dmr_list file.

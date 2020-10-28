@@ -1,10 +1,12 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# domar
+# domar <img src='man/figures/logo.png' align="right" height="138" />
 
 <!-- badges: start -->
 
+[![R build
+status](https://github.com/drdsdaniel/domar/workflows/R-CMD-check/badge.svg)](https://github.com/drdsdaniel/domar/actions)
 <!-- badges: end -->
 
 The goal of domar is to get administrative registries data from
