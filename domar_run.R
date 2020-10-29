@@ -1,11 +1,13 @@
-
-message(Sys.time()) #util para el log del cron.
+#util para el log del cron.
+message(Sys.time())
 message('
 
 
 
 
         ')
+
+
 
 library(domar)
 library(googlesheets4)
@@ -33,7 +35,8 @@ googledrive::drive_auth(
 googledrive::drive_upload(
   media = paste0('/home/', user,'/domar/domar_run.log'),
   path =  'Databases/domar/cron_logs/',
-  name = paste0(user, '-domar_run.log'))
+  name = paste0(user, '-domar_run.log'),
+  overwrite = TRUE)
 
 # imae_month
 secure_gss(myEmail, paste0('/home/', user,'/domar/domar.email'), 'imae_month', kvars = c('fecha', 'serie', 'Indice'))
