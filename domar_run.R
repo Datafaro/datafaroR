@@ -1,5 +1,11 @@
 
-print(Sys.time()) #util para el log del cron.
+message(Sys.time()) #util para el log del cron.
+message('
+
+
+
+
+        ')
 
 library(domar)
 library(googlesheets4)
