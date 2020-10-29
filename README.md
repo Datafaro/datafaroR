@@ -10,8 +10,8 @@ status](https://github.com/drdsdaniel/domar/workflows/R-CMD-check/badge.svg)](ht
 <!-- badges: end -->
 
 The goal of domar is to get administrative registries data from
-corresponding source, restructered it in tabular form. Besides `domar`
-give functions for storage this data in Google Sheets.
+corresponding source and restructered it in tabular form. Besides
+`domar` give functions for storage this data in Google Sheets.
 
 ## Installation
 

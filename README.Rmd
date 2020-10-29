@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 [![R build status](https://github.com/drdsdaniel/domar/workflows/R-CMD-check/badge.svg)](https://github.com/drdsdaniel/domar/actions)
 <!-- badges: end -->
 
-The goal of domar is to get administrative registries data from corresponding source, restructered it in tabular form. Besides `domar` give functions for storage this data in Google Sheets.
+The goal of domar is to get administrative registries data from corresponding source and restructered it in tabular form. Besides `domar` give functions for storage this data in Google Sheets.
 
 ## Installation
 
