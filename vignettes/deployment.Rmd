@@ -23,14 +23,33 @@ R>check
 R>install
 
 create blastula creds file.
+blastula::create_smtp_creds_file('domar.email', user = 'domar.email@gmail.com', provider = 'gmail')
+Enter password on prompt
 
-auth googlesheets4 with account with access to dmr_list file.
-<!-- me logueo con googlesheets4::gs4_auth('drdsdaniel@gmail.com') -->
+cache auth googlesheets4 with account with access to dmr_list file.
+https://medium.com/@JosiahParry/googlesheets4-authentication-for-deployment-9e994b4c81d6
 
-configure cron task.
+domar_run.R
+usar rutas absolutas: Esto así porque en mi caso particular el cron está corriendo en el usuario root, y los archivos están en el usuario particular
+print(Sys.time()) # Para el log del cron.
+library(domar)
+library(googlesheets4)
+myEmail <- 'drdsdaniel@gmail.com'
+# Esto es porque tengo users distintos en la máquina de prueba y el servidor.
+user <- if(file.exists('/home/drdsdaniel/domar/domar_run.R')){
+  'drdsdaniel'
+}else{
+  'daniel'
+}
+# Auth
+gs4_auth(
+  cache = paste0('/home/', user, '/.secrets'),
+  email = 'drdsdaniel@gmail.com'
+  )
+# imae_month
+secure_gss(myEmail, paste0('/home/', user,'/domar/domar.email'), 'imae_month', kvars = c('fecha', 'serie', 'Indice'))
 
-https://stevenmortimer.com/automating-r-scripts-with-cron/
 
-crontab -e
-
-@hourly /usr/lib/R/bin/Rscript '/home/drdsdaniel/domar/domar_run.R'
+configure cron
+sudo crontab -e
+@hourly /usr/lib/R/bin/Rscript '/home/daniel/domar/domar_run.R'  >> '/home/daniel/domar/domar_run.log' 2>&1

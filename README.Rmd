@@ -19,23 +19,23 @@ knitr::opts_chunk$set(
 [![R build status](https://github.com/drdsdaniel/domar/workflows/R-CMD-check/badge.svg)](https://github.com/drdsdaniel/domar/actions)
 <!-- badges: end -->
 
-The goal of domar is to get administrative registries data from corresponding source and restructered it in tabular form. Besides `domar` give functions for storage this data in Google Sheets.
+Este paquete provee funciones que obtienen archivos de datos de la web y los devuelve en formato tabular. También proporciona funciones para almacenar estos datos en Google Sheets o una base de datos local de forma programática.
 
-## Installation
+## Instalación
 
-domar is not suitable for CRAN.
+domar no es apto para CRAN.
 
-You can install the development version from [GitHub](https://github.com/) with:
+Puedes instalar la versión de desarrollo desde [GitHub](https://github.com/) con:
 
 ``` r
 # install.packages("devtools")
 devtools::install_github("drdsdaniel/domar", build_vignettes=TRUE)
 ```
 
-If you have a binary build, which is likely, install it.
+Si tienes un archivo binario, lo cual es muy probable, instálalo.
 
-## Starting
+## Comenzando
 
-Once you have followed the above instructions and installed the package. Run `browseVignettes('domar')` in the R console to get more detailed instructions on the use of the package.
+Una vez has instalado el paquete ejecuta `browseVignettes('domar')` en la consola de comando de R para ver más información relevante.
 
 <!-- Asegurate de tener una sola instancia corriendo al mismo tiempo en el cron. O aún mejor, que cada instancia sea la que crea un nuevo cron al salir -->

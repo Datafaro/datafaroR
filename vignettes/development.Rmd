@@ -21,6 +21,8 @@ Once you have installed the package and can view this vignette you system meet w
 
 ## Extra requirements
 
+Install the API to have acces to domar_list
+
 For contributing to the development the first thing that you need is to have access to the [domar file](https://docs.google.com/spreadsheets/d/1svANACeWShYC--wm7wwSKaUn_bF_xXuF81SnV8yMeb8/edit#gid=0), where can be find and set information about the indicators.
 
 > If you have the access, don't change the file structure unless you know what do you do.

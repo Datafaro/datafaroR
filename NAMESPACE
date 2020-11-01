@@ -3,6 +3,7 @@
 export(domar_list)
 export(downloader)
 export(gsheet_storage)
+export(imae_mensual)
 export(imae_month)
 export(secure_gss)
 export(to_date)
