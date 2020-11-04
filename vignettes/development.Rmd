@@ -17,71 +17,71 @@ knitr::opts_chunk$set(
 ```
 
 
-Once you have installed the package and can view this vignette you system meet with the requirements for contribute with the develoment of the package.
+Una vez que has instalado el paquete y puedes ver estas viñetas, tu sistema cumple con los requisitos para contribuir con el desarrollo del paquete.
 
-## Extra requirements
+## Requisitos extras
 
-Install the API to have acces to domar_list
+Existe un API donde se encuentras un listado de todos los indicadores disponibles en el sistema. Es importante que tengas acceso a este listado para poder proceder con el desarrollo del paquete.
 
-For contributing to the development the first thing that you need is to have access to the [domar file](https://docs.google.com/spreadsheets/d/1svANACeWShYC--wm7wwSKaUn_bF_xXuF81SnV8yMeb8/edit#gid=0), where can be find and set information about the indicators.
+<!-- For contributing to the development the first thing that you need is to have access to the [domar file](https://docs.google.com/spreadsheets/d/1svANACeWShYC--wm7wwSKaUn_bF_xXuF81SnV8yMeb8/edit#gid=0), where can be find and set information about the indicators. -->
 
-> If you have the access, don't change the file structure unless you know what do you do.
+<!-- > If you have the access, don't change the file structure unless you know what do you do. -->
 
-Almost every field in the list need to be fill in order to succesfully deploy an indicator.
+Para crear un indicador nuevo es importante que te tomes el tiempo de llenar todos los campos que te sean posibles en la tabla.
 
-## Methodology
+## Metodología
 
-Asides it is not mandatory, is hightly recommended follow the methodology presented in the book [R Packages](https://r-pkgs.org/) from Hadley Wickham.
+A pesar de que no es obligatorio, es altamente recomendado seguir la metología presentada en [R Packages](https://r-pkgs.org/) de Hadley Wickham, para le desarrollo del paquete.
 
-## Workflow
+## Flujo de trabajo
 
-### Common functions
+### Funciones base
 
 #### downloader()
 
-You need to use this function into the indicator functions. See the `downloader` function documentation to know how it works.
+Utilizaras esta función en la definición de las funciones de los indicadores. Vea la documentación de la función `downloader` para conocer como funciona.
 
-If `downloader` don't meet you needs you can proposed a modified versión of `downloader`, granting this continue working for others indicators.
-
-If the above can be do it is hightly recommended that you discuss with the other current developers before to proceed with an alternative.
+Si la función `downloader` no cumple con sus requerimiento proponga una versión modificada de dicha función al equipo de manera que se garantice que sigue funcionando para todas las demás funciones.
 
 #### to_date()
 
-If the indicator which are working is a time series you rather than providing separate variables for year, month and so on, you will need to use this function to merge multiple variables into one unique date variable.
+Esta función combina varias columnas relativas a fecha en una única columna.
 
-It's hightly recommended you verify `to_date` meet the requirements for your current working indicator.
+Es altamente recomendado que verifiques que la función `to_date` cumple con los requisitos necesarios para el indicador en el que estás trabajando. De lo contrario, inicia una discusión con el equipo de desarrolladores acerca de una alternativa para la función.
 
-See `to_date` function documentation.
+Vea la documentación de la función `to_date` para ver como funciona.
 
 #### domar_list()
 
-The `domar_list` function download the list of all domar indicator used into another functions. See `gsheet_storage`.
+Esta función obtiene la lista de indicadores en el sistema, donde se dispone de todos los párametros relativos al indicador, necesarios para el desarrollo y funcionamiento del mismo.
 
-See `domar_list` function documentarion.
+Vea la documentación de la función `domar_list`.
 
 #### gsheet_storage()
 
-The `gsheet_storage` function storage the output of indicators functions (dataframes) in the corresponding Google Sheet. The needed arguments are presents in the `domar_list` file.
+La función `gsheet_storage`  almacena los datos devueltos por las funciones de los indicadores en el Google Sheet indicado en la lista de indicadores.
 
-On the process, this function make some extra validations in the data to grant the correctness of the update.
-
-See `gsheet_storage` for aditional details.
+Vea la documentación de la función `gsheet_storage` para detalles adicionales.
 
 #### secure_gss()
 
-This function is a wrapper for a `tryCatch` function and the `gsheet_storage` function. If an error occur, then an email is send to the especified email address.
+Esta función es un `tryCatch` para la función `gsheet_storage`. Si ocurriese algún error entonces un email es enviado al correo del desarrollador responsable de dicho indicador.
 
-See `secure_gss` for aditional details.
+Vea la documentación de `secure_gss`.
 
-### New indicators
+### Nuevos indicadores
 
-Fill the fields in `domar_list`. Pick the ID carefully, the ID will play a very important role in the development process.
+Para agregar un nuevo indicador:
 
-For the moment, the name of the file in which the function is defined, and the function will to have the same name has the `id` specified in the `domar_list` file. This is important for the way that work the `gsheet_storage` and the `secure_gss` functions.
-
-On every function specify the `kvars` in the documentation `details` section. See `gsheet_storage` for more on `kvars`.
-
-If your are working in an indicator it's importan that you put you name in the `Working` field.
+- Completa el registro del indicador en la lista de indicadores del API.
+  - Selecciona el ID cuidadosamente, the ID del indicador va a jugar un papel estelar en todo el proceso de desarrollo y     despliegue del indicador.
+- El nombre de la función del indicador debe ser exactamente igual que el ID del indicador.
+- Especifica las `kvars` de cada indicador, en la sección `details` de la documentación de dicho indicador.
+  - Las `kvars` son variables que las funciones `*_storage` utilizan para validar los datos.
+  - Las primeras `n-1` kvars se utilizan como variables clave de los datos que identifican de manera única a cada registro.
+  - La última kvar es una variable numérica que se utiliza para comparar los valores actuales con los nuevos en busca de consistencia.
+  
+Si estás trabajando en un indicador es importante que lo indiques en el campo correspondiente de la lista de indicadores, a fin de evitar la duplicación de esfuerzos.
 
 #### Destination file
 

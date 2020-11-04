@@ -1,6 +1,6 @@
 Package: domar
 Title: Dominican Admnistrative Registries
-Version: 0.0.01.9000
+Version: 0.0.1.9000
 Authors@R: c( 
     person(given = "Daniel E.",
            family = "de la Rosa",
@@ -8,13 +8,13 @@ Authors@R: c(
            email = "drdsdaniel@gmail.com"),
     person(
            family = 'GCPareto',
-           role = 'cph'
+           role = 'aut'
            )
            )
 Maintainer@R: Daniel E. de la Rosa <drdsdaniel@gmail.com>
 Description: Este paquete provee funciones que obtienen archivos de datos de la
     web y los devuelve en formato tabular. Tambien proporciona funciones para
-    almacenar estos datos en Google Sheets o una base de datos local de forma programatica.
+    almacenar estos datos en Google Sheets o una base de datos de forma programatica.
 License: CC BY 4.0
 Encoding: UTF-8
 LazyData: true
@@ -32,7 +32,9 @@ Imports:
     dplyr,
     googlesheets4,
     tidyselect,
-    blastula
+    blastula,
+    DBI,
+    RPostgres
 Suggests: 
     knitr,
     rmarkdown

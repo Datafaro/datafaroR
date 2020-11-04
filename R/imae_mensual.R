@@ -1,22 +1,14 @@
 #' IMAE Mensual
 #'
-#' @param url el url del archivo original \code{dmr_list}. Ver \code{\link{domar_list}}
+#' @param url el url del archivo original
 #'
 #' @return data.frame los datos del IMAE en forma tabular
 #'
 #' @export
 #'
-#' @details
-#'   \code{kvars}
-#'   \itemize{
-#'     \item \code{fecha}
-#'     \item \code{serie}
-#'     \item \code{Indice}
-#'   }
-#'
 #' @examples
 #' \dontrun{
-#' imae <- imae_mensual()
+#' imae <- imae_mensual('https://.../imae.xlsx')
 #' }
 imae_mensual <- function(url) {
   imae <- readxl::read_excel(
@@ -84,14 +76,5 @@ imae_mensual <- function(url) {
   imaest$serie <- 'Serie Tendencia-Ciclo'
 
   #
-  dplyr::select(dplyr::bind_rows(imaeso, imaesd, imaest),
-                tidyselect::all_of(c(
-                  "fecha",
-                  "Indice",
-                  "Var_periodo_anterior",
-                  "Var_interanual",
-                  "Var_acumulada",
-                  "Var_promedio_12_meses",
-                  "serie"
-                )))
+  dplyr::bind_rows(imaeso, imaesd, imaest)
 }

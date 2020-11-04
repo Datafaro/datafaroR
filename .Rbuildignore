@@ -6,3 +6,5 @@
 ^domar_run\.log$
 ^domar\.email$
 ^\.github$
+^\.env$
+^db_con\.R$

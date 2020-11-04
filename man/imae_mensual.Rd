@@ -7,7 +7,7 @@
 imae_mensual(url)
 }
 \arguments{
-\item{url}{el url del archivo original \code{dmr_list}. Ver \code{\link{domar_list}}}
+\item{url}{el url del archivo original}
 }
 \value{
 data.frame los datos del IMAE en forma tabular
@@ -15,16 +15,8 @@ data.frame los datos del IMAE en forma tabular
 \description{
 IMAE Mensual
 }
-\details{
-\code{kvars}
-\itemize{
-\item \code{fecha}
-\item \code{serie}
-\item \code{Indice}
-}
-}
 \examples{
 \dontrun{
-imae <- imae_mensual()
+imae <- imae_mensual('https://.../imae.xlsx')
 }
 }
