@@ -1,4 +1,18 @@
-utils::globalVariables(c("ano", "mes", 'domar_list', '...2', 'V1', 'V2'))
+utils::globalVariables(
+  c(
+    "ano",
+    "mes",
+    'domar_list',
+    '...2',
+    'V1',
+    'V2',
+    '...6',
+    'Componente',
+    'fecha',
+    'nivel',
+    'pib_acumulado'
+  )
+)
 
 
 #' Descarga de archivos

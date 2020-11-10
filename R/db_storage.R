@@ -69,7 +69,7 @@ db_storage <- function(db_conn, id){
   max_chgs <- indicator$max_changes/100
   if(indicator$indicator_state == 2){
     if(Sys.time() > indicator$next_update){
-      if(indicador$tipo_indicador == '2'){
+      if(indicator$tipo_indicador == '2'){
         newData <-get(id)(db_conn, indicator)
       } else {
         newData <-get(id)(indicator)
