@@ -13,10 +13,12 @@ secure_gss(to_email, creds_file_name, id, ...)
 
 \item{id}{See \code{\link{gsheet_storage}}}
 
-\item{...}{See \code{\link{gsheet_storage}}
-#'}
+\item{...}{See \code{\link{gsheet_storage}}}
 }
 \description{
+\lifecycle{archived}
+}
+\details{
 This is a wraper function to tryCatch for \code{\link{gsheet_storage}}.
 If error, then an email is send to specified email address.
 }
