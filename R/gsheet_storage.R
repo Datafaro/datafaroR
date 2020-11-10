@@ -1,5 +1,7 @@
 #' Storage domar data in Google Sheets
 #'
+#' \lifecycle{archived}
+#'
 #' @param id character ID of variable in the domar data list
 #' @param kvars key variables for data comparison. See \code{Details}
 #' @param bound numeric a number between 0 and 1. Default to 0.95.
@@ -53,8 +55,6 @@
 #'    \item \code{\link{Sys.time}} plus 92 days for quarter frecuency.
 #'    \item \code{\link{Sys.time}} plus 365 days for annual frecuency.
 #'  }
-#'
-#' @export
 #'
 #' @examples
 #' \dontrun{

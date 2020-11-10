@@ -1,5 +1,7 @@
 #' Secure Google Sheet storage version
 #'
+#' \lifecycle{archived}
+#'
 #' This is a wraper function to tryCatch for \code{\link{gsheet_storage}}.
 #'   If error, then an email is send to specified email address.
 #'
@@ -7,8 +9,6 @@
 #' @param creds_file_name  a file name pointer. See \code{\link[blastula]{creds_file}}
 #' @param id See \code{\link{gsheet_storage}}
 #' @param ... See \code{\link{gsheet_storage}}
-#'#'
-#' @export
 #'
 #' @examples
 #' \dontrun{

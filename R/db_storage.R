@@ -69,7 +69,7 @@ db_storage <- function(db_conn, id){
   max_chgs <- indicator$max_changes/100
   if(indicator$indicator_state == 2){
     if(Sys.time() > indicator$next_update){
-      newData <-get(id)(indicator$original_url)
+      newData <-get(id)(indicator)
       if(DBI::dbExistsTable(db_conn, id)){
         oldData <- DBI::dbReadTable(db_conn, id)
         if(validate_data(db_conn, newData, oldData, indicator)){

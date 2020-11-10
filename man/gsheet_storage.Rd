@@ -15,7 +15,7 @@ gsheet_storage(id, kvars, bound = 0.95)
 Indicate the min fraction of rows where the key variables need to match.}
 }
 \description{
-Storage domar data in Google Sheets
+\lifecycle{archived}
 }
 \details{
 Don't use if you don't have access to \code{\link{domar_list}}.

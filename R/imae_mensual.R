@@ -1,6 +1,6 @@
 #' IMAE Mensual
 #'
-#' @param url el url del archivo original
+#' @param indicador vector de datos para este indicador en la lista de domar
 #'
 #' @return data.frame los datos del IMAE en forma tabular
 #'
@@ -10,9 +10,9 @@
 #' \dontrun{
 #' imae <- imae_mensual('https://.../imae.xlsx')
 #' }
-imae_mensual <- function(url) {
+imae_mensual <- function(indicador) {
   imae <- readxl::read_excel(
-    downloader(url, 'xlxs'),
+    downloader(indicador),
     skip = 5)
   # Serie original
   imaeso <- imae[,1:6]

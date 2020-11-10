@@ -4,10 +4,10 @@
 \alias{imae_mensual}
 \title{IMAE Mensual}
 \usage{
-imae_mensual(url)
+imae_mensual(indicador)
 }
 \arguments{
-\item{url}{el url del archivo original}
+\item{indicador}{vector de datos para este indicador en la lista de domar}
 }
 \value{
 data.frame los datos del IMAE en forma tabular
