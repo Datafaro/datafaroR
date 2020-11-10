@@ -1,24 +1,21 @@
-utils::globalVariables(c("ano", "mes", 'domar_list'))
+utils::globalVariables(c("ano", "mes", 'domar_list', '...2', 'V1', 'V2'))
 
 
-#' Download files interactivelly
+#' Descarga de archivos
 #'
-#' @param url url address of file
-#' @param ext the file extention for the downloaded file.
-#'   See \code{\link{tempfile}}
+#' @param indicador el vector de datos correspondiente al indicador en cuestion
 #'
-#' @return pointer to tempfile storage
+#' @return la ruta de un archivo temporal que contiene el archivo descargado
 #'
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' downloader('https://cdn.bancentral.gov.do/documents/
-#' estadisticas/sector-real/documents/imae.xlsx', 'xlsx')
+#' downloader(pib_gasto)
 #' }
-downloader <- function(url, ext){
-  httr::GET(url,
-            httr::write_disk(tf <- tempfile(fileext = paste0('.', ext))))
+downloader <- function(indicador){
+  httr::GET(indicador$original_url,
+            httr::write_disk(tf <- tempfile(fileext = indicador$file_ext)))
   tf
 }
 

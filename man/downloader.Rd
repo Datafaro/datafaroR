@@ -2,25 +2,21 @@
 % Please edit documentation in R/utils.R
 \name{downloader}
 \alias{downloader}
-\title{Download files interactivelly}
+\title{Descarga de archivos}
 \usage{
-downloader(url, ext)
+downloader(indicador)
 }
 \arguments{
-\item{url}{url address of file}
-
-\item{ext}{the file extention for the downloaded file.
-See \code{\link{tempfile}}}
+\item{indicador}{el vector de datos correspondiente al indicador en cuestion}
 }
 \value{
-pointer to tempfile storage
+la ruta de un archivo temporal que contiene el archivo descargado
 }
 \description{
-Download files interactivelly
+Descarga de archivos
 }
 \examples{
 \dontrun{
-downloader('https://cdn.bancentral.gov.do/documents/
-estadisticas/sector-real/documents/imae.xlsx', 'xlsx')
+downloader(pib_gasto)
 }
 }
