@@ -7,13 +7,24 @@
 downloader(indicador)
 }
 \arguments{
-\item{indicador}{el vector de datos correspondiente al indicador en cuestion}
+\item{indicador}{el vector de datos correspondiente al indicador en cuestion.
+Vea la sección \code{details} para más detalles.}
 }
 \value{
 la ruta de un archivo temporal que contiene el archivo descargado
 }
 \description{
 Descarga de archivos
+}
+\details{
+El indicador pasado a la función es un vector de datos que debe
+contener por lo menos:
+
+\itemize{
+\item{Extensión del archivo \code{(file_ext)}: uno de 'xlsx', 'xls',
+'csv', 'pdf', 'dir', 'sql'}
+\item{Enlace directo a la descarga \code{(original_url)}}
+}
 }
 \examples{
 \dontrun{

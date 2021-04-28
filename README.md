@@ -31,6 +31,4 @@ Si tienes un archivo binario, lo cual es muy probable, instálalo.
 ## Comenzando
 
 Una vez has instalado el paquete ejecuta `browseVignettes('domar')` en
-la consola de comando de R para ver más información relevante.
-
-<!-- Asegurate de tener una sola instancia corriendo al mismo tiempo en el cron. O aún mejor, que cada instancia sea la que crea un nuevo cron al salir -->
+la consola de comandos de R para ver más información relevante.

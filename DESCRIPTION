@@ -1,6 +1,6 @@
 Package: domar
 Title: Dominican Admnistrative Registries
-Version: 0.004.1.9000
+Version: 0.004.2.9000
 Authors@R: c( 
     person(given = "Daniel E.",
            family = "de la Rosa",
@@ -35,9 +35,15 @@ Imports:
     blastula,
     DBI,
     RPostgres,
-    lifecycle
+    lifecycle,
+    janitor,
+    rvest,
+    magrittr,
+    Dmisc (>= 0.2.2.9001)
 Suggests: 
     knitr,
     rmarkdown
 VignetteBuilder: knitr
 RdMacros: lifecycle
+Remotes:  
+    drdsdaniel/Dmisc

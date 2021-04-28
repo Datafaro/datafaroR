@@ -21,7 +21,9 @@ user <- if(file.exists('/home/drdsdaniel/domar/domar_run.R')){'drdsdaniel'}else{
 
 creds_file <- if(interactive()){'domar.email'} else {paste0('/home/', user,'/domar/domar.email')}
 
-lista <- DBI::dbReadTable(db_conn, 'api_domar_list')
+lista <- DBI::dbReadTable(db_conn, 'api_indicator')
+indicador <- DBI::dbReadTable(db_conn, 'api_indicator')
+indicador <- indicador[indicador$id == 'deuda_publica_2020',]
 lista <- lista[lista$indicator_state == 2,]
 
 for (id in lista$id) {
