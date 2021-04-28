@@ -7,16 +7,16 @@
 imae_mensual(indicador)
 }
 \arguments{
-\item{indicador}{vector de datos para este indicador en la lista de domar}
+\item{indicador}{Vea \code{\link{downloader}}}
 }
 \value{
-data.frame los datos del IMAE en forma tabular
+\link{data.frame}: los datos del IMAE en forma tabular
 }
 \description{
 IMAE Mensual
 }
 \examples{
 \dontrun{
-imae <- imae_mensual('https://.../imae.xlsx')
+imae <- imae_mensual(indicador)
 }
 }

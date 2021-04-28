@@ -1,19 +1,23 @@
 #' IMAE Mensual
 #'
-#' @param indicador vector de datos para este indicador en la lista de domar
+#' @param indicador Vea \code{\link{downloader}}
 #'
-#' @return data.frame los datos del IMAE en forma tabular
+#' @return [data.frame]: los datos del IMAE en forma tabular
 #'
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' imae <- imae_mensual('https://.../imae.xlsx')
+#' imae <- imae_mensual(indicador)
 #' }
 imae_mensual <- function(indicador) {
+  ano <- NULL
+  mes <- NULL
+  file_path <- downloader(indicador)
   imae <- readxl::read_excel(
-    downloader(indicador),
+    file_path,
     skip = 5)
+  unlink(file_path)
   # Serie original
   imaeso <- imae[,1:6]
   imaeso <- imaeso[-1,]
@@ -30,7 +34,7 @@ imae_mensual <- function(indicador) {
   imaeso <- tidyr::fill(imaeso, ano, .direction = 'up')
   imaeso <- tidyr::fill(imaeso, ano)
   imaeso <- dplyr::filter(imaeso, !is.na(mes))
-  imaeso <- to_date(imaeso)
+  imaeso <- Dmisc::vars_to_date(imaeso, ano = 1, mes = 2)
   imaeso$serie <- 'Serie original'
 
   # Serie desestacionalizada
@@ -51,7 +55,7 @@ imae_mensual <- function(indicador) {
   imaesd <- tidyr::fill(imaesd, ano, .direction = 'up')
   imaesd <- tidyr::fill(imaesd, ano)
   imaesd <- imaesd[!is.na(imaesd$mes),]
-  imaesd <- to_date(imaesd)
+  imaesd <- Dmisc::vars_to_date(imaesd, ano = 1, mes = 2)
   imaesd$serie <- 'Serie desestacionalizada'
 
   # Serie tendencia-ciclo
@@ -72,7 +76,7 @@ imae_mensual <- function(indicador) {
   imaest <- tidyr::fill(imaest, ano, .direction = 'up')
   imaest <- tidyr::fill(imaest, ano)
   imaest <- imaest[!is.na(imaest$mes),]
-  imaest <- to_date(imaest)
+  imaest <- Dmisc::vars_to_date(imaest, ano = 1, mes = 2)
   imaest$serie <- 'Serie Tendencia-Ciclo'
 
   #
