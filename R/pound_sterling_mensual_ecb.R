@@ -9,6 +9,6 @@ pound_sterling_mensual_ecb <- function(indicador){
   names(table) <- table[1,]
   table <- table[-1,]
   table <- tidyr::separate(table, Period, c('ano', 'mes'))
-  table <- Dmisc::vars_to_date(table, ano = 1, mes = 2, tipo_mes = 'num')
+  table <- Dmisc::vars_to_date(table, year = 1, month = 2)
   table
 }

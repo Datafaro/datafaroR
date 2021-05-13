@@ -8,7 +8,7 @@ balanza_pagos_mensual <- function(indicador){
   datos$V1 <- stringr::str_remove(datos$V1, '\\*')
   datos <- tidyr::fill(datos, V1)
   datos[1:2, 1:2] <- NA
-  datos <- Dmisc::vars_to_date(datos, ano = 1, mes = 2)
+  datos <- Dmisc::vars_to_date(datos, year = 1, month = 2)
   datos <- as.data.frame(t(datos))
   datos <- dplyr::bind_cols(
     c(rep('GOBIERNO CENTRAL PRESUPUESTARIO', 96),

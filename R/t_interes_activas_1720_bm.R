@@ -42,7 +42,7 @@ t_interes_activas_1720_bm <- function(indicador){
     sectores,
     preferencial
   )
-  datos <- Dmisc::vars_to_date(datos, ano = 1, mes = 2)
+  datos <- Dmisc::vars_to_date(datos, year = 1, month = 2)
   datos <- dplyr::filter(datos, !is.na(fecha))
   datos
 }
