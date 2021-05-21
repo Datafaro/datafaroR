@@ -8,3 +8,5 @@
 ^\.github$
 ^\.env$
 ^db_con\.R$
+^data-raw$
+^Levels$

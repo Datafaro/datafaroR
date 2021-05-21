@@ -25,7 +25,7 @@ downloader <- function(indicador) {
   original_url <- as.character(indicador[["original_url"]])
   #return(class(original_url))
   #return(length(file_ext))
-  if (file_ext == "dir") {
+  if (file_ext == "html") {
     xml2::read_html(original_url)
   } else {
     httr::GET(

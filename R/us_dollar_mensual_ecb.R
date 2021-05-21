@@ -1,4 +1,16 @@
-us_dollar_mensual_ecb <- function(indicador){
+#' Tipo de cambio USD/Eur Mensual
+#'
+#' @param indicador Vea \code{\link{downloader}}
+#'
+#' @return [data.frame]: los datos del indicador en forma tabular
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'  usd_eur <- us_dollar_mensual_ecb(indicador)
+#' }
+us_dollar_mensual_ecb <- function(indicador = c(original_url = "https://sdw.ecb.europa.eu/quickview.do?SERIES_KEY=120.EXR.M.USD.EUR.SP00.A", file_ext = "html")){
   Period <- NULL
   file <- downloader(indicador)
   table <- rvest::html_nodes(file, 'table')

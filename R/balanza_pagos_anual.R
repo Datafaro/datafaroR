@@ -1,126 +1,33 @@
-balanza_pagos_anual <- function(indicador){
+#' Balanza de pagos Anual
+#'
+#' @param indicador  Vea \code{\link{downloader}}
+#'
+#' @return [data.frame]: los datos del indicador en forma tabular
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'   bpa <- balanza_pagos_anual()
+#' }
+balanza_pagos_anual <- function(indicador = NULL){
+  `2010` <- NULL
+  conceptos <- NULL
+  orden <- NULL
+  nivel <- NULL
+  Conceptos <- NULL
+  if(is.null(indicador)){
+    indicador <-  c(
+      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-externo/documents/bpagos_6.xls",
+      file_ext = "xls"
+    )
+  }
   fecha <- NULL
   file <- downloader(indicador)
-  datos <- readxl::read_excel(file, col_names = F)
-  datos <- datos[1:119,]
-  datos <- as.data.frame(t(datos))
-  #datos <- datos[!duplicated(datos$V1, incomparables = NA),]
-  datos$V2 <- stringr::str_remove(datos$V2, '\\*')
-  #datos <- tidyr::fill(datos, V1)
-  datos[1:2, 1:2] <- NA
-  #datos <- to_date(datos, ano = 1, mes = 2)
-  datos <- as.data.frame(t(datos))
-  datos <- dplyr::bind_cols(
-    c(rep('GOBIERNO CENTRAL PRESUPUESTARIO', 97),
-      rep('RESTO DEL SECTOR P\u00daBLICO NO FINANCIERO', 19),
-      rep('SECTOR P\u00daBLICO NO FINANCIERO', 3)),
-    c('', '', '',
-      rep('Transacciones que afectan al patrimonio neto', 47),
-      '',
-      rep('Transacciones en activos no financieros', 15),
-      rep('Transacciones en activos y pasivos financieros (financiamiento)', 29),
-      rep('', 5),
-      rep('Transacciones en activos y pasivos financieros (financiamiento)', 14),
-      rep('', 5)),
-    c('', '', '', '', '1', '11', '111', '1111', '1112', '1113', '113', '114', '1141',
-      '11411', '11414', '1142', '1144', '1145', '115', '116', '12', '13', '14',
-      '2', '21', '211', '212', '22', '24', '241', '242', '242.1', '25', '251',
-      '251.1',
-      '252',
-      '26',
-      '261',
-      '262',
-      '263',
-      '2631',
-      '2632',
-      '27',
-      '28',
-      '282',
-      '2821',
-      '2821.1',
-      '2822',
-      '2822.1',
-      'GOB',
-      '',
-      '',
-      '31',
-      '311',
-      '313',
-      '314',
-      '',
-      '315',
-      '',
-      '2M',
-      '',
-      'PB',
-      'PB',
-      'NLB',
-      'NLB',
-      '',
-      '',
-      '32',
-      '321',
-      '3212',
-      '3215',
-      '3218',
-      '322',
-      '3225',
-      '33',
-      '331',
-      '3313',
-      '3313.1',
-      '3313.11',
-      '3313.12',
-      '3313.13',
-      '3314',
-      '3314.1',
-      '3314.2',
-      '3315',
-      '332',
-      '3323',
-      '3323.1',
-      '3323.2',
-      '3323.3',
-      '3324',
-      '3324.1',
-      '3324.2',
-      '3324.3',
-      'NLBz',
-      '',
-      '',
-      '',
-      'NLB',
-      'NLB',
-      '',
-      '32',
-      '321',
-      '3212',
-      '3213',
-      '3218',
-      '322',
-      '33',
-      '331',
-      '3313',
-      '3314',
-      '3315',
-      '332',
-      '3324',
-      '',
-      '',
-      '',
-      'NLB',
-      'NLB'
-    ),
-    datos
-  )
-  datos$...4 <- NULL
-  datos <- datos[!is.na(datos$...6),]
-  datos[1,1:3] <- NA
-  names(datos) <- datos[1,]
-  datos <- datos[-1,]
-  names(datos)[1:4] <- c('sector', 'tipo_transaccion', 'codigo', 'cuenta')
-  datos <- tidyr::pivot_longer(datos, -c(1:4), names_to = 'fecha', values_to = 'valor')
-  datos <- dplyr::mutate(datos,
-                         fecha = format(as.numeric(fecha), scientific = F))
+  #file <- "/mnt/d/Descargas/bpagos_6 (1).xls"
+  datos <- readxl::read_excel(file, skip = 5)
+  datos <- tidyr::drop_na(datos, `2010`)
+  datos <- dplyr::bind_cols(dplyr::select(domar::nvl_balanza_pagos_anual, -conceptos), datos)
+  datos <- tidyr::pivot_longer(datos, -c(orden, nivel, Conceptos), names_to = "ano", values_to = "valor")
   datos
 }
