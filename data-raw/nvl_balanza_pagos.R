@@ -1,4 +1,4 @@
-nvl_balanza_pagos_anual <- tibble::tribble(
+nvl_balanza_pagos <- tibble::tribble(
   ~orden,	~conceptos,
   "1",	"1. Cuenta Corriente",
   "1.1",	"1.1 Balanza de Bienes y Servicios",
@@ -42,23 +42,24 @@ nvl_balanza_pagos_anual <- tibble::tribble(
   "1.3.2.1",	"Remesas Familiares",
   "1.3.2.2",	"Otras Transferencias",
   "2",	"2. Cuenta de Capital 1/",
-  "3",	"3. Préstamo /Endeudamiento Neto (3=1+2)",
+  "3",	"3. Préstamo /
+    Endeudamiento Neto (3=1+2)",
   "4",	"4. Cuenta Financiera",
   "4.1",	"Inversión Directa",
   "4.2",	"Inversión de Cartera",
   "4.3",	"Deuda Pub. y Priv. Med. y LP (Neto)",
   "4.4",	"Deuda Pub. y Priv. Corto Plazo (Neto)",
-  "4.5",	"Moneda y Depósitos ",
+  "4.5",	"Moneda y Depósitos",
   "4.6",	"Otros  2/",
   "5",	"5. Saldo",
   "6",	"6. Errores y Omisiones",
   "7",	"7. Financiamiento",
-  "99.1",	"Activos de Reservas ",
+  "99.1",	"Activos de Reservas",
   "99.2",	"Uso del crédito y  Préstamos del FMI 3/",
   "99.3",	"Transferecias (Condonación de deudas)",
   "99.4",	"Otra inversión-pasivos 4/"
 )
 
-nvl_balanza_pagos_anual <- nivelador(nvl_balanza_pagos_anual)
+nvl_balanza_pagos <- nivelador(nvl_balanza_pagos)
 
-usethis::use_data(nvl_balanza_pagos_anual, overwrite = TRUE)
+usethis::use_data(nvl_balanza_pagos, overwrite = TRUE)

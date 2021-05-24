@@ -2,4 +2,5 @@
 #'
 #'
 #' @format [data.frame]
-"nvl_balanza_pagos_anual"
+"nvl_balanza_pagos"
+"balanza_pagos_trim"

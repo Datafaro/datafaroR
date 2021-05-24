@@ -12,10 +12,7 @@
 #' }
 balanza_pagos_anual <- function(indicador = NULL){
   `2010` <- NULL
-  conceptos <- NULL
-  orden <- NULL
-  nivel <- NULL
-  Conceptos <- NULL
+  . <- NULL
   if(is.null(indicador)){
     indicador <-  c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-externo/documents/bpagos_6.xls",
@@ -27,7 +24,11 @@ balanza_pagos_anual <- function(indicador = NULL){
   #file <- "/mnt/d/Descargas/bpagos_6 (1).xls"
   datos <- readxl::read_excel(file, skip = 5)
   datos <- tidyr::drop_na(datos, `2010`)
-  datos <- dplyr::bind_cols(dplyr::select(domar::nvl_balanza_pagos_anual, -conceptos), datos)
-  datos <- tidyr::pivot_longer(datos, -c(orden, nivel, Conceptos), names_to = "ano", values_to = "valor")
-  datos
+  datos <- datos %>%
+    dplyr::bind_cols(domar::nvl_balanza_pagos, .)
+  if(sum(datos[, "conceptos"] == datos[, "Conceptos"]) == 57){
+    datos %>%
+      dplyr::select(-"Conceptos") %>%
+      tidyr::pivot_longer(-c(1:3), names_to = "ano", values_to = "valor")
+  }
 }
