@@ -2,6 +2,7 @@
 
 export("%>%")
 export(balanza_pagos_anual)
+export(balanza_pagos_trim)
 export(db_storage)
 export(domar_list)
 export(downloader)
