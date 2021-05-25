@@ -7,3 +7,4 @@ domar.email
 domar_run.log
 .env
 db_con.R
+domar.Rproj
