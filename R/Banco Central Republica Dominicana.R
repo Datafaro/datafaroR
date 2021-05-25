@@ -335,3 +335,249 @@ ipc_mensual_2020 <- function(indicador = NULL){
   datos <- Dmisc::vars_to_date(datos, year = 1, month = 2)
   datos
 }
+
+
+
+
+#' Deuda pública 2020
+#'
+#'  \lifecycle{experimental}
+#'
+#' @param indicador Vea \code{\link{downloader}}
+#'
+#' @return [data.frame]: los datos del indicador en forma tabular
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'   dp20 <- deuda_publica_2020()
+#' }
+deuda_publica_2020 <- function(indicador){
+  if(is.null(indicador)){
+    indicador = c(
+      original_url = "",
+      file_ext = ""
+    )
+  }
+  codigo <- NULL
+  fecha <- NULL
+  file <- downloader(indicador)
+  datos <- readxl::read_excel(file, skip = 11, col_names = F)
+  datos <- datos[1:56,]
+  datos <- dplyr::bind_cols(
+    c(
+      '',
+      '',
+      '',
+      '',
+      '',
+      '2111',
+      '2112',
+      '2113',
+      '2114',
+      '2115',
+      '211',
+      '',
+      '',
+      '2121',
+      '2122',
+      '2123',
+      '2124',
+      '21241',
+      '2125',
+      '2126',
+      '21261',
+      '2127',
+      '212',
+      '',
+      '21',
+      '',
+      '',
+      '221',
+      '222',
+      '223',
+      '22',
+      '',
+      '2',
+      '',
+      '',
+      '1.1',
+      '1.2',
+      '1.3',
+      '1.4',
+      '1.5',
+      '1.6',
+      '',
+      '1',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '0',
+      '',
+      '',
+      '',
+      ''
+    ),
+    datos
+  )
+  datos <- as.data.frame(t(datos))
+  datos <- datos[!is.na(datos$V1),]
+  datos <- as.data.frame(t(datos))
+  names(datos) <- datos[1,]
+  datos <- datos[-1,]
+  names(datos)[1:2] <- c('codigo', 'cuenta')
+  datos <- dplyr::filter(datos, codigo != '')
+  datos <- tidyr::pivot_longer(datos, -c(1:2), names_to = 'fecha', values_to = 'valor')
+  datos <- dplyr::mutate(datos,
+                         fecha = stringr::str_remove_all(fecha, '\\*')
+                         )
+  datos
+}
+
+
+
+
+#' Índices de Valores Encadenados del PIB
+#'
+#'  \lifecycle{experimental}
+#'
+#' @param indicador Vea \code{\link{downloader}}
+#'
+#' @return [data.frame]: los datos del indicador en forma tabular
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'   ive <- pib_ive()
+#' }
+pib_ive <- function(indicador = NULL){
+  if(is.null(indicador)){
+    indicador = c(
+      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-real/documents/pib_2007.xlsx",
+      file_ext = "xlsx"
+    )
+  }
+  `...1` <- NULL
+  `...2` <- NULL
+  ano <- NULL
+  file <- downloader(indicador)
+  ive <- readxl::read_excel(file, skip = 4, col_names = F)
+  ive <- tidyr::fill(ive, ...1)
+  ive <- dplyr::mutate(
+    ive,
+    ano = dplyr::if_else(stringr::str_detect(...1, "[a-z]"), ...1, NA_character_),
+    ano = stringr::str_remove_all(ano, "[^0-9]")
+  ) %>%
+    tidyr::fill(ano, .direction = "up") %>%
+    tidyr::drop_na(...2)
+}
+
+
+
+
+#' Índices de Valores Encadenados del PIB Trimestral
+#'
+#'  \lifecycle{experimental}
+#'
+#' @param indicador Vea \code{\link{downloader}}
+#'
+#' @return [data.frame]: los datos del indicador en forma tabular
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'   ivet <- pib_ive_trimestral()
+#' }
+pib_ive_trimestral <- function(indicador = NULL){
+  if(is.null(indicador)){
+    indicador = c(
+      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-real/documents/pib_2007.xlsx",
+      file_ext = "xlsx"
+    )
+  }
+  `...1` <- NULL
+  ano <- NULL
+  fecha <- NULL
+  serie <- NULL
+  ive <- pib_ive(indicador)
+  ive <- ive %>%
+    dplyr::filter(
+      !stringr::str_detect(...1, "[0-9]")
+    ) %>%
+    dplyr::mutate(
+      ...1 = dplyr::case_when(
+        ...1 == "IV" ~ "Q4",
+        ...1 == "III" ~ "Q3",
+        ...1 == "II" ~ "Q2",
+        ...1 == "I" ~ "Q1"
+      ),
+      fecha = paste(ano, ...1)
+    )
+  ive <- ive %>%
+    dplyr::select(
+      -ano,
+      -...1
+    )
+  ive <- t(dplyr::relocate(ive, fecha))
+  ive[1,1] <- "serie"
+  ive[1,2] <- "indicador"
+  ive <- janitor::row_to_names(ive, 1)
+  ive <- as.data.frame(ive)
+  ive <- tidyr::fill(ive, serie)
+  ive <- tidyr::pivot_longer(ive, -c("serie", "indicador"), names_to = "fecha", values_drop_na = T)
+  ive
+}
+
+
+
+
+#' Índices de Valores Encadenados del PIB Anual
+#'
+#'  \lifecycle{experimental}
+#'
+#' @param indicador Vea \code{\link{downloader}}
+#'
+#' @return [data.frame]: los datos del indicador en forma tabular
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'   ivea <- pib_ive_anual()
+#' }
+pib_ive_anual <- function(indicador = NULL){
+  if(is.null(indicador)){
+    indicador = c(
+      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-real/documents/pib_2007.xlsx",
+      file_ext = "xlsx"
+    )
+  }
+  `...1` <- NULL
+  ano <- NULL
+  serie <- NULL
+  ive <- pib_ive(indicador)
+  ive <- ive %>%
+    dplyr::filter(
+      !startsWith(...1, "I")
+    )
+  ive <- ive %>%
+    dplyr::select(
+      -...1
+    )
+  ive <- t(dplyr::relocate(ive, ano))
+  ive[1,1] <- "serie"
+  ive[1,2] <- "indicador"
+  ive <- janitor::row_to_names(ive, 1)
+  ive <- as.data.frame(ive)
+  ive <- tidyr::fill(ive, serie)
+  ive <- tidyr::pivot_longer(ive, -c("serie", "indicador"), names_to = "ano", values_drop_na = T)
+  ive
+}
