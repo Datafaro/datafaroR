@@ -581,3 +581,1536 @@ pib_ive_anual <- function(indicador = NULL){
   ive <- tidyr::pivot_longer(ive, -c("serie", "indicador"), names_to = "ano", values_drop_na = T)
   ive
 }
+
+
+
+
+#' Indicadores Monetarios BCRD
+#'
+#'  \lifecycle{experimental}
+#'
+#' @param indicador Vea \code{\link{downloader}}
+#'
+#' @return [data.frame]: los datos del indicador en forma tabular
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'   imbcrd <- indicadores_monetarios_bcrd()
+#' }
+indicadores_monetarios_bcrd <- function(indicador) {
+  V1 <- NULL
+  fecha <- NULL
+  valor <- NULL
+  file <- downloader(indicador)
+  datos <- readxl::read_excel(
+    file,
+    skip = 4,
+    col_names = F
+  )
+  datos <- datos[!is.na(datos$...1),]
+  datos <- datos[1:44,]
+  datos <- dplyr::bind_cols(
+    c(
+      '',
+      rep('Indicadores BCRD', 11),
+      rep('Base Monetaria', 13),
+      rep('Agregados monetarios', 13),
+      rep('Multiplicadores monetarios', 5),
+      'Tasa de cambio'
+    ),
+    c('',
+      '1',
+      '2',
+      '3',
+      '4',
+      '4.1',
+      '4.11',
+      '4.2',
+      '4.3',
+      '5',
+      '5.1',
+      '6',
+      '',
+      '7',
+      '7.1',
+      '7.11',
+      '7.2',
+      '7.3',
+      '8',
+      '8.1',
+      '8.2',
+      '8.3',
+      '8.4',
+      '8.5',
+      '8.6',
+      '',
+      '9',
+      '9.1',
+      '9.2',
+      '10',
+      '10.1',
+      '10.2',
+      '10.3',
+      '10.4',
+      '11',
+      '11.1',
+      '11.2',
+      '11.3',
+      '',
+      '',
+      '12.1',
+      '12.2',
+      '12.3',
+      '13'
+    ),
+    datos
+  )
+  datos[1, 1:3] <- NA
+  datos <- as.data.frame(t(datos))
+  datos <- dplyr::mutate(datos,
+                         V1 = stringr::str_replace(tolower(V1), 'ene', 'Jan'),
+                         V1 = stringr::str_replace(tolower(V1), 'abr', 'Apr'),
+                         V1 = stringr::str_replace(tolower(V1), 'ago', 'Aug'),
+                         V1 = stringr::str_replace(tolower(V1), 'dic', 'Dec'),
+                         V1 = stringr::str_replace_all(V1, '-', ' '),
+                         V1 = stringr::str_remove_all(V1, '\\*'),
+                         V1 = dplyr::case_when(
+                           is.na(as.Date(as.numeric(V1), origin = "1899-12-30")) ~ V1,
+                           !is.na(as.Date(as.numeric(V1), origin = "1899-12-30")) ~ as.character(as.Date(as.numeric(V1), origin = "1899-12-30")),
+                         ),
+                         V1 = stringr::str_remove_all(V1, '\\.'),
+                         V1 = dplyr::case_when(
+                           stringr::str_count(V1, ' ') == 2 ~ as.character(as.Date(V1, '%d %b %y')),
+                           stringr::str_count(V1, ' ') == 1 ~ as.character(as.Date(paste('01', V1), '%d %b %y')),
+                           TRUE ~ V1
+                         )
+                         )
+  datos <- as.data.frame(t(datos))
+  names(datos) <- make.names(datos[1,])
+  names(datos)[1:3] <- c('grupo', 'codigo', 'indicador')
+  datos <- datos[-1,]
+  datos <- datos[datos$codigo != '',]
+  datos <- tidyr::pivot_longer(datos, -c(1:3), names_to = 'fecha', values_to = 'valor')
+  datos <- dplyr::mutate(datos,
+                         fecha = stringr::str_remove(fecha, 'X'),
+                         fecha = stringr::str_replace_all(fecha, '\\.', '-'),
+                         valor = as.numeric(valor)
+                         )
+  datos
+}
+
+
+
+
+#' Indicadores Monetarios OSD
+#'
+#'  \lifecycle{experimental}
+#'
+#' @param indicador Vea \code{\link{downloader}}
+#'
+#' @return [data.frame]: los datos del indicador en forma tabular
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'   imosd <- indicadores_monetarios_osd()
+#' }
+indicadores_monetarios_osd <- function(indicador) {
+  V1 <- NULL
+  fecha <- NULL
+  valor <- NULL
+  file <- downloader(indicador)
+  datos <- readxl::read_excel(
+    file,
+    skip = 4,
+    col_names = F
+  )
+  datos <- datos[!is.na(datos$...2),]
+  #datos <- datos[1:44,]
+  datos <- dplyr::bind_cols(
+    c('',
+      '1',
+      '11',
+      '12',
+      '2',
+      '21',
+      '22',
+      '3',
+      '31',
+      '32',
+      '4',
+      '401',
+      '4011',
+      '4012',
+      '4013',
+      '40131',
+      '40132',
+      '41',
+      '411',
+      '4111',
+      '4112',
+      '4113',
+      '41131',
+      '41132',
+      '42',
+      '421',
+      '4211',
+      '4212',
+      '4213',
+      '42131',
+      '42132',
+      '43',
+      '431',
+      '4311',
+      '44',
+      '441',
+      '4411',
+      '5',
+      '501',
+      '5011',
+      '5012',
+      '5013',
+      '50131',
+      '50132',
+      '51',
+      '511',
+      '5111',
+      '5112',
+      '5113',
+      '51131',
+      '51132',
+      '52',
+      '521',
+      '5211',
+      '5212',
+      '5213',
+      '52131',
+      '52132',
+      '53',
+      '531',
+      '5311',
+      '54',
+      '541',
+      '5411',
+      '6',
+      '61',
+      '62',
+      '63',
+      '7'
+    ),
+    datos
+  )
+  datos[1, 1:2] <- NA
+  datos <- as.data.frame(t(datos))
+  datos <- dplyr::mutate(datos,
+                         V1 = stringr::str_replace(tolower(V1), 'ene', 'Jan'),
+                         V1 = stringr::str_replace(tolower(V1), 'abr', 'Apr'),
+                         V1 = stringr::str_replace(tolower(V1), 'ago', 'Aug'),
+                         V1 = stringr::str_replace(tolower(V1), 'dic', 'Dec'),
+                         V1 = stringr::str_replace_all(V1, '-', ' '),
+                         V1 = stringr::str_remove_all(V1, '\\*'),
+                         V1 = dplyr::case_when(
+                           is.na(as.Date(as.numeric(V1), origin = "1899-12-30")) ~ V1,
+                           !is.na(as.Date(as.numeric(V1), origin = "1899-12-30")) ~ as.character(as.Date(as.numeric(V1), origin = "1899-12-30")),
+                         ),
+                         V1 = stringr::str_remove_all(V1, '\\.'),
+                         V1 = dplyr::case_when(
+                           stringr::str_count(V1, ' ') == 2 ~ as.character(as.Date(V1, '%d %b %y')),
+                           stringr::str_count(V1, ' ') == 1 ~ as.character(as.Date(paste('01', V1), '%d %b %y')),
+                           TRUE ~ V1
+                         )
+  )
+  datos <- as.data.frame(t(datos))
+  names(datos) <- make.names(datos[1,])
+  names(datos)[1:2] <- c('codigo', 'indicador')
+  datos <- datos[-1,]
+  datos <- datos[datos$codigo != '',]
+  datos <- tidyr::pivot_longer(datos, -c(1:2), names_to = 'fecha', values_to = 'valor')
+  datos <- dplyr::mutate(datos,
+                         fecha = stringr::str_remove(fecha, 'X'),
+                         fecha = stringr::str_replace_all(fecha, '\\.', '-'),
+                         valor = as.numeric(valor)
+  )
+  datos
+}
+#' PIB por enfoque del gasto trimestral
+#'
+#'   \lifecycle{experimental}
+#'
+#' @param indicador vector de datos para este indicador en la lista de domar
+#'
+#' @return data.frame los datos del PIB por el enfoque del gasto trimestral
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' pib_gasto_t(indicador)
+#' }
+pib_gasto_trim <- function(indicador = c(original_url = NULL, file_ext = "xls")){
+  if(is.null(indicador[["original_url"]])){
+    indicador[["original_url"]] <- "https://cdn.bancentral.gov.do/documents/estadisticas/sector-real/documents/pib_gasto_2007.xls"
+  }
+  `...2` <- NULL
+  V1 <- NULL
+  V2 <- NULL
+  pibFile <- downloader(indicador)
+  pib <- readxl::read_excel(pibFile, sheet = 'PIB$_Trim', skip = 5, col_names = F)
+  pib <- tidyr::drop_na(pib, ...2)
+  pib <- pib[1:11,]
+  pib <- t(pib)
+  pib[,1] <- stringr::str_remove_all(pib[,1], "[^0-9]")
+  pib <- as.data.frame(pib)
+  pib <- tidyr::fill(pib, V1)
+  pib <- dplyr::mutate(pib,
+                       V2 = dplyr::case_when(
+                         V2 == 'E-M' ~ 'Q1',
+                         V2 == 'A-J' ~ 'Q2',
+                         V2 == 'J-S' ~ 'Q3',
+                         V2 == 'O-D' ~ 'Q4'
+                       ),
+                       V1 = paste(V1, V2),
+                       V2 = NULL)
+  pib <- t(pib)
+  pib[1,1] <- 'Componente'
+  pib <- as.data.frame(pib)
+  names(pib) <- pib[1,]
+  pib <- pib[-1,]
+  levels <- dplyr::bind_cols(
+    data.frame(
+      nivel0 = c(0,0,0,0,0,0,0,0,1),
+      nivel1 = c(1,0,0,1,0,0,1,1,0),
+      nivel2 = c(0,1,1,0,1,1,1,1,0)
+    ),
+    pib$Componente
+  )
+  names(levels)[4] <- 'Componente'
+  levels <- tidyr::pivot_longer(levels, -'Componente', names_to = "nivel", values_drop_na = T)
+  levels <- levels[levels$value == 1,]
+  levels$value <- NULL
+  levels$nivel <- stringr::str_remove(levels$nivel, 'nivel')
+  order <- dplyr::bind_cols(
+    data.frame(
+      orden = c(1,11,12,2,21,22,3,4,5)
+    ),
+    pib$Componente
+  )
+  names(order)[2] <- 'Componente'
+  levels <- dplyr::left_join(levels, order)
+  rm(order)
+  pib <- dplyr::left_join(levels, pib)
+  rm(levels)
+  pib <- tidyr::pivot_longer(pib,
+                             -c('Componente', 'nivel', 'orden'),
+                             names_to= 'fecha',
+                             values_to = 'pib',
+                             values_drop_na = T)
+  pib$fecha <- zoo::as.yearqtr(pib$fecha)
+  pib$pib <- as.numeric(pib$pib)
+
+  # Ponderacion por componente
+  pib2 <- readxl::read_excel(pibFile, sheet = 'PIB$_Trim', skip = 25, col_names = F)
+  pib2 <- tidyr::drop_na(pib2, ...2)
+  pib2 <- pib2[1:11,]
+  pib2 <- t(pib2)
+  pib2[,1] <- stringr::str_remove_all(pib2[,1], '[^0-9]')
+  pib2[1,1] <- NA
+  pib2 <- as.data.frame(pib2)
+  pib2 <- tidyr::fill(pib2, V1)
+  pib2 <- dplyr::mutate(pib2,
+                       V2 = dplyr::case_when(
+                         V2 == 'E-M' ~ 'Q1',
+                         V2 == 'A-J' ~ 'Q2',
+                         V2 == 'J-S' ~ 'Q3',
+                         V2 == 'O-D' ~ 'Q4'
+                       ),
+                       V1 = paste(V1, V2),
+                       V2 = NULL)
+  pib2 <- t(pib2)
+  pib2[1,1] <- 'Componente'
+  pib2 <- as.data.frame(pib2)
+  names(pib2) <- pib2[1,]
+  pib2 <- pib2[-1,]
+  levels <- dplyr::bind_cols(
+    data.frame(
+      nivel0 = c(0,0,0,0,0,0,0,0,1),
+      nivel1 = c(1,0,0,1,0,0,1,1,0),
+      nivel2 = c(0,1,1,0,1,1,1,1,0)
+    ),
+    pib2$Componente
+  )
+  names(levels)[4] <- 'Componente'
+  levels <- tidyr::pivot_longer(levels, -'Componente')
+  levels <- levels[levels$value == 1,]
+  levels$value <- NULL
+  levels <- dplyr::rename(levels, 'nivel' = 'name')
+  levels$nivel <- stringr::str_remove(levels$nivel, 'nivel')
+  order <- dplyr::bind_cols(
+    data.frame(
+      orden = c(1,11,12,2,21,22,3,4,5)
+    ),
+    pib2$Componente
+  )
+  names(order)[2] <- 'Componente'
+  levels <- dplyr::left_join(levels, order)
+  rm(order)
+  pib2 <- dplyr::left_join(levels, pib2)
+  rm(levels)
+  pib2 <- tidyr::pivot_longer(pib2,
+                              -c('Componente', 'nivel', 'orden'),
+                              names_to= 'fecha',
+                              values_to = 'ponderacion',
+                              values_drop_na = T)
+  pib2$fecha <- zoo::as.yearqtr(pib2$fecha)
+  pib2$ponderacion <- as.numeric(pib2$ponderacion)
+
+  pib <- dplyr::left_join(pib, pib2)
+
+
+  # PIB Acumulado
+  pib2 <- readxl::read_excel(pibFile, sheet = 'PIB$_Trim_Acum', skip = 6, col_names = F)
+  pib2 <- tidyr::drop_na(pib2, ...2)
+  pib2 <- pib2[1:11,]
+  pib2 <- t(pib2)
+  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(p\\)')
+  pib2[1,1] <- NA
+  pib2 <- as.data.frame(pib2)
+  pib2 <- tidyr::fill(pib2, V1)
+  pib2 <- dplyr::mutate(pib2,
+                       V2 = dplyr::case_when(
+                         V2 == 'E-M' ~ 'Q1',
+                         V2 == 'E-J' ~ 'Q2',
+                         V2 == 'E-S' ~ 'Q3',
+                         V2 == 'E-D' ~ 'Q4'
+                       ),
+                       V1 = paste(V1, V2),
+                       V2 = NULL)
+  pib2 <- t(pib2)
+  pib2[1,1] <- 'Componente'
+  pib2 <- as.data.frame(pib2)
+  names(pib2) <- pib2[1,]
+  pib2 <- pib2[-1,]
+  levels <- dplyr::bind_cols(
+    data.frame(
+      nivel0 = c(0,0,0,0,0,0,0,0,1),
+      nivel1 = c(1,0,0,1,0,0,1,1,0),
+      nivel2 = c(0,1,1,0,1,1,1,1,0)
+    ),
+    pib2$Componente
+  )
+  names(levels)[4] <- 'Componente'
+  levels <- tidyr::pivot_longer(levels, -'Componente')
+  levels <- levels[levels$value == 1,]
+  levels$value <- NULL
+  levels <- dplyr::rename(levels, 'nivel' = 'name')
+  levels$nivel <- stringr::str_remove(levels$nivel, 'nivel')
+  order <- dplyr::bind_cols(
+    data.frame(
+      orden = c(1,11,12,2,21,22,3,4,5)
+    ),
+    pib2$Componente
+  )
+  names(order)[2] <- 'Componente'
+  levels <- dplyr::left_join(levels, order)
+  rm(order)
+  pib2 <- dplyr::left_join(levels, pib2)
+  rm(levels)
+  pib2 <- tidyr::pivot_longer(pib2,
+                              -c('Componente', 'nivel', 'orden'),
+                              names_to= 'fecha',
+                              values_to = 'pib_acumulado',
+                              values_drop_na = T)
+  pib2$fecha <- zoo::as.yearqtr(pib2$fecha)
+  pib2$pib_acumulado <- as.numeric(pib2$pib_acumulado)
+
+  pib <- dplyr::left_join(pib, pib2)
+
+  # Ponderación por componente PIB acumulado
+  pib2 <- readxl::read_excel(pibFile, sheet = 'PIB$_Trim_Acum', skip = 25, col_names = F)
+  pib2 <- tidyr::drop_na(pib2, ...2)
+  pib2 <- pib2[1:11,]
+  pib2 <- t(pib2)
+  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(p\\)')
+  pib2[1,1] <- NA
+  pib2 <- as.data.frame(pib2)
+  pib2 <- tidyr::fill(pib2, V1)
+  pib2 <- dplyr::mutate(pib2,
+                        V2 = dplyr::case_when(
+                          V2 == 'E-M' ~ 'Q1',
+                          V2 == 'E-J' ~ 'Q2',
+                          V2 == 'E-S' ~ 'Q3',
+                          V2 == 'E-D' ~ 'Q4'
+                        ),
+                        V1 = paste(V1, V2),
+                        V2 = NULL)
+  pib2 <- t(pib2)
+  pib2[1,1] <- 'Componente'
+  pib2 <- as.data.frame(pib2)
+  names(pib2) <- pib2[1,]
+  pib2 <- pib2[-1,]
+  levels <- dplyr::bind_cols(
+    data.frame(
+      nivel0 = c(0,0,0,0,0,0,0,0,1),
+      nivel1 = c(1,0,0,1,0,0,1,1,0),
+      nivel2 = c(0,1,1,0,1,1,1,1,0)
+    ),
+    pib2$Componente
+  )
+  names(levels)[4] <- 'Componente'
+  levels <- tidyr::pivot_longer(levels, -'Componente')
+  levels <- levels[levels$value == 1,]
+  levels$value <- NULL
+  levels <- dplyr::rename(levels, 'nivel' = 'name')
+  levels$nivel <- stringr::str_remove(levels$nivel, 'nivel')
+  order <- dplyr::bind_cols(
+    data.frame(
+      orden = c(1,11,12,2,21,22,3,4,5)
+    ),
+    pib2$Componente
+  )
+  names(order)[2] <- 'Componente'
+  levels <- dplyr::left_join(levels, order)
+  pib2 <- dplyr::left_join(levels, pib2)
+  rm(levels)
+  pib2 <- tidyr::pivot_longer(pib2,
+                              -c('Componente', 'nivel', 'orden'),
+                              names_to= 'fecha',
+                              values_to = 'ponderacion_acumulada',
+                              values_drop_na = T)
+  pib2$fecha <- zoo::as.yearqtr(pib2$fecha)
+  pib2$ponderacion_acumulada <- as.numeric(pib2$ponderacion_acumulada)
+
+  pib <- dplyr::left_join(pib, pib2)
+
+  #############
+  # INDICE PIB
+  #############
+
+  pib2 <- readxl::read_excel(pibFile, sheet = 'PIBK_Trim', skip = 6, col_names = F)
+  pib2 <- pib2[!is.na(pib2$...1) | !is.na(pib2$...2),]
+  pib2 <- pib2[1:11,]
+  pib2 <- t(pib2)
+  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(p\\)')
+  pib2[1,1] <- NA
+  pib2 <- as.data.frame(pib2)
+  pib2 <- tidyr::fill(pib2, V1)
+  pib2 <- dplyr::mutate(pib2,
+                        V2 = dplyr::case_when(
+                          V2 == 'E-M' ~ 'Q1',
+                          V2 == 'A-J' ~ 'Q2',
+                          V2 == 'J-S' ~ 'Q3',
+                          V2 == 'O-D' ~ 'Q4'
+                        ),
+                        V1 = paste(V1, V2),
+                        V2 = NULL)
+  pib2 <- t(pib2)
+  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(1\\)')
+  pib2[1,1] <- 'Componente'
+  pib2 <- as.data.frame(pib2)
+  names(pib2) <- pib2[1,]
+  pib2 <- pib2[-1,]
+  levels <- dplyr::bind_cols(
+    data.frame(
+      nivel0 = c(0,0,0,0,0,0,0,0,1),
+      nivel1 = c(1,0,0,1,0,0,1,1,0),
+      nivel2 = c(0,1,1,0,1,1,1,1,0)
+    ),
+    pib2$Componente
+  )
+  names(levels)[4] <- 'Componente'
+  levels <- tidyr::pivot_longer(levels, -'Componente')
+  levels <- levels[levels$value == 1,]
+  levels$value <- NULL
+  levels <- dplyr::rename(levels, 'nivel' = 'name')
+  levels$nivel <- stringr::str_remove(levels$nivel, 'nivel')
+  order <- dplyr::bind_cols(
+    data.frame(
+      orden = c(1,11,12,2,21,22,3,4,5)
+    ),
+    pib2$Componente
+  )
+  names(order)[2] <- 'Componente'
+  levels <- dplyr::left_join(levels, order)
+  pib2 <- dplyr::left_join(levels, pib2)
+  rm(levels, order)
+  pib2 <- tidyr::pivot_longer(pib2,
+                              -c('Componente', 'nivel', 'orden'),
+                              names_to= 'fecha',
+                              values_to = 'indice',
+                              values_drop_na = T)
+  pib2$fecha <- zoo::as.yearqtr(pib2$fecha)
+  pib2$indice <- as.numeric(pib2$indice)
+
+  pib <- dplyr::left_join(pib, pib2)
+
+  # Tasa de crecimiento
+
+  pib2 <- readxl::read_excel(pibFile, sheet = 'PIBK_Trim', skip = 25, col_names = F)
+  pib2 <- pib2[!is.na(pib2$...1) | !is.na(pib2$...2),]
+  pib2 <- pib2[1:11,]
+  pib2 <- t(pib2)
+  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(p\\)')
+  pib2[1,1] <- NA
+  pib2 <- as.data.frame(pib2)
+  pib2 <- tidyr::fill(pib2, V1)
+  pib2 <- dplyr::mutate(pib2,
+                        V2 = dplyr::case_when(
+                          V2 == 'E-M' ~ 'Q1',
+                          V2 == 'A-J' ~ 'Q2',
+                          V2 == 'J-S' ~ 'Q3',
+                          V2 == 'O-D' ~ 'Q4'
+                        ),
+                        V1 = paste(V1, V2),
+                        V2 = NULL)
+  pib2 <- t(pib2)
+  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(1\\)')
+  pib2[1,1] <- 'Componente'
+  pib2 <- as.data.frame(pib2)
+  names(pib2) <- pib2[1,]
+  pib2 <- pib2[-1,]
+  levels <- dplyr::bind_cols(
+    data.frame(
+      nivel0 = c(0,0,0,0,0,0,0,0,1),
+      nivel1 = c(1,0,0,1,0,0,1,1,0),
+      nivel2 = c(0,1,1,0,1,1,1,1,0)
+    ),
+    pib2$Componente
+  )
+  names(levels)[4] <- 'Componente'
+  levels <- tidyr::pivot_longer(levels, -'Componente')
+  levels <- levels[levels$value == 1,]
+  levels$value <- NULL
+  levels <- dplyr::rename(levels, 'nivel' = 'name')
+  levels$nivel <- stringr::str_remove(levels$nivel, 'nivel')
+  order <- dplyr::bind_cols(
+    data.frame(
+      orden = c(1,11,12,2,21,22,3,4,5)
+    ),
+    pib2$Componente
+  )
+  names(order)[2] <- 'Componente'
+  levels <- dplyr::left_join(levels, order)
+  pib2 <- dplyr::left_join(levels, pib2)
+  rm(levels, order)
+  pib2 <- tidyr::pivot_longer(pib2,
+                              -c('Componente', 'nivel', 'orden'),
+                              names_to= 'fecha',
+                              values_to = 'tasa_crecimiento',
+                              values_drop_na = T)
+  pib2$fecha <- zoo::as.yearqtr(pib2$fecha)
+  pib2$tasa_crecimiento <- as.numeric(pib2$tasa_crecimiento)
+
+  pib <- dplyr::left_join(pib, pib2)
+
+  # Incidencia por componente
+  pib2 <- readxl::read_excel(pibFile, sheet = 'PIBK_Trim', skip = 44, col_names = F)
+  pib2 <- pib2[!is.na(pib2$...1) | !is.na(pib2$...2),]
+  pib2 <- pib2[1:11,]
+  pib2 <- t(pib2)
+  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(p\\)')
+  pib2[1,1] <- NA
+  pib2 <- as.data.frame(pib2)
+  pib2 <- tidyr::fill(pib2, V1)
+  pib2 <- dplyr::mutate(pib2,
+                        V2 = dplyr::case_when(
+                          V2 == 'E-M' ~ 'Q1',
+                          V2 == 'A-J' ~ 'Q2',
+                          V2 == 'J-S' ~ 'Q3',
+                          V2 == 'O-D' ~ 'Q4'
+                        ),
+                        V1 = paste(V1, V2),
+                        V2 = NULL)
+  pib2 <- t(pib2)
+  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(1\\)')
+  pib2[1,1] <- 'Componente'
+  pib2 <- as.data.frame(pib2)
+  names(pib2) <- pib2[1,]
+  pib2 <- pib2[-1,]
+  levels <- dplyr::bind_cols(
+    data.frame(
+      nivel0 = c(0,0,0,0,0,0,0,0,1),
+      nivel1 = c(1,0,0,1,0,0,1,1,0),
+      nivel2 = c(0,1,1,0,1,1,1,1,0)
+    ),
+    pib2$Componente
+  )
+  names(levels)[4] <- 'Componente'
+  levels <- tidyr::pivot_longer(levels, -'Componente')
+  levels <- levels[levels$value == 1,]
+  levels$value <- NULL
+  levels <- dplyr::rename(levels, 'nivel' = 'name')
+  levels$nivel <- stringr::str_remove(levels$nivel, 'nivel')
+  order <- dplyr::bind_cols(
+    data.frame(
+      orden = c(1,11,12,2,21,22,3,4,5)
+    ),
+    pib2$Componente
+  )
+  names(order)[2] <- 'Componente'
+  levels <- dplyr::left_join(levels, order)
+  pib2 <- dplyr::left_join(levels, pib2)
+  rm(levels, order)
+  pib2 <- tidyr::pivot_longer(pib2,
+                              -c('Componente', 'nivel', 'orden'),
+                              names_to= 'fecha',
+                              values_to = 'incidencia',
+                              values_drop_na = T)
+  pib2$fecha <- zoo::as.yearqtr(pib2$fecha)
+  pib2$incidencia <- as.numeric(pib2$incidencia)
+
+  pib <- dplyr::left_join(pib, pib2)
+
+
+  #########################
+  # INDICE PIB ACUMULADO
+  #########################
+
+  pib2 <- readxl::read_excel(pibFile, sheet = 'PIBK_Trim_Acum', skip = 6, col_names = F)
+  pib2 <- pib2[!is.na(pib2$...1) | !is.na(pib2$...2),]
+  pib2 <- pib2[1:11,]
+  pib2 <- t(pib2)
+  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(p\\)')
+  pib2[1,1] <- NA
+  pib2 <- as.data.frame(pib2)
+  pib2 <- tidyr::fill(pib2, V1)
+  pib2 <- dplyr::mutate(pib2,
+                        V2 = dplyr::case_when(
+                          V2 == 'E-M' ~ 'Q1',
+                          V2 == 'E-J' ~ 'Q2',
+                          V2 == 'E-S' ~ 'Q3',
+                          V2 == 'E-D' ~ 'Q4'
+                        ),
+                        V1 = paste(V1, V2),
+                        V2 = NULL)
+  pib2 <- t(pib2)
+  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(1\\)')
+  pib2[1,1] <- 'Componente'
+  pib2 <- as.data.frame(pib2)
+  names(pib2) <- pib2[1,]
+  pib2 <- pib2[-1,]
+  levels <- dplyr::bind_cols(
+    data.frame(
+      nivel0 = c(0,0,0,0,0,0,0,0,1),
+      nivel1 = c(1,0,0,1,0,0,1,1,0),
+      nivel2 = c(0,1,1,0,1,1,1,1,0)
+    ),
+    pib2$Componente
+  )
+  names(levels)[4] <- 'Componente'
+  levels <- tidyr::pivot_longer(levels, -'Componente')
+  levels <- levels[levels$value == 1,]
+  levels$value <- NULL
+  levels <- dplyr::rename(levels, 'nivel' = 'name')
+  levels$nivel <- stringr::str_remove(levels$nivel, 'nivel')
+  order <- dplyr::bind_cols(
+    data.frame(
+      orden = c(1,11,12,2,21,22,3,4,5)
+    ),
+    pib2$Componente
+  )
+  names(order)[2] <- 'Componente'
+  levels <- dplyr::left_join(levels, order)
+  pib2 <- dplyr::left_join(levels, pib2)
+  rm(levels, order)
+  pib2 <- tidyr::pivot_longer(pib2,
+                              -c('Componente', 'nivel', 'orden'),
+                              names_to= 'fecha',
+                              values_to = 'indice_acumulado',
+                              values_drop_na = T)
+  pib2$fecha <- zoo::as.yearqtr(pib2$fecha)
+  pib2$indice_acumulado <- as.numeric(pib2$indice_acumulado)
+
+  pib <- dplyr::left_join(pib, pib2)
+
+  # Tasa de crecimiento
+
+  pib2 <- readxl::read_excel(pibFile, sheet = 'PIBK_Trim_Acum', skip = 25, col_names = F)
+  pib2 <- pib2[!is.na(pib2$...1) | !is.na(pib2$...2),]
+  pib2 <- pib2[1:11,]
+  pib2 <- t(pib2)
+  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(p\\)')
+  pib2[1,1] <- NA
+  pib2 <- as.data.frame(pib2)
+  pib2 <- tidyr::fill(pib2, V1)
+  pib2 <- dplyr::mutate(pib2,
+                        V2 = dplyr::case_when(
+                          V2 == 'E-M' ~ 'Q1',
+                          V2 == 'E-J' ~ 'Q2',
+                          V2 == 'E-S' ~ 'Q3',
+                          V2 == 'E-D' ~ 'Q4'
+                        ),
+                        V1 = paste(V1, V2),
+                        V2 = NULL)
+  pib2 <- t(pib2)
+  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(1\\)')
+  pib2[1,1] <- 'Componente'
+  pib2 <- as.data.frame(pib2)
+  names(pib2) <- pib2[1,]
+  pib2 <- pib2[-1,]
+  levels <- dplyr::bind_cols(
+    data.frame(
+      nivel0 = c(0,0,0,0,0,0,0,0,1),
+      nivel1 = c(1,0,0,1,0,0,1,1,0),
+      nivel2 = c(0,1,1,0,1,1,1,1,0)
+    ),
+    pib2$Componente
+  )
+  names(levels)[4] <- 'Componente'
+  levels <- tidyr::pivot_longer(levels, -'Componente')
+  levels <- levels[levels$value == 1,]
+  levels$value <- NULL
+  levels <- dplyr::rename(levels, 'nivel' = 'name')
+  levels$nivel <- stringr::str_remove(levels$nivel, 'nivel')
+  order <- dplyr::bind_cols(
+    data.frame(
+      orden = c(1,11,12,2,21,22,3,4,5)
+    ),
+    pib2$Componente
+  )
+  names(order)[2] <- 'Componente'
+  levels <- dplyr::left_join(levels, order)
+  pib2 <- dplyr::left_join(levels, pib2)
+  rm(levels, order)
+  pib2 <- tidyr::pivot_longer(pib2,
+                              -c('Componente', 'nivel', 'orden'),
+                              names_to= 'fecha',
+                              values_to = 'tasa_crecimiento_acumulada',
+                              values_drop_na = T)
+  pib2$fecha <- zoo::as.yearqtr(pib2$fecha)
+  pib2$tasa_crecimiento_acumulada <- as.numeric(pib2$tasa_crecimiento_acumulada)
+
+  pib <- dplyr::left_join(pib, pib2)
+
+  # Incidencia por componente
+  pib2 <- readxl::read_excel(pibFile, sheet = 'PIBK_Trim_Acum', skip = 44, col_names = F)
+  pib2 <- pib2[!is.na(pib2$...1) | !is.na(pib2$...2),]
+  pib2 <- pib2[1:11,]
+  pib2 <- t(pib2)
+  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(p\\)')
+  pib2[1,1] <- NA
+  pib2 <- as.data.frame(pib2)
+  pib2 <- tidyr::fill(pib2, V1)
+  pib2 <- dplyr::mutate(pib2,
+                        V2 = dplyr::case_when(
+                          V2 == 'E-M' ~ 'Q1',
+                          V2 == 'E-J' ~ 'Q2',
+                          V2 == 'E-S' ~ 'Q3',
+                          V2 == 'E-D' ~ 'Q4'
+                        ),
+                        V1 = paste(V1, V2),
+                        V2 = NULL)
+  pib2 <- t(pib2)
+  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(1\\)')
+  pib2[1,1] <- 'Componente'
+  pib2 <- as.data.frame(pib2)
+  names(pib2) <- pib2[1,]
+  pib2 <- pib2[-1,]
+  levels <- dplyr::bind_cols(
+    data.frame(
+      nivel0 = c(0,0,0,0,0,0,0,0,1),
+      nivel1 = c(1,0,0,1,0,0,1,1,0),
+      nivel2 = c(0,1,1,0,1,1,1,1,0)
+    ),
+    pib2$Componente
+  )
+  names(levels)[4] <- 'Componente'
+  levels <- tidyr::pivot_longer(levels, -'Componente')
+  levels <- levels[levels$value == 1,]
+  levels$value <- NULL
+  levels <- dplyr::rename(levels, 'nivel' = 'name')
+  levels$nivel <- stringr::str_remove(levels$nivel, 'nivel')
+  order <- dplyr::bind_cols(
+    data.frame(
+      orden = c(1,11,12,2,21,22,3,4,5)
+    ),
+    pib2$Componente
+  )
+  names(order)[2] <- 'Componente'
+  levels <- dplyr::left_join(levels, order)
+  pib2 <- dplyr::left_join(levels, pib2)
+  rm(levels, order)
+  pib2 <- tidyr::pivot_longer(pib2,
+                              -c('Componente', 'nivel', 'orden'),
+                              names_to= 'fecha',
+                              values_to = 'incidencia_acumulada',
+                              values_drop_na = T)
+  pib2$fecha <- zoo::as.yearqtr(pib2$fecha)
+  pib2$incidencia_acumulada <- as.numeric(pib2$incidencia_acumulada)
+
+  pib <- dplyr::left_join(pib, pib2)
+
+  pib$fecha <- as.character(pib$fecha)
+  unlink(pibFile)
+  pib
+}
+
+#' PIB por el enfoque de origen
+#'
+#' @param indicador vector con los datos del indicador
+#'
+#' @return los datos en formato tabular
+#' @export
+#'
+pib_origen_trim <- function(indicador = c(original_url = NULL, file_ext="xlsx")){
+  `...2` <- NULL
+  V1 <- NULL
+  V2 <- NULL
+  Rama <- NULL
+  value <- NULL
+  level <- NULL
+  `...6` <- NULL
+  file <- downloader(indicador)
+  # PIB
+  pib <- readxl::read_excel(file, sheet = 'PIB$_Trim', skip = 6, col_names = F)
+  pib <- pib[1:34,]
+  pib <- tidyr::drop_na(pib, ...2)
+  pib <- t(pib)
+  pib[1,1] <- NA
+  pib[,1] <- stringr::str_remove_all(pib[,1], '[^0-9]')
+  pib <- as.data.frame(pib)
+  pib <- tidyr::fill(pib, V1)
+  pib <- dplyr::mutate(pib,
+                       V2 = dplyr::case_when(
+                         V2 == 'E-M' ~ 'Q1',
+                         V2 == 'A-J' ~ 'Q2',
+                         V2 == 'J-S' ~ 'Q3',
+                         V2 == 'O-D' ~ 'Q4'
+                       ),
+                       V1 = paste(V1, V2),
+                       V2 = NULL)
+  pib <- t(pib)
+  pib <- as.data.frame(pib)
+  pib[1,1] <- 'Rama'
+  names(pib) <- pib[1,]
+  pib <- pib[-1,]
+  levels <- dplyr::bind_cols(
+    data.frame(
+      nivel0 = c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1),
+      nivel1 = c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0),
+      nivel2 = c(1,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0),
+      nivel3 = c(1,0,0,0,1,1,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0),
+      nivel4 = c(0,1,1,0,1,0,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,0,1,0,0,1,1,0,1,0),
+      nivel5 = c(0,1,1,0,1,0,1,1,1,1,1,1,0,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,0,1,0)
+    ),
+    pib$Rama
+  )
+  names(levels)[7] <- 'Rama'
+  levels <- tidyr::pivot_longer(levels, -Rama, names_to='level')
+  levels <- dplyr::filter(levels,
+                          value == 1)
+  levels$value <- NULL
+  levels <- dplyr::mutate(levels,
+                          level = stringr::str_remove(level, 'nivel'))
+  order <- dplyr::bind_cols(
+    data.frame(
+      orden = c('01','0101','0102','02','0201','0202','020201','020202',
+                '020203','020204','0203','0204','03','0301','0302','0303',
+                '0304','0305','0306','0307','0308','030801','030802','0309',
+                '030901','030902','0310','0311','04','05','06')
+    ),
+    pib$Rama
+  )
+  names(order)[2] <- 'Rama'
+  levels <- dplyr::left_join(levels, order)
+  pib <- dplyr::left_join(levels, pib)
+  pib <- tidyr::pivot_longer(pib, -c('Rama', 'level', 'orden'), names_to = 'fecha', values_to = 'pib', values_drop_na = T)
+  pib$fecha <- zoo::as.yearqtr(pib$fecha)
+  pib$pib <- as.numeric(pib$pib)
+
+  # Ponderacion actividad economica
+  pib2 <- readxl::read_excel(file, skip = 42, col_names = F)
+  pib2 <- tidyr::drop_na(pib2, ...2)
+  pib2 <- t(pib2)
+  pib2[1,1] <- NA
+  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(p\\)')
+  pib2 <- as.data.frame(pib2)
+  pib2 <- tidyr::fill(pib2, V1)
+  pib2 <- dplyr::mutate(pib2,
+                       V2 = dplyr::case_when(
+                         V2 == 'E-M' ~ 'Q1',
+                         V2 == 'A-J' ~ 'Q2',
+                         V2 == 'J-S' ~ 'Q3',
+                         V2 == 'O-D' ~ 'Q4'
+                       ),
+                       V1 = paste(V1, V2),
+                       V2 = NULL)
+  pib2 <- t(pib2)
+  pib2 <- as.data.frame(pib2)
+  pib2[1,1] <- 'Rama'
+  names(pib2) <- pib2[1,]
+  pib2 <- pib2[-1,]
+  levels <- dplyr::bind_cols(
+    data.frame(
+      nivel0 = c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1),
+      nivel1 = c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0),
+      nivel2 = c(1,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0),
+      nivel3 = c(1,0,0,0,1,1,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0),
+      nivel4 = c(0,1,1,0,1,0,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,0,1,0,0,1,1,0,1,0),
+      nivel5 = c(0,1,1,0,1,0,1,1,1,1,1,1,0,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,0,1,0)
+    ),
+    pib2$Rama
+  )
+  names(levels)[7] <- 'Rama'
+  levels <- tidyr::pivot_longer(levels, -Rama, names_to='level')
+  levels <- dplyr::filter(levels,
+                          value == 1)
+  levels$value <- NULL
+  levels <- dplyr::mutate(levels,
+                          level = stringr::str_remove(level, 'nivel'))
+  order <- dplyr::bind_cols(
+    data.frame(
+      orden = c('01','0101','0102','02','0201','0202','020201','020202',
+                '020203','020204','0203','0204','03','0301','0302','0303',
+                '0304','0305','0306','0307','0308','030801','030802','0309',
+                '030901','030902','0310','0311','04','05','06')
+    ),
+    pib2$Rama
+  )
+  names(order)[2] <- 'Rama'
+  levels <- dplyr::left_join(levels, order)
+  pib2 <- dplyr::left_join(levels, pib2)
+  pib2 <- tidyr::pivot_longer(pib2, -c('Rama', 'level', 'orden'), names_to = 'fecha', values_to = 'ponderacion', values_drop_na = T)
+  pib2$fecha <- zoo::as.yearqtr(pib2$fecha)
+  pib2$ponderacion <- as.numeric(pib2$ponderacion)
+
+  pib <- dplyr::left_join(pib, pib2)
+  rm(pib2)
+
+  # PIB Acumulado
+  pib2 <- readxl::read_excel(file, sheet = 'PIB$_Trim_Acum', skip = 6, col_names = F)
+  pib2 <- pib2[1:34,]
+  pib2 <- tidyr::drop_na(pib2, ...2)
+  pib2 <- t(pib2)
+  pib2[1,1] <- NA
+  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(p\\)')
+  pib2 <- as.data.frame(pib2)
+  pib2 <- tidyr::fill(pib2, V1)
+  pib2 <- dplyr::mutate(pib2,
+                       V2 = dplyr::case_when(
+                         V2 == 'E-M' ~ 'Q1',
+                         V2 == 'E-J' ~ 'Q2',
+                         V2 == 'E-S' ~ 'Q3',
+                         V2 == 'E-D' ~ 'Q4'
+                       ),
+                       V1 = paste(V1, V2),
+                       V2 = NULL)
+  pib2 <- t(pib2)
+  pib2 <- as.data.frame(pib2)
+  pib2[1,1] <- 'Rama'
+  names(pib2) <- pib2[1,]
+  pib2 <- pib2[-1,]
+  levels <- dplyr::bind_cols(
+    data.frame(
+      nivel0 = c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1),
+      nivel1 = c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0),
+      nivel2 = c(1,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0),
+      nivel3 = c(1,0,0,0,1,1,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0),
+      nivel4 = c(0,1,1,0,1,0,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,0,1,0,0,1,1,0,1,0),
+      nivel5 = c(0,1,1,0,1,0,1,1,1,1,1,1,0,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,0,1,0)
+    ),
+    pib2$Rama
+  )
+  names(levels)[7] <- 'Rama'
+  levels <- tidyr::pivot_longer(levels, -Rama, names_to='level')
+  levels <- dplyr::filter(levels,
+                          value == 1)
+  levels$value <- NULL
+  levels <- dplyr::mutate(levels,
+                          level = stringr::str_remove(level, 'nivel'))
+  order <- dplyr::bind_cols(
+    data.frame(
+      orden = c('01','0101','0102','02','0201','0202','020201','020202',
+                '020203','020204','0203','0204','03','0301','0302','0303',
+                '0304','0305','0306','0307','0308','030801','030802','0309',
+                '030901','030902','0310','0311','04','05','06')
+    ),
+    pib2$Rama
+  )
+  names(order)[2] <- 'Rama'
+  levels <- dplyr::left_join(levels, order)
+  pib2 <- dplyr::left_join(levels, pib2)
+  pib2 <- tidyr::pivot_longer(pib2,
+                              -c('Rama', 'level', 'orden'),
+                              names_to = 'fecha',
+                              values_to = 'pib_acumulado', values_drop_na = T)
+  pib2$fecha <- zoo::as.yearqtr(pib2$fecha)
+  pib2$pib_acumulado <- as.numeric(pib2$pib_acumulado)
+
+  pib <- dplyr::left_join(pib, pib2)
+  rm(pib2)
+
+  # Ponderacion actividad economica acumulado
+  pib2 <- readxl::read_excel(file, sheet = 'PIB$_Trim_Acum', skip = 42, col_names = F)
+  pib2 <- tidyr::drop_na(pib2, ...2)
+  pib2 <- t(pib2)
+  pib2[1,1] <- NA
+  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(p\\)')
+  pib2 <- as.data.frame(pib2)
+  pib2 <- tidyr::fill(pib2, V1)
+  pib2 <- dplyr::mutate(pib2,
+                        V2 = dplyr::case_when(
+                          V2 == 'E-M' ~ 'Q1',
+                          V2 == 'E-J' ~ 'Q2',
+                          V2 == 'E-S' ~ 'Q3',
+                          V2 == 'E-D' ~ 'Q4'
+                        ),
+                        V1 = paste(V1, V2),
+                        V2 = NULL)
+  pib2 <- t(pib2)
+  pib2 <- as.data.frame(pib2)
+  pib2[1,1] <- 'Rama'
+  names(pib2) <- pib2[1,]
+  pib2 <- pib2[-1,]
+  levels <- dplyr::bind_cols(
+    data.frame(
+      nivel0 = c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1),
+      nivel1 = c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0),
+      nivel2 = c(1,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0),
+      nivel3 = c(1,0,0,0,1,1,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0),
+      nivel4 = c(0,1,1,0,1,0,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,0,1,0,0,1,1,0,1,0),
+      nivel5 = c(0,1,1,0,1,0,1,1,1,1,1,1,0,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,0,1,0)
+    ),
+    pib2$Rama
+  )
+  names(levels)[7] <- 'Rama'
+  levels <- tidyr::pivot_longer(levels, -Rama, names_to='level')
+  levels <- dplyr::filter(levels,
+                          value == 1)
+  levels$value <- NULL
+  levels <- dplyr::mutate(levels,
+                          level = stringr::str_remove(level, 'nivel'))
+  order <- dplyr::bind_cols(
+    data.frame(
+      orden = c('01','0101','0102','02','0201','0202','020201','020202',
+                '020203','020204','0203','0204','03','0301','0302','0303',
+                '0304','0305','0306','0307','0308','030801','030802','0309',
+                '030901','030902','0310','0311','04','05','06')
+    ),
+    pib2$Rama
+  )
+  names(order)[2] <- 'Rama'
+  levels <- dplyr::left_join(levels, order)
+  pib2 <- dplyr::left_join(levels, pib2)
+  pib2 <- tidyr::pivot_longer(pib2, -c('Rama', 'level', 'orden'), names_to = 'fecha', values_to = 'ponderacion_acumulada', values_drop_na = T)
+  pib2$fecha <- zoo::as.yearqtr(pib2$fecha)
+  pib2$ponderacion_acumulada <- as.numeric(pib2$ponderacion_acumulada)
+
+  pib <- dplyr::left_join(pib, pib2)
+  rm(pib2)
+
+  # INDICE
+  pib2 <- readxl::read_excel(file, sheet = 'PIBK_Trim', skip = 6, col_names = F)
+  pib2 <- pib2[1:34,]
+  pib2 <- tidyr::drop_na(pib2, ...2)
+  pib2 <- t(pib2)
+  pib2[1,1] <- NA
+  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(p\\)')
+  pib2 <- as.data.frame(pib2)
+  pib2 <- tidyr::fill(pib2, V1)
+  pib2 <- dplyr::mutate(pib2,
+                       V2 = dplyr::case_when(
+                         V2 == 'E-M' ~ 'Q1',
+                         V2 == 'A-J' ~ 'Q2',
+                         V2 == 'J-S' ~ 'Q3',
+                         V2 == 'O-D' ~ 'Q4'
+                       ),
+                       V1 = paste(V1, V2),
+                       V2 = NULL)
+  pib2 <- t(pib2)
+  pib2 <- as.data.frame(pib2)
+  pib2[1,1] <- 'Rama'
+  names(pib2) <- pib2[1,]
+  pib2 <- pib2[-1,]
+  levels <- dplyr::bind_cols(
+    data.frame(
+      nivel0 = c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1),
+      nivel1 = c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0),
+      nivel2 = c(1,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0),
+      nivel3 = c(1,0,0,0,1,1,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0),
+      nivel4 = c(0,1,1,0,1,0,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,0,1,0,0,1,1,0,1,0),
+      nivel5 = c(0,1,1,0,1,0,1,1,1,1,1,1,0,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,0,1,0)
+    ),
+    pib2$Rama
+  )
+  names(levels)[7] <- 'Rama'
+  levels <- tidyr::pivot_longer(levels, -Rama, names_to='level')
+  levels <- dplyr::filter(levels,
+                          value == 1)
+  levels$value <- NULL
+  levels <- dplyr::mutate(levels,
+                          level = stringr::str_remove(level, 'nivel'))
+  order <- dplyr::bind_cols(
+    data.frame(
+      orden = c('01','0101','0102','02','0201','0202','020201','020202',
+                '020203','020204','0203','0204','03','0301','0302','0303',
+                '0304','0305','0306','0307','0308','030801','030802','0309',
+                '030901','030902','0310','0311','04','05','06')
+    ),
+    pib2$Rama
+  )
+  names(order)[2] <- 'Rama'
+  levels <- dplyr::left_join(levels, order)
+  pib2 <- dplyr::left_join(levels, pib2)
+  pib2 <- tidyr::pivot_longer(pib2, -c('Rama', 'level', 'orden'), names_to = 'fecha', values_to = 'indice', values_drop_na = T)
+  pib2$fecha <- zoo::as.yearqtr(pib2$fecha)
+  pib2$indice <- as.numeric(pib2$indice)
+
+  pib <- dplyr::left_join(pib, pib2)
+  rm(pib2)
+
+  # Tasas de crecimiento INDICE
+  pib2 <- readxl::read_excel(file, sheet = 'PIBK_Trim', skip = 42, col_names = F)
+  pib2 <- pib2[1:34,]
+  pib2 <- tidyr::drop_na(pib2, ...6)
+  pib2 <- t(pib2)
+  pib2[1,1] <- NA
+  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(p\\)')
+  pib2 <- as.data.frame(pib2)
+  pib2 <- tidyr::fill(pib2, V1)
+  pib2 <- dplyr::mutate(pib2,
+                        V2 = dplyr::case_when(
+                          V2 == 'E-M' ~ 'Q1',
+                          V2 == 'A-J' ~ 'Q2',
+                          V2 == 'J-S' ~ 'Q3',
+                          V2 == 'O-D' ~ 'Q4'
+                        ),
+                        V1 = paste(V1, V2),
+                        V2 = NULL)
+  pib2 <- t(pib2)
+  pib2 <- as.data.frame(pib2)
+  pib2[1,1] <- 'Rama'
+  names(pib2) <- pib2[1,]
+  pib2 <- pib2[-1,]
+  levels <- dplyr::bind_cols(
+    data.frame(
+      nivel0 = c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1),
+      nivel1 = c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0),
+      nivel2 = c(1,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0),
+      nivel3 = c(1,0,0,0,1,1,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0),
+      nivel4 = c(0,1,1,0,1,0,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,0,1,0,0,1,1,0,1,0),
+      nivel5 = c(0,1,1,0,1,0,1,1,1,1,1,1,0,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,0,1,0)
+    ),
+    pib2$Rama
+  )
+  names(levels)[7] <- 'Rama'
+  levels <- tidyr::pivot_longer(levels, -Rama, names_to='level')
+  levels <- dplyr::filter(levels,
+                          value == 1)
+  levels$value <- NULL
+  levels <- dplyr::mutate(levels,
+                          level = stringr::str_remove(level, 'nivel'))
+  order <- dplyr::bind_cols(
+    data.frame(
+      orden = c('01','0101','0102','02','0201','0202','020201','020202',
+                '020203','020204','0203','0204','03','0301','0302','0303',
+                '0304','0305','0306','0307','0308','030801','030802','0309',
+                '030901','030902','0310','0311','04','05','06')
+    ),
+    pib2$Rama
+  )
+  names(order)[2] <- 'Rama'
+  levels <- dplyr::left_join(levels, order)
+  pib2 <- dplyr::left_join(levels, pib2)
+  pib2 <- tidyr::pivot_longer(pib2, -c('Rama', 'level', 'orden'), names_to = 'fecha', values_to = 'tasas_crecimiento', values_drop_na = T)
+  pib2$fecha <- zoo::as.yearqtr(pib2$fecha)
+  pib2$tasas_crecimiento <- as.numeric(pib2$tasas_crecimiento)
+
+  pib <- dplyr::left_join(pib, pib2)
+  rm(pib2)
+
+  # Incidencia INDICE
+  pib2 <- readxl::read_excel(file, sheet = 'PIBK_Trim', skip = 78, col_names = F)
+  pib2 <- pib2[1:34,]
+  pib2 <- tidyr::drop_na(pib2, ...6)
+  pib2 <- t(pib2)
+  pib2[1,1] <- NA
+  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(p\\)')
+  pib2 <- as.data.frame(pib2)
+  pib2 <- tidyr::fill(pib2, V1)
+  pib2 <- dplyr::mutate(pib2,
+                        V2 = dplyr::case_when(
+                          V2 == 'E-M' ~ 'Q1',
+                          V2 == 'A-J' ~ 'Q2',
+                          V2 == 'J-S' ~ 'Q3',
+                          V2 == 'O-D' ~ 'Q4'
+                        ),
+                        V1 = paste(V1, V2),
+                        V2 = NULL)
+  pib2 <- t(pib2)
+  pib2 <- as.data.frame(pib2)
+  pib2[1,1] <- 'Rama'
+  names(pib2) <- pib2[1,]
+  pib2 <- pib2[-1,]
+  levels <- dplyr::bind_cols(
+    data.frame(
+      nivel0 = c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1),
+      nivel1 = c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0),
+      nivel2 = c(1,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0),
+      nivel3 = c(1,0,0,0,1,1,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0),
+      nivel4 = c(0,1,1,0,1,0,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,0,1,0,0,1,1,0,1,0),
+      nivel5 = c(0,1,1,0,1,0,1,1,1,1,1,1,0,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,0,1,0)
+    ),
+    pib2$Rama
+  )
+  names(levels)[7] <- 'Rama'
+  levels <- tidyr::pivot_longer(levels, -Rama, names_to='level')
+  levels <- dplyr::filter(levels,
+                          value == 1)
+  levels$value <- NULL
+  levels <- dplyr::mutate(levels,
+                          level = stringr::str_remove(level, 'nivel'))
+  order <- dplyr::bind_cols(
+    data.frame(
+      orden = c('01','0101','0102','02','0201','0202','020201','020202',
+                '020203','020204','0203','0204','03','0301','0302','0303',
+                '0304','0305','0306','0307','0308','030801','030802','0309',
+                '030901','030902','0310','0311','04','05','06')
+    ),
+    pib2$Rama
+  )
+  names(order)[2] <- 'Rama'
+  levels <- dplyr::left_join(levels, order)
+  pib2 <- dplyr::left_join(levels, pib2)
+  pib2 <- tidyr::pivot_longer(pib2, -c('Rama', 'level', 'orden'), names_to = 'fecha', values_to = 'incidencia', values_drop_na = T)
+  pib2$fecha <- zoo::as.yearqtr(pib2$fecha)
+  pib2$incidencia <- as.numeric(pib2$incidencia)
+
+  pib <- dplyr::left_join(pib, pib2)
+  rm(pib2)
+
+  # INDICE ACUMULADO
+  pib2 <- readxl::read_excel(file, sheet = 'PIBK_Trim_Acum', skip = 6, col_names = F)
+  pib2 <- pib2[1:34,]
+  pib2 <- tidyr::drop_na(pib2, ...2)
+  pib2 <- t(pib2)
+  pib2[1,1] <- NA
+  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(p\\)')
+  pib2 <- as.data.frame(pib2)
+  pib2 <- tidyr::fill(pib2, V1)
+  pib2 <- dplyr::mutate(pib2,
+                        V2 = dplyr::case_when(
+                          V2 == 'E-M' ~ 'Q1',
+                          V2 == 'E-J' ~ 'Q2',
+                          V2 == 'E-S' ~ 'Q3',
+                          V2 == 'E-D' ~ 'Q4'
+                        ),
+                        V1 = paste(V1, V2),
+                        V2 = NULL)
+  pib2 <- t(pib2)
+  pib2 <- as.data.frame(pib2)
+  pib2[1,1] <- 'Rama'
+  names(pib2) <- pib2[1,]
+  pib2 <- pib2[-1,]
+  levels <- dplyr::bind_cols(
+    data.frame(
+      nivel0 = c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1),
+      nivel1 = c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0),
+      nivel2 = c(1,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0),
+      nivel3 = c(1,0,0,0,1,1,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0),
+      nivel4 = c(0,1,1,0,1,0,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,0,1,0,0,1,1,0,1,0),
+      nivel5 = c(0,1,1,0,1,0,1,1,1,1,1,1,0,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,0,1,0)
+    ),
+    pib2$Rama
+  )
+  names(levels)[7] <- 'Rama'
+  levels <- tidyr::pivot_longer(levels, -Rama, names_to='level')
+  levels <- dplyr::filter(levels,
+                          value == 1)
+  levels$value <- NULL
+  levels <- dplyr::mutate(levels,
+                          level = stringr::str_remove(level, 'nivel'))
+  order <- dplyr::bind_cols(
+    data.frame(
+      orden = c('01','0101','0102','02','0201','0202','020201','020202',
+                '020203','020204','0203','0204','03','0301','0302','0303',
+                '0304','0305','0306','0307','0308','030801','030802','0309',
+                '030901','030902','0310','0311','04','05','06')
+    ),
+    pib2$Rama
+  )
+  names(order)[2] <- 'Rama'
+  levels <- dplyr::left_join(levels, order)
+  pib2 <- dplyr::left_join(levels, pib2)
+  pib2 <- tidyr::pivot_longer(pib2, -c('Rama', 'level', 'orden'), names_to = 'fecha', values_to = 'indice_acumulado', values_drop_na = T)
+  pib2$fecha <- zoo::as.yearqtr(pib2$fecha)
+  pib2$indice_acumulado <- as.numeric(pib2$indice_acumulado)
+
+  pib <- dplyr::left_join(pib, pib2)
+  rm(pib2)
+
+  # Tasas de crecimiento INDICE ACUMULADO
+  pib2 <- readxl::read_excel(file, sheet = 'PIBK_Trim_Acum', skip = 42, col_names = F)
+  pib2 <- pib2[1:34,]
+  pib2 <- tidyr::drop_na(pib2, ...6)
+  pib2 <- t(pib2)
+  pib2[1,1] <- NA
+  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(p\\)')
+  pib2 <- as.data.frame(pib2)
+  pib2 <- tidyr::fill(pib2, V1)
+  pib2 <- dplyr::mutate(pib2,
+                        V2 = dplyr::case_when(
+                          V2 == 'E-M' ~ 'Q1',
+                          V2 == 'E-J' ~ 'Q2',
+                          V2 == 'E-S' ~ 'Q3',
+                          V2 == 'E-D' ~ 'Q4'
+                        ),
+                        V1 = paste(V1, V2),
+                        V2 = NULL)
+  pib2 <- t(pib2)
+  pib2 <- as.data.frame(pib2)
+  pib2[1,1] <- 'Rama'
+  names(pib2) <- pib2[1,]
+  pib2 <- pib2[-1,]
+  levels <- dplyr::bind_cols(
+    data.frame(
+      nivel0 = c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1),
+      nivel1 = c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0),
+      nivel2 = c(1,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0),
+      nivel3 = c(1,0,0,0,1,1,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0),
+      nivel4 = c(0,1,1,0,1,0,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,0,1,0,0,1,1,0,1,0),
+      nivel5 = c(0,1,1,0,1,0,1,1,1,1,1,1,0,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,0,1,0)
+    ),
+    pib2$Rama
+  )
+  names(levels)[7] <- 'Rama'
+  levels <- tidyr::pivot_longer(levels, -Rama, names_to='level')
+  levels <- dplyr::filter(levels,
+                          value == 1)
+  levels$value <- NULL
+  levels <- dplyr::mutate(levels,
+                          level = stringr::str_remove(level, 'nivel'))
+  order <- dplyr::bind_cols(
+    data.frame(
+      orden = c('01','0101','0102','02','0201','0202','020201','020202',
+                '020203','020204','0203','0204','03','0301','0302','0303',
+                '0304','0305','0306','0307','0308','030801','030802','0309',
+                '030901','030902','0310','0311','04','05','06')
+    ),
+    pib2$Rama
+  )
+  names(order)[2] <- 'Rama'
+  levels <- dplyr::left_join(levels, order)
+  pib2 <- dplyr::left_join(levels, pib2)
+  pib2 <- tidyr::pivot_longer(pib2, -c('Rama', 'level', 'orden'), names_to = 'fecha', values_to = 'tasa_crecimiento_acumulada', values_drop_na = T)
+  pib2$fecha <- zoo::as.yearqtr(pib2$fecha)
+  pib2$tasa_crecimiento_acumulada <- as.numeric(pib2$tasa_crecimiento_acumulada)
+
+  pib <- dplyr::left_join(pib, pib2)
+  rm(pib2)
+
+  # Incidencia INDICE ACUMULADO
+  pib2 <- readxl::read_excel(file, sheet = 'PIBK_Trim_Acum', skip = 78, col_names = F)
+  pib2 <- pib2[1:34,]
+  pib2 <- tidyr::drop_na(pib2, ...6)
+  pib2 <- t(pib2)
+  pib2[1,1] <- NA
+  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(p\\)')
+  pib2 <- as.data.frame(pib2)
+  pib2 <- tidyr::fill(pib2, V1)
+  pib2 <- dplyr::mutate(pib2,
+                        V2 = dplyr::case_when(
+                          V2 == 'E-M' ~ 'Q1',
+                          V2 == 'E-J' ~ 'Q2',
+                          V2 == 'E-S' ~ 'Q3',
+                          V2 == 'E-D' ~ 'Q4'
+                        ),
+                        V1 = paste(V1, V2),
+                        V2 = NULL)
+  pib2 <- t(pib2)
+  pib2 <- as.data.frame(pib2)
+  pib2[1,1] <- 'Rama'
+  names(pib2) <- pib2[1,]
+  pib2 <- pib2[-1,]
+  levels <- dplyr::bind_cols(
+    data.frame(
+      nivel0 = c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1),
+      nivel1 = c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0),
+      nivel2 = c(1,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0),
+      nivel3 = c(1,0,0,0,1,1,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0),
+      nivel4 = c(0,1,1,0,1,0,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,0,1,0,0,1,1,0,1,0),
+      nivel5 = c(0,1,1,0,1,0,1,1,1,1,1,1,0,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,0,1,0)
+    ),
+    pib2$Rama
+  )
+  names(levels)[7] <- 'Rama'
+  levels <- tidyr::pivot_longer(levels, -Rama, names_to='level')
+  levels <- dplyr::filter(levels,
+                          value == 1)
+  levels$value <- NULL
+  levels <- dplyr::mutate(levels,
+                          level = stringr::str_remove(level, 'nivel'))
+  order <- dplyr::bind_cols(
+    data.frame(
+      orden = c('01','0101','0102','02','0201','0202','020201','020202',
+                '020203','020204','0203','0204','03','0301','0302','0303',
+                '0304','0305','0306','0307','0308','030801','030802','0309',
+                '030901','030902','0310','0311','04','05','06')
+    ),
+    pib2$Rama
+  )
+  names(order)[2] <- 'Rama'
+  levels <- dplyr::left_join(levels, order)
+  pib2 <- dplyr::left_join(levels, pib2)
+  pib2 <- tidyr::pivot_longer(pib2, -c('Rama', 'level', 'orden'), names_to = 'fecha', values_to = 'incidencia_acumulada', values_drop_na = T)
+  pib2$fecha <- zoo::as.yearqtr(pib2$fecha)
+  pib2$incidencia_acumulada <- as.numeric(pib2$incidencia_acumulada)
+
+  pib <- dplyr::left_join(pib, pib2)
+  rm(pib2, levels, order)
+  unlink(file)
+  pib
+}
+
+
+
+
+#' Producto Interno Bruto (PIB) per cápita
+#'
+#'  \lifecycle{experimental}
+#'
+#' @param indicador Vea \code{\link{downloader}}
+#'
+#' @return [data.frame]: los datos del indicador en forma tabular
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'   pibpc <- pib_per_capita()
+#' }
+pib_per_capita <- function(indicador = NULL){
+  if(is.null(indicador)){
+    indicador = c(
+      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-real/documents/pib_dolares.xls", 
+      file_ext = "xls"
+    )
+  }
+  V1 <- NULL
+  V2 <- NULL
+  `...1` <- NULL
+  `...2` <- NULL
+  ano <- NULL
+  file <- downloader(indicador)
+  pib <- readxl::read_excel(file, skip = 4, col_names = F) %>%
+    t() %>%
+    as.data.frame() %>%
+    dplyr::mutate(
+      V1 = paste(V1, V2)
+    ) %>%
+    t() %>%
+    as.data.frame() %>%
+    dplyr::mutate(
+      ...1 = stringr::str_remove_all(...1, "[^0-9]")
+    ) %>%
+    tidyr::drop_na(...1, ...2) %>%
+    dplyr::mutate(
+      indicador = dplyr::if_else(duplicated(...1), "Tasa de crecimiento", "Valor")
+    ) %>%
+    janitor::row_to_names(1)
+  names(pib)[[1]] <- "ano"
+  names(pib) <- janitor::make_clean_names(names(pib))
+  dplyr::filter(pib, ano != "") %>%
+    dplyr::rename("indicador" = "valor")
+}
