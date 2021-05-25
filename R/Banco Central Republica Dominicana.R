@@ -2130,7 +2130,7 @@ pib_per_capita <- function(indicador = NULL){
 #'
 #' @examples
 #' \dontrun{
-#'   tiabm <- t_interes_activas_1720_bm()
+#'   tinabmm <- tasa_interes_nominales_activas_bm_mensual()
 #' }
 tasa_interes_nominales_activas_bm_mensual <- function(indicador = NULL){
   if(is.null(indicador)){
@@ -2184,5 +2184,35 @@ tasa_interes_nominales_activas_bm_mensual <- function(indicador = NULL){
   )
   datos <- Dmisc::vars_to_date(datos, year = 1, month = 2)
   datos <- dplyr::filter(datos, !is.na(fecha))
+  datos
+}
+
+
+
+
+#' Tipo de cambio dólar mensual
+#'
+#'  \lifecycle{experimental}
+#'
+#' @param indicador Vea \code{\link{downloader}}
+#'
+#' @return [data.frame]: los datos del indicador en forma tabular
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'   tcdm <- tipo_cambio_dolar_mensual()
+#' }
+tipo_cambio_dolar_mensual <- function(indicador = NULL){
+  if(is.null(indicador)){
+    indicador = c(
+      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/mercado-cambiario/documents/TASA_DOLAR_REFERENCIA_MC.xls",
+      file_ext = "xls"
+    )
+  }
+  file <- downloader(indicador)
+  datos <- readxl::read_excel(file, 'PromMensual', skip = 2)
+  datos <- Dmisc::vars_to_date(datos, year = 1, month = 2)
   datos
 }
