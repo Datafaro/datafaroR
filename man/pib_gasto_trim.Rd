@@ -4,7 +4,7 @@
 \alias{pib_gasto_trim}
 \title{PIB por enfoque del gasto trimestral}
 \usage{
-pib_gasto_trim(indicador = c(original_url = NULL, file_ext = "xls"))
+pib_gasto_trim(indicador = NULL, metadata = FALSE)
 }
 \arguments{
 \item{indicador}{vector de datos para este indicador en la lista de domar}
