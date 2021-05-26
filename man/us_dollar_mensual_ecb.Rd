@@ -2,7 +2,7 @@
 % Please edit documentation in R/Banco Central Europeo.R
 \name{us_dollar_mensual_ecb}
 \alias{us_dollar_mensual_ecb}
-\title{Tipo de cambio USD/Eur Mensual}
+\title{Tipo de cambio USD/Euro Mensual}
 \usage{
 us_dollar_mensual_ecb(indicador = NULL)
 }
@@ -13,7 +13,7 @@ us_dollar_mensual_ecb(indicador = NULL)
 \link{data.frame}: los datos del indicador en forma tabular
 }
 \description{
-Tipo de cambio USD/Eur Mensual
+Tipo de cambio USD/Euro Mensual
 }
 \examples{
 \dontrun{

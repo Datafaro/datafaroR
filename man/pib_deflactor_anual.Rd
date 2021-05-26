@@ -4,11 +4,7 @@
 \alias{pib_deflactor_anual}
 \title{Deflactor del PIB Anual}
 \usage{
-pib_deflactor_anual(
-  indicador = c(original_url =
-    "https://cdn.bancentral.gov.do/documents/estadisticas/sector-real/documents/pib_deflactor_2007.xls",
-    file_ext = "xls")
-)
+pib_deflactor_anual(indicador = NULL)
 }
 \arguments{
 \item{indicador}{Vea \code{\link{downloader}}}

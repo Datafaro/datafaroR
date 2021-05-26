@@ -36,6 +36,8 @@ balanza_pagos_anual <- function(indicador = NULL){
   }
 }
 
+########################################################################################################
+
 #' Balanza de pagos Trimestral
 #'
 #'  \lifecycle{experimental}
@@ -89,7 +91,9 @@ balanza_pagos_trim <- function(indicador = NULL){
   }
 }
 
-#' IMAE Mensual
+###################################################################################################################################
+
+#' Indicador Mensual de Actividad Económica (IMAE) Mensual
 #'
 #'  \lifecycle{experimental}
 #'
@@ -176,7 +180,9 @@ imae_mensual <- function(indicador) {
   dplyr::bind_rows(imaeso, imaesd, imaest)
 }
 
-#' Deflactor del PIB
+#################################################################################################################################
+
+#' Deflactor del Producto Interno Bruto (PIB)
 #'
 #'  \lifecycle{experimental}
 #'
@@ -190,11 +196,17 @@ imae_mensual <- function(indicador) {
 #' \dontrun{
 #'   def <- pib_deflactor()
 #' }
-pib_deflactor <- function(indicador) {
+pib_deflactor <- function(indicador = NULL) {
+  if(is.null(indicador)){
+    indicador = c(
+      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-real/documents/pib_deflactor_2007.xls",
+      file_ext = "xls"
+    )
+  }
   `...1` <- NULL
   ano <- NULL
   `...2` <- NULL
-  file <- "/mnt/d/Descargas/pib_deflactor_2007.xls"
+  file <- "/mnt/d/Descargas/pib_deflactor_2007 (3).xls"
   #file <- downloader(indicador)
   def <- readxl::read_excel(file, skip = 4, col_names = F)
   return(def)
@@ -206,6 +218,8 @@ pib_deflactor <- function(indicador) {
     tidyr::fill(ano, .direction = "up") %>%
     tidyr::drop_na(...2)
 }
+
+###############################################################################################################################################
 
 #' Deflactor del PIB Trimestral
 #'
@@ -221,7 +235,7 @@ pib_deflactor <- function(indicador) {
 #' \dontrun{
 #'   dpt <- pib_deflactor_trimestral()
 #' }
-pib_deflactor_trimestral <- function(indicador = c(original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-real/documents/pib_deflactor_2007.xls", file_ext = "xls")){
+pib_deflactor_trimestral <- function(indicador = NULL){
   `...1` <- NULL
   ano <- NULL
   serie <- NULL
@@ -256,6 +270,8 @@ pib_deflactor_trimestral <- function(indicador = c(original_url = "https://cdn.b
     tidyr::pivot_longer(-c(serie, indicador), values_drop_na = T)
 }
 
+#####################################################################################################################
+
 #' Deflactor del PIB Anual
 #'
 #'  \lifecycle{experimental}
@@ -270,7 +286,7 @@ pib_deflactor_trimestral <- function(indicador = c(original_url = "https://cdn.b
 #' \dontrun{
 #'   dpa <- pib_deflactor_anual()
 #' }
-pib_deflactor_anual <- function(indicador = c(original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-real/documents/pib_deflactor_2007.xls", file_ext = "xls")){
+pib_deflactor_anual <- function(indicador = NULL){
   `...1` <- NULL
   ano <- NULL
   serie <- NULL
@@ -295,7 +311,7 @@ pib_deflactor_anual <- function(indicador = c(original_url = "https://cdn.bancen
     tidyr::pivot_longer(-c(serie, indicador), values_drop_na = T)
 }
 
-
+##############################################################################################################################
 
 #' Índice de Precios al Consumidor (octubre 2019 - septiembre 2020)
 #'
@@ -336,112 +352,7 @@ ipc_mensual_2020 <- function(indicador = NULL){
   datos
 }
 
-
-
-
-#' Deuda pública 2020
-#'
-#'  \lifecycle{experimental}
-#'
-#' @param indicador Vea \code{\link{downloader}}
-#'
-#' @return [data.frame]: los datos del indicador en forma tabular
-#'
-#' @export
-#'
-#' @examples
-#' \dontrun{
-#'   dp20 <- deuda_publica_2020()
-#' }
-deuda_publica_2020 <- function(indicador){
-  if(is.null(indicador)){
-    indicador = c(
-      original_url = "",
-      file_ext = ""
-    )
-  }
-  codigo <- NULL
-  fecha <- NULL
-  file <- downloader(indicador)
-  datos <- readxl::read_excel(file, skip = 11, col_names = F)
-  datos <- datos[1:56,]
-  datos <- dplyr::bind_cols(
-    c(
-      '',
-      '',
-      '',
-      '',
-      '',
-      '2111',
-      '2112',
-      '2113',
-      '2114',
-      '2115',
-      '211',
-      '',
-      '',
-      '2121',
-      '2122',
-      '2123',
-      '2124',
-      '21241',
-      '2125',
-      '2126',
-      '21261',
-      '2127',
-      '212',
-      '',
-      '21',
-      '',
-      '',
-      '221',
-      '222',
-      '223',
-      '22',
-      '',
-      '2',
-      '',
-      '',
-      '1.1',
-      '1.2',
-      '1.3',
-      '1.4',
-      '1.5',
-      '1.6',
-      '',
-      '1',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '0',
-      '',
-      '',
-      '',
-      ''
-    ),
-    datos
-  )
-  datos <- as.data.frame(t(datos))
-  datos <- datos[!is.na(datos$V1),]
-  datos <- as.data.frame(t(datos))
-  names(datos) <- datos[1,]
-  datos <- datos[-1,]
-  names(datos)[1:2] <- c('codigo', 'cuenta')
-  datos <- dplyr::filter(datos, codigo != '')
-  datos <- tidyr::pivot_longer(datos, -c(1:2), names_to = 'fecha', values_to = 'valor')
-  datos <- dplyr::mutate(datos,
-                         fecha = stringr::str_remove_all(fecha, '\\*')
-                         )
-  datos
-}
-
-
-
+##########################################################################################################################
 
 #' Índices de Valores Encadenados del PIB
 #'
@@ -479,8 +390,7 @@ pib_ive <- function(indicador = NULL){
     tidyr::drop_na(...2)
 }
 
-
-
+#############################################################################################################################
 
 #' Índices de Valores Encadenados del PIB Trimestral
 #'
@@ -497,12 +407,6 @@ pib_ive <- function(indicador = NULL){
 #'   ivet <- pib_ive_trimestral()
 #' }
 pib_ive_trimestral <- function(indicador = NULL){
-  if(is.null(indicador)){
-    indicador = c(
-      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-real/documents/pib_2007.xlsx",
-      file_ext = "xlsx"
-    )
-  }
   `...1` <- NULL
   ano <- NULL
   fecha <- NULL
@@ -536,8 +440,7 @@ pib_ive_trimestral <- function(indicador = NULL){
   ive
 }
 
-
-
+########################################################################################################################################
 
 #' Índices de Valores Encadenados del PIB Anual
 #'
@@ -554,12 +457,6 @@ pib_ive_trimestral <- function(indicador = NULL){
 #'   ivea <- pib_ive_anual()
 #' }
 pib_ive_anual <- function(indicador = NULL){
-  if(is.null(indicador)){
-    indicador = c(
-      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-real/documents/pib_2007.xlsx",
-      file_ext = "xlsx"
-    )
-  }
   `...1` <- NULL
   ano <- NULL
   serie <- NULL
@@ -582,8 +479,7 @@ pib_ive_anual <- function(indicador = NULL){
   ive
 }
 
-
-
+#################################################################################################################################################
 
 #' Indicadores Monetarios BCRD
 #'
@@ -599,110 +495,52 @@ pib_ive_anual <- function(indicador = NULL){
 #' \dontrun{
 #'   imbcrd <- indicadores_monetarios_bcrd()
 #' }
-indicadores_monetarios_bcrd <- function(indicador) {
+indicadores_monetarios_bcrd <- function(indicador = NULL) {
+  if(is.null(indicador)){
+    indicador = c(
+      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/serie_indicadores_bcrd.xlsx",
+      file_ext = "xlsx"
+    )
+  }
   V1 <- NULL
   fecha <- NULL
   valor <- NULL
+  #file <- "/mnt/d/Descargas/serie_indicadores_bcrd (4).xlsx"
   file <- downloader(indicador)
   datos <- readxl::read_excel(
     file,
     skip = 4,
     col_names = F
-  )
-  datos <- datos[!is.na(datos$...1),]
-  datos <- datos[1:44,]
-  datos <- dplyr::bind_cols(
-    c(
-      '',
-      rep('Indicadores BCRD', 11),
-      rep('Base Monetaria', 13),
-      rep('Agregados monetarios', 13),
-      rep('Multiplicadores monetarios', 5),
-      'Tasa de cambio'
-    ),
-    c('',
-      '1',
-      '2',
-      '3',
-      '4',
-      '4.1',
-      '4.11',
-      '4.2',
-      '4.3',
-      '5',
-      '5.1',
-      '6',
-      '',
-      '7',
-      '7.1',
-      '7.11',
-      '7.2',
-      '7.3',
-      '8',
-      '8.1',
-      '8.2',
-      '8.3',
-      '8.4',
-      '8.5',
-      '8.6',
-      '',
-      '9',
-      '9.1',
-      '9.2',
-      '10',
-      '10.1',
-      '10.2',
-      '10.3',
-      '10.4',
-      '11',
-      '11.1',
-      '11.2',
-      '11.3',
-      '',
-      '',
-      '12.1',
-      '12.2',
-      '12.3',
-      '13'
-    ),
-    datos
-  )
-  datos[1, 1:3] <- NA
-  datos <- as.data.frame(t(datos))
-  datos <- dplyr::mutate(datos,
-                         V1 = stringr::str_replace(tolower(V1), 'ene', 'Jan'),
-                         V1 = stringr::str_replace(tolower(V1), 'abr', 'Apr'),
-                         V1 = stringr::str_replace(tolower(V1), 'ago', 'Aug'),
-                         V1 = stringr::str_replace(tolower(V1), 'dic', 'Dec'),
-                         V1 = stringr::str_replace_all(V1, '-', ' '),
-                         V1 = stringr::str_remove_all(V1, '\\*'),
-                         V1 = dplyr::case_when(
-                           is.na(as.Date(as.numeric(V1), origin = "1899-12-30")) ~ V1,
-                           !is.na(as.Date(as.numeric(V1), origin = "1899-12-30")) ~ as.character(as.Date(as.numeric(V1), origin = "1899-12-30")),
-                         ),
-                         V1 = stringr::str_remove_all(V1, '\\.'),
-                         V1 = dplyr::case_when(
-                           stringr::str_count(V1, ' ') == 2 ~ as.character(as.Date(V1, '%d %b %y')),
-                           stringr::str_count(V1, ' ') == 1 ~ as.character(as.Date(paste('01', V1), '%d %b %y')),
-                           TRUE ~ V1
-                         )
-                         )
-  datos <- as.data.frame(t(datos))
-  names(datos) <- make.names(datos[1,])
-  names(datos)[1:3] <- c('grupo', 'codigo', 'indicador')
-  datos <- datos[-1,]
-  datos <- datos[datos$codigo != '',]
-  datos <- tidyr::pivot_longer(datos, -c(1:3), names_to = 'fecha', values_to = 'valor')
-  datos <- dplyr::mutate(datos,
-                         fecha = stringr::str_remove(fecha, 'X'),
-                         fecha = stringr::str_replace_all(fecha, '\\.', '-'),
-                         valor = as.numeric(valor)
-                         )
-  datos
+  ) %>%
+    dplyr::filter(!is.na(...250))
+  if(nrow(datos) == 40){
+    datos <- dplyr::left_join(
+      datos,
+      nvl_indicadores_monetarios_bcrd,
+      by = c("...1" = "indicadores")
+    )
+  } else {
+    stop("")
+  }
+  datos <- datos %>%
+    dplyr::relocate(c("orden", "nivel")) %>%
+    t() %>%
+    tibble::as.tibble() %>%
+    Dmisc::vars_to_date(date = 1) %>%
+    t() %>%
+    tibble::as.tibble() %>%
+    janitor::row_to_names(1)
+  names(datos)[1:3] <- c("orden", "nivel", "indicador")
+  datos %>%
+    tidyr::pivot_longer(-c(1:3), names_to = "date", values_to = "valor") %>%
+    dplyr::mutate(
+      date = as.Date(date),
+      valor = as.numeric(valor)
+    ) %>%
+    tidyr::drop_na(valor)
 }
 
-
-
+############################################################################################################
 
 #' Indicadores Monetarios OSD
 #'
@@ -2083,7 +1921,7 @@ pib_origen_trim <- function(indicador = c(original_url = NULL, file_ext="xlsx"))
 pib_per_capita <- function(indicador = NULL){
   if(is.null(indicador)){
     indicador = c(
-      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-real/documents/pib_dolares.xls", 
+      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-real/documents/pib_dolares.xls",
       file_ext = "xls"
     )
   }
@@ -2135,7 +1973,7 @@ pib_per_capita <- function(indicador = NULL){
 tasa_interes_nominales_activas_bm_mensual <- function(indicador = NULL){
   if(is.null(indicador)){
     indicador = c(
-      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/tbm_activad.xlsx", 
+      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/tbm_activad.xlsx",
       file_ext = "xlsx"
     )
   }
@@ -2216,3 +2054,5 @@ tipo_cambio_dolar_mensual <- function(indicador = NULL){
   datos <- Dmisc::vars_to_date(datos, year = 1, month = 2)
   datos
 }
+
+

@@ -4,11 +4,7 @@
 \alias{pib_deflactor_trimestral}
 \title{Deflactor del PIB Trimestral}
 \usage{
-pib_deflactor_trimestral(
-  indicador = c(original_url =
-    "https://cdn.bancentral.gov.do/documents/estadisticas/sector-real/documents/pib_deflactor_2007.xls",
-    file_ext = "xls")
-)
+pib_deflactor_trimestral(indicador = NULL)
 }
 \arguments{
 \item{indicador}{Vea \code{\link{downloader}}}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/Banco Central Republica Dominicana.R
 \name{imae_mensual}
 \alias{imae_mensual}
-\title{IMAE Mensual}
+\title{Indicador Mensual de Actividad Económica (IMAE) Mensual}
 \usage{
 imae_mensual(indicador)
 }

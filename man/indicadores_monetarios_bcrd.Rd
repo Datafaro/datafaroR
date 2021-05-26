@@ -4,7 +4,7 @@
 \alias{indicadores_monetarios_bcrd}
 \title{Indicadores Monetarios BCRD}
 \usage{
-indicadores_monetarios_bcrd(indicador)
+indicadores_monetarios_bcrd(indicador = NULL)
 }
 \arguments{
 \item{indicador}{Vea \code{\link{downloader}}}

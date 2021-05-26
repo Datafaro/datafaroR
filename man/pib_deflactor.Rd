@@ -2,9 +2,9 @@
 % Please edit documentation in R/Banco Central Republica Dominicana.R
 \name{pib_deflactor}
 \alias{pib_deflactor}
-\title{Deflactor del PIB}
+\title{Deflactor del Producto Interno Bruto (PIB)}
 \usage{
-pib_deflactor(indicador)
+pib_deflactor(indicador = NULL)
 }
 \arguments{
 \item{indicador}{Vea \code{\link{downloader}}}

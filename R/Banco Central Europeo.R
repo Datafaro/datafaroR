@@ -33,7 +33,9 @@ pound_sterling_mensual_ecb <- function(indicador = NULL){
   table
 }
 
-#' Tipo de cambio USD/Eur Mensual
+##########################################################################################################
+
+#' Tipo de cambio USD/Euro Mensual
 #'
 #' @param indicador Vea \code{\link{downloader}}
 #'
@@ -65,6 +67,8 @@ us_dollar_mensual_ecb <- function(indicador = NULL){
   table <- Dmisc::vars_to_date(table, year = 1, month = 2)
   table
 }
+
+####################################################################################################################
 
 #' Tipo de cambio Yen Japonés /Euro Mensual
 #'
