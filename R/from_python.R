@@ -9,9 +9,9 @@
 #' @return Un vector con nombres que se pasa a la función del indicador.
 #'
 #' @export
-from_python <- function(keys, values){
+from_python <- function(keys, values, metadata = FALSE){
   indicador <- values
   names(indicador) <- keys
   #indicador <- type.convert(indicador)
-  get(stringr::str_replace_all(indicador$id, "-", "_"))(indicador)
+  get(stringr::str_replace_all(indicador$id, "-", "_"))(indicador, metadata = metadata)
 }

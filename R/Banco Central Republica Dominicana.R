@@ -23,7 +23,7 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE){
         "orden", "Orden de los componentes", "", "int",
         "nivel", "Nivel de los componentes", "", "int",
         "componente", "Componente", "", "text",
-        "date", "Fecha", "", "qdate",
+        "date", "Fecha", "quarter", "qdate",
         "pib", "Valor del PIB", "Millones de RD$", "comma_f1",
         "ponderacion", "Ponderación por componente", "Porcentaje (%)", "f2",
         "pib_acumulado", "PIB acumulado", "Millones de RD$", "comma_f1",
