@@ -23,7 +23,7 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE){
         "orden", "Orden de los componentes", "", "int",
         "nivel", "Nivel de los componentes", "", "int",
         "componente", "Componente", "", "text",
-        "date", "Fecha", "quarter", "qdate",
+        "date", "Fecha", "Trimestres", "qdate",
         "pib", "Valor del PIB", "Millones de RD$", "comma_f1",
         "ponderacion", "Ponderación por componente", "Porcentaje (%)", "f2",
         "pib_acumulado", "PIB acumulado", "Millones de RD$", "comma_f1",
@@ -46,8 +46,8 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE){
   `...2` <- NULL
   V1 <- NULL
   V2 <- NULL
-  #pibFile <- "/mnt/d/Descargas/pib_gasto_2007 (6).xls"
-  pibFile <- downloader(indicador)
+  pibFile <- "/mnt/d/Descargas/pib_gasto_2007 (6).xls"
+  #pibFile <- downloader(indicador)
   pib <- readxl::read_excel(pibFile, sheet = 'PIB$_Trim', skip = 5, col_names = F)
   pib <- tidyr::drop_na(pib, ...2)
   pib <- pib[1:11,]
@@ -328,7 +328,7 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE){
 
   pib$date <- lubridate::ceiling_date(as.Date(tsibble::yearquarter(pib$date)), unit = "quarter")
   pib$date <- lubridate::add_with_rollback(pib$date, lubridate::days(-1))
-  unlink(pibFile)
+  #unlink(pibFile)
   pib %>%
     dplyr::left_join(domar::nvl_pib_gasto) %>%
     dplyr::relocate(c(orden, nivel))
