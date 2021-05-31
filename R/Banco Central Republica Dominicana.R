@@ -360,7 +360,7 @@ pib_gasto_anual <- function(indicador = NULL, metadata = FALSE){
         "orden", "Orden de los componentes", "", "int",
         "nivel", "Nivel de los componentes", "", "int",
         "componente", "Componente", "", "text",
-        "date", "Fecha", "Años", "int",
+        "ano", "Año", "Anual", "int",
         "pib", "Valor del PIB", "Millones de RD$", "comma_f1",
         "ponderacion", "Ponderación por componente", "Porcentaje (%)", "f2",
         "ive_pib", "Índice de Valores Encadenados (IVE) del PIB", "Índice (2007=100)", "f1",
@@ -397,7 +397,7 @@ pib_gasto_anual <- function(indicador = NULL, metadata = FALSE){
   pib <- as.data.frame(pib)
   names(pib) <- pib[1,]
   pib <- pib[-1,]
-  pib <- tidyr::pivot_longer(pib, -componente, names_to = "date", values_to = "pib")
+  pib <- tidyr::pivot_longer(pib, -componente, names_to = "ano", values_to = "pib")
 
   # Ponderación por componente PIB acumulado
   pib2 <- readxl::read_excel(pibFile, sheet = 'PIB$_Trim_Acum', skip = 25, col_names = F)
@@ -415,7 +415,7 @@ pib_gasto_anual <- function(indicador = NULL, metadata = FALSE){
   pib2 <- as.data.frame(pib2)
   names(pib2) <- pib2[1,]
   pib2 <- pib2[-1,]
-  pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "ponderacion")
+  pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "ano", values_to = "ponderacion")
 
   pib <- dplyr::left_join(pib, pib2)
 
@@ -438,7 +438,7 @@ pib_gasto_anual <- function(indicador = NULL, metadata = FALSE){
   pib2 <- as.data.frame(pib2)
   names(pib2) <- pib2[1,]
   pib2 <- pib2[-1,]
-  pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "ive_pib")
+  pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "ano", values_to = "ive_pib")
 
   pib <- dplyr::left_join(pib, pib2)
 
@@ -460,7 +460,7 @@ pib_gasto_anual <- function(indicador = NULL, metadata = FALSE){
   pib2 <- as.data.frame(pib2)
   names(pib2) <- pib2[1,]
   pib2 <- pib2[-1,]
-  pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "tasa_crecimiento")
+  pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "ano", values_to = "tasa_crecimiento")
 
   pib <- dplyr::left_join(pib, pib2)
 
@@ -481,7 +481,7 @@ pib_gasto_anual <- function(indicador = NULL, metadata = FALSE){
   pib2 <- as.data.frame(pib2)
   names(pib2) <- pib2[1,]
   pib2 <- pib2[-1,]
-  pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "incidencia")
+  pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "ano", values_to = "incidencia")
 
   pib <- dplyr::left_join(pib, pib2)
 
