@@ -1,6 +1,6 @@
 Package: domar
 Title: Dominican Admnistrative Registries
-Version: 0.008.0.9000
+Version: 0.009.0.9000
 Authors@R: c( 
     person(given = "Daniel E.",
            family = "de la Rosa",

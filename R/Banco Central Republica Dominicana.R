@@ -7,13 +7,14 @@
 #'   \lifecycle{experimental}
 #'
 #' @param indicador vector de datos para este indicador en la lista de domar
+#' @param metadata
 #'
 #' @return data.frame los datos del PIB por el enfoque del gasto trimestral
-#' @export
+#' @export if TRUE return indicator metadata
 #'
 #' @examples
 #' \dontrun{
-#' pib_gasto_t(indicador)
+#' pib_gasto_trim()
 #' }
 pib_gasto_trim <- function(indicador = NULL, metadata = FALSE){
   if(metadata){
@@ -46,8 +47,8 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE){
   `...2` <- NULL
   V1 <- NULL
   V2 <- NULL
-  pibFile <- "/mnt/d/Descargas/pib_gasto_2007 (6).xls"
-  #pibFile <- downloader(indicador)
+  #pibFile <- "/mnt/c/Users/drdsd/Downloads/pib_gasto_2007.xls"
+  pibFile <- downloader(indicador)
   pib <- readxl::read_excel(pibFile, sheet = 'PIB$_Trim', skip = 5, col_names = F)
   pib <- tidyr::drop_na(pib, ...2)
   pib <- pib[1:11,]
@@ -329,6 +330,162 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE){
   pib$date <- lubridate::ceiling_date(as.Date(tsibble::yearquarter(pib$date)), unit = "quarter")
   pib$date <- lubridate::add_with_rollback(pib$date, lubridate::days(-1))
   #unlink(pibFile)
+  pib %>%
+    dplyr::left_join(domar::nvl_pib_gasto) %>%
+    dplyr::relocate(c(orden, nivel))
+}
+
+
+
+
+#' PIB por enfoque del gasto anual
+#'
+#'   \lifecycle{experimental}
+#'
+#' @param indicador vector de datos para este indicador en la lista de domar
+#' @param metadata if TRUE return indicator metadata
+#'
+#' @return data.frame los datos del PIB por el enfoque del gasto trimestral
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' pib_gasto_anual()
+#' }
+pib_gasto_anual <- function(indicador = NULL, metadata = FALSE){
+  if(metadata){
+    return(
+      tibble::tribble(
+        ~col, ~name, ~unit, ~dtype,
+        "orden", "Orden de los componentes", "", "int",
+        "nivel", "Nivel de los componentes", "", "int",
+        "componente", "Componente", "", "text",
+        "date", "Fecha", "Años", "int",
+        "pib", "Valor del PIB", "Millones de RD$", "comma_f1",
+        "ponderacion", "Ponderación por componente", "Porcentaje (%)", "f2",
+        "ive_pib", "Índice de Valores Encadenados (IVE) del PIB", "Índice (2007=100)", "f1",
+        "tasa_crecimiento", "Tasa de crecimiento PIB", "Porcentaje (%)", "f1",
+        "incidencia", "Incidencia por componente del PIB", "", "f1"
+      )
+    )
+  }
+  if(is.null(indicador)){
+    indicador <- c(
+      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-real/documents/pib_gasto_2007.xls",
+      file_ext = "xls"
+    )
+  }
+  `...2` <- NULL
+  V1 <- NULL
+  V2 <- NULL
+  #pibFile <- "/mnt/c/Users/drdsd/Downloads/pib_gasto_2007.xls"
+  pibFile <- downloader(indicador)
+
+  # PIB Acumulado
+  pib <- readxl::read_excel(pibFile, sheet = 'PIB$_Trim_Acum', skip = 6, col_names = F)
+  pib <- tidyr::drop_na(pib, ...2)
+  pib <- pib[1:11,]
+  pib <- t(pib)
+  pib[,1] <- stringr::str_remove(pib[,1], '\\(p\\)')
+  pib[1,1] <- NA
+  pib <- as.data.frame(pib)
+  pib <- tidyr::fill(pib, V1)
+  pib <- dplyr::filter(pib, is.na(V2) | V2 == "E-D")
+  pib$V2 <- NULL
+  pib <- t(pib)
+  pib[1,1] <- 'componente'
+  pib <- as.data.frame(pib)
+  names(pib) <- pib[1,]
+  pib <- pib[-1,]
+  pib <- tidyr::pivot_longer(pib, -componente, names_to = "date", values_to = "pib")
+
+  # Ponderación por componente PIB acumulado
+  pib2 <- readxl::read_excel(pibFile, sheet = 'PIB$_Trim_Acum', skip = 25, col_names = F)
+  pib2 <- tidyr::drop_na(pib2, ...2)
+  pib2 <- pib2[1:11,]
+  pib2 <- t(pib2)
+  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(p\\)')
+  pib2[1,1] <- NA
+  pib2 <- as.data.frame(pib2)
+  pib2 <- tidyr::fill(pib2, V1)
+  pib2 <- dplyr::filter(pib2, is.na(V2) | V2 == "E-D")
+  pib2$V2 <- NULL
+  pib2 <- t(pib2)
+  pib2[1,1] <- 'componente'
+  pib2 <- as.data.frame(pib2)
+  names(pib2) <- pib2[1,]
+  pib2 <- pib2[-1,]
+  pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "ponderacion")
+
+  pib <- dplyr::left_join(pib, pib2)
+
+
+  ## INDICE PIB ACUMULADO
+
+  pib2 <- readxl::read_excel(pibFile, sheet = 'PIBK_Trim_Acum', skip = 6, col_names = F)
+  pib2 <- pib2[!is.na(pib2$...1) | !is.na(pib2$...2),]
+  pib2 <- pib2[1:11,]
+  pib2 <- t(pib2)
+  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(p\\)')
+  pib2[1,1] <- NA
+  pib2 <- as.data.frame(pib2)
+  pib2 <- tidyr::fill(pib2, V1)
+  pib2 <- dplyr::filter(pib2, is.na(V2) | V2 == "E-D")
+  pib2$V2 <- NULL
+  pib2 <- t(pib2)
+  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(1\\)')
+  pib2[1,1] <- 'componente'
+  pib2 <- as.data.frame(pib2)
+  names(pib2) <- pib2[1,]
+  pib2 <- pib2[-1,]
+  pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "ive_pib")
+
+  pib <- dplyr::left_join(pib, pib2)
+
+    # Tasa de crecimiento
+
+  pib2 <- readxl::read_excel(pibFile, sheet = 'PIBK_Trim_Acum', skip = 25, col_names = F)
+  pib2 <- pib2[!is.na(pib2$...1) | !is.na(pib2$...2),]
+  pib2 <- pib2[1:11,]
+  pib2 <- t(pib2)
+  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(p\\)')
+  pib2[1,1] <- NA
+  pib2 <- as.data.frame(pib2)
+  pib2 <- tidyr::fill(pib2, V1)
+  pib2 <- dplyr::filter(pib2, is.na(V2) | V2 == "E-D")
+  pib2$V2 <- NULL
+  pib2 <- t(pib2)
+  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(1\\)')
+  pib2[1,1] <- 'componente'
+  pib2 <- as.data.frame(pib2)
+  names(pib2) <- pib2[1,]
+  pib2 <- pib2[-1,]
+  pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "tasa_crecimiento")
+
+  pib <- dplyr::left_join(pib, pib2)
+
+  # Incidencia por componente
+  pib2 <- readxl::read_excel(pibFile, sheet = 'PIBK_Trim_Acum', skip = 44, col_names = F)
+  pib2 <- pib2[!is.na(pib2$...1) | !is.na(pib2$...2),]
+  pib2 <- pib2[1:11,]
+  pib2 <- t(pib2)
+  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(p\\)')
+  pib2[1,1] <- NA
+  pib2 <- as.data.frame(pib2)
+  pib2 <- tidyr::fill(pib2, V1)
+  pib2 <- dplyr::filter(pib2, is.na(V2) | V2 == "E-D")
+  pib2$V2 <- NULL
+  pib2 <- t(pib2)
+  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(1\\)')
+  pib2[1,1] <- 'componente'
+  pib2 <- as.data.frame(pib2)
+  names(pib2) <- pib2[1,]
+  pib2 <- pib2[-1,]
+  pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "incidencia")
+
+  pib <- dplyr::left_join(pib, pib2)
+
+  unlink(pibFile)
   pib %>%
     dplyr::left_join(domar::nvl_pib_gasto) %>%
     dplyr::relocate(c(orden, nivel))
