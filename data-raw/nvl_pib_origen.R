@@ -1,0 +1,37 @@
+nvl_pib_origen <- tibble::tribble(
+  ~orden, ~rae,
+  '1',	'Agropecuario',
+  '1.1',	'Subsector Agricola',
+  '1.2',	'Ganadería, Silvicultura y Pesca',
+  '1',	'Industrias',
+  '1.1',	'Explotación de Minas y Canteras',
+  '1.2',	'Manufactura Local',
+  '1.2.1',	'Industrias de Alimentos',
+  '1.2.2',	'Elaboración de Bebidas y Productos de Tabaco',
+  '1.2.3',	'Fabricación de Productos de la Refinación de Petróleo y Quimicos',
+  '1.2.4',	'Otras Manufacturas',
+  '1.3',	'Manufactura Zonas Francas',
+  '1.4',	'Construcción',
+  '1',	'Servicios',
+  '1.1',	'Energía y Agua',
+  '1.2',	'Comercio',
+  '1.3',	'Hoteles, Bares y Restaurantes',
+  '1.4',	'Transporte y Almacenamiento',
+  '1.5',	'Comunicaciones',
+  '1.6',	'Intermediación Financiera, Seguros y Actividades Conexas',
+  '1.7',	'Actividades Inmobiliarias y de Alquiler',
+  '1.8',	'Enseñanza',
+  '1.8.1',	'Enseñanza de Mercado',
+  '1.8.2',	'Enseñanza No de Mercado',
+  '1.9',	'Salud',
+  '1.9.1',	'Salud de Mercado',
+  '1.9.2',	'Salud No de Mercado',
+  '1.11',	'Otras Actividades de Servicios de Mercado',
+  '1.12',	'Administración Pública y Defensa; Seguridad Social de Afiliación Obligatoria y Otros Servicios',
+  '0',	'Valor Agregado',
+  '0',	'Impuestos a la producción netos de subsidios',
+  '0',	'Producto Interno Bruto'
+) %>%
+  nivelador()
+
+usethis::use_data(nvl_pib_origen, overwrite = TRUE)

@@ -8,15 +8,17 @@ pib_gasto_trim(indicador = NULL, metadata = FALSE)
 }
 \arguments{
 \item{indicador}{vector de datos para este indicador en la lista de domar}
+
+\item{metadata}{indica si se retornan los datos o la metadata del indicador}
 }
 \value{
-data.frame los datos del PIB por el enfoque del gasto trimestral
+data.frame con los datos del indicador en forma tabular
 }
 \description{
 \lifecycle{experimental}
 }
 \examples{
 \dontrun{
-pib_gasto_t(indicador)
+pib_gasto_trim()
 }
 }
