@@ -77,12 +77,12 @@ nivelador <- function(tbl){
 #'
 #' @export
 from_python <- function(keys, values, data = NULL, metadata = FALSE){
+  indicador <- values
+  names(indicador) <- keys
+  #indicador <- type.convert(indicador)
   if(!is.null(data)){
     get(stringr::str_replace_all(indicador$id, "-", "_"))(data, metadata = metadata)
   } else {
-    indicador <- values
-    names(indicador) <- keys
-    #indicador <- type.convert(indicador)
     get(stringr::str_replace_all(indicador$id, "-", "_"))(indicador, metadata = metadata)
   }
 }
