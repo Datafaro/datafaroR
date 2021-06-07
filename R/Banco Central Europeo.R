@@ -12,7 +12,16 @@
 #' \dontrun{
 #'   pound <- pound_sterling_mensual_ecb()
 #' }
-pound_sterling_mensual_ecb <- function(indicador = NULL){
+pound_sterling_mensual_ecb <- function(indicador = NULL, metadata = FALSE){
+  if(metadata){
+    return(
+      tibble::tribble(
+        ~col, ~name, ~unit, ~dtype,
+        "date", "Fecha", "Mensual", "mdate",
+        "value", "Tipo de cambio", "", "f2"
+      )
+    )
+  }
   if(is.null(indicador)){
     indicador = c(
       original_url = "https://sdw.ecb.europa.eu/quickview.do?SERIES_KEY=120.EXR.M.GBP.EUR.SP00.A",
@@ -47,7 +56,16 @@ pound_sterling_mensual_ecb <- function(indicador = NULL){
 #' \dontrun{
 #'  usd_eur <- us_dollar_mensual_ecb(indicador)
 #' }
-us_dollar_mensual_ecb <- function(indicador = NULL){
+us_dollar_mensual_ecb <- function(indicador = NULL, metadata = FALSE){
+  if(metadata){
+    return(
+      tibble::tribble(
+        ~col, ~name, ~unit, ~dtype,
+        "date", "Fecha", "Mensual", "mdate",
+        "value", "Tipo de cambio", "", "f2"
+      )
+    )
+  }
   if(is.null(indicador)){
     indicador = c(
       original_url = "https://sdw.ecb.europa.eu/quickview.do?SERIES_KEY=120.EXR.M.USD.EUR.SP00.A",
@@ -82,7 +100,16 @@ us_dollar_mensual_ecb <- function(indicador = NULL){
 #' \dontrun{
 #'  yen <- yen_mensual_ecb()
 #' }
-yen_mensual_ecb <- function(indicador = NULL){
+yen_mensual_ecb <- function(indicador = NULL, metadata = FALSE){
+  if(metadata){
+    return(
+      tibble::tribble(
+        ~col, ~name, ~unit, ~dtype,
+        "date", "Fecha", "Mensual", "mdate",
+        "value", "Tipo de cambio", "", "f2"
+      )
+    )
+  }
   if(is.null(indicador)){
     indicador = c(
       original_url = "https://sdw.ecb.europa.eu/quickview.do?SERIES_KEY=120.EXR.M.JPY.EUR.SP00.A",
