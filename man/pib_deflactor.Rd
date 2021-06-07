@@ -10,5 +10,5 @@ pib_deflactor(indicador = NULL)
 \item{indicador}{Vea \code{\link{downloader}}}
 }
 \description{
-\lifecycle{experimental}
+\lifecycle{deprecated}
 }
