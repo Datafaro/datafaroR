@@ -4,10 +4,12 @@
 \alias{pib_per_capita}
 \title{Producto Interno Bruto (PIB) per cápita}
 \usage{
-pib_per_capita(indicador = NULL)
+pib_per_capita(indicador = NULL, metadata = FALSE)
 }
 \arguments{
 \item{indicador}{Vea \code{\link{downloader}}}
+
+\item{metadata}{indica si se retornan los datos o la metadata del indicador}
 }
 \value{
 \link{data.frame}: los datos del indicador en forma tabular
@@ -17,6 +19,6 @@ pib_per_capita(indicador = NULL)
 }
 \examples{
 \dontrun{
-  pibpc <- pib_per_capita()
+  pib_per_capita()
 }
 }

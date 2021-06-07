@@ -7,12 +7,12 @@
 pib_gasto_trim(indicador = NULL, metadata = FALSE)
 }
 \arguments{
-\item{indicador}{vector de datos para este indicador en la lista de domar}
+\item{indicador}{Vea \code{\link{downloader}}}
 
 \item{metadata}{indica si se retornan los datos o la metadata del indicador}
 }
 \value{
-data.frame con los datos del indicador en forma tabular
+\link{data.frame}: los datos del indicador en forma tabular
 }
 \description{
 \lifecycle{experimental}

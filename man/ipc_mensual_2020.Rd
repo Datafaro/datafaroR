@@ -4,10 +4,12 @@
 \alias{ipc_mensual_2020}
 \title{Índice de Precios al Consumidor (octubre 2019 - septiembre 2020)}
 \usage{
-ipc_mensual_2020(indicador = NULL)
+ipc_mensual_2020(indicador = NULL, metadata = FALSE)
 }
 \arguments{
 \item{indicador}{Vea \code{\link{downloader}}}
+
+\item{metadata}{indica si se retornan los datos o la metadata del indicador}
 }
 \value{
 \link{data.frame}: los datos del indicador en forma tabular
@@ -17,6 +19,6 @@ ipc_mensual_2020(indicador = NULL)
 }
 \examples{
 \dontrun{
-  ipc20 <- ipc_mensual_2020()
+  ipc_mensual_2020()
 }
 }

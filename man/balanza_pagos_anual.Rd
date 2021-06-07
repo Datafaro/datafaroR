@@ -2,12 +2,14 @@
 % Please edit documentation in R/Banco Central Republica Dominicana.R
 \name{balanza_pagos_anual}
 \alias{balanza_pagos_anual}
-\title{Balanza de pagos Anual}
+\title{Balanza de pagos anual}
 \usage{
-balanza_pagos_anual(indicador = NULL)
+balanza_pagos_anual(indicador = NULL, metadata = FALSE)
 }
 \arguments{
 \item{indicador}{Vea \code{\link{downloader}}}
+
+\item{metadata}{indica si se retornan los datos o la metadata del indicador}
 }
 \value{
 \link{data.frame}: los datos del indicador en forma tabular
@@ -17,6 +19,6 @@ balanza_pagos_anual(indicador = NULL)
 }
 \examples{
 \dontrun{
-  bpa <- balanza_pagos_anual()
+  balanza_pagos_anual()
 }
 }

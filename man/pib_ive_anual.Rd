@@ -2,12 +2,14 @@
 % Please edit documentation in R/Banco Central Republica Dominicana.R
 \name{pib_ive_anual}
 \alias{pib_ive_anual}
-\title{Índices de Valores Encadenados del PIB Anual}
+\title{Índice de Volumen Encadenados (IVE) anual}
 \usage{
-pib_ive_anual(indicador = NULL)
+pib_ive_anual(indicador = NULL, metadata = FALSE)
 }
 \arguments{
 \item{indicador}{Vea \code{\link{downloader}}}
+
+\item{metadata}{indica si se retornan los datos o la metadata del indicador}
 }
 \value{
 \link{data.frame}: los datos del indicador en forma tabular
@@ -17,6 +19,6 @@ pib_ive_anual(indicador = NULL)
 }
 \examples{
 \dontrun{
-  ivea <- pib_ive_anual()
+pib_ive_anual()
 }
 }

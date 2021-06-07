@@ -9,16 +9,6 @@ pib_deflactor(indicador = NULL)
 \arguments{
 \item{indicador}{Vea \code{\link{downloader}}}
 }
-\value{
-\link{data.frame}: los datos como se descargan del banco con muy pocas
-modificaciones. Luego esos datos son tomados por pib_deflactor_trimestral y
-pib_deflactor_anual
-}
 \description{
 \lifecycle{experimental}
-}
-\examples{
-\dontrun{
-  def <- pib_deflactor()
-}
 }

@@ -8,6 +8,8 @@ pib_deflactor_anual(indicador = NULL)
 }
 \arguments{
 \item{indicador}{Vea \code{\link{downloader}}}
+
+\item{metadata}{indica si se retornan los datos o la metadata del indicador}
 }
 \value{
 \link{data.frame}: los datos del indicador en forma tabular
@@ -17,6 +19,6 @@ pib_deflactor_anual(indicador = NULL)
 }
 \examples{
 \dontrun{
-  dpa <- pib_deflactor_anual()
+  pib_deflactor_anual()
 }
 }

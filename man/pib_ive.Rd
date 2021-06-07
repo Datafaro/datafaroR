@@ -2,21 +2,13 @@
 % Please edit documentation in R/Banco Central Republica Dominicana.R
 \name{pib_ive}
 \alias{pib_ive}
-\title{Índices de Valores Encadenados del PIB}
+\title{Índices de Valores Encadenados (IVE)}
 \usage{
 pib_ive(indicador = NULL)
 }
 \arguments{
 \item{indicador}{Vea \code{\link{downloader}}}
 }
-\value{
-\link{data.frame}: los datos del indicador en forma tabular
-}
 \description{
 \lifecycle{experimental}
-}
-\examples{
-\dontrun{
-  ive <- pib_ive()
-}
 }

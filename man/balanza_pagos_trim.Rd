@@ -2,12 +2,14 @@
 % Please edit documentation in R/Banco Central Republica Dominicana.R
 \name{balanza_pagos_trim}
 \alias{balanza_pagos_trim}
-\title{Balanza de pagos Trimestral}
+\title{Balanza de pagos trimestral}
 \usage{
-balanza_pagos_trim(indicador = NULL)
+balanza_pagos_trim(indicador = NULL, metadata = FALSE)
 }
 \arguments{
 \item{indicador}{Vea \code{\link{downloader}}}
+
+\item{metadata}{indica si se retornan los datos o la metadata del indicador}
 }
 \value{
 \link{data.frame}: los datos del indicador en forma tabular
@@ -17,6 +19,6 @@ balanza_pagos_trim(indicador = NULL)
 }
 \examples{
 \dontrun{
-  bpt <- balanza_pagos_trim()
+  balanza_pagos_trim()
 }
 }

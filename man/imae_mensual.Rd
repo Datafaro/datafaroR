@@ -4,19 +4,21 @@
 \alias{imae_mensual}
 \title{Indicador Mensual de Actividad Económica (IMAE) Mensual}
 \usage{
-imae_mensual(indicador)
+imae_mensual(indicador = NULL, metadata = FALSE)
 }
 \arguments{
 \item{indicador}{Vea \code{\link{downloader}}}
+
+\item{metadata}{indica si se retornan los datos o la metadata del indicador}
 }
 \value{
-\link{data.frame}: los datos del IMAE en forma tabular
+\link{data.frame}: los datos del indicador en forma tabular
 }
 \description{
 \lifecycle{experimental}
 }
 \examples{
 \dontrun{
-imae <- imae_mensual(indicador)
+  imae_mensual(indicador)
 }
 }

@@ -7,12 +7,12 @@
 pib_origen_anual(data = NULL, metadata = FALSE)
 }
 \arguments{
-\item{data}{datos del indicador principal}
-
 \item{metadata}{indica si se retornan los datos o la metadata del indicador}
+
+\item{indicador}{Vea \code{\link{downloader}}}
 }
 \value{
-data.frame con los datos del indicador en forma tabular
+\link{data.frame}: los datos del indicador en forma tabular
 }
 \description{
 \lifecycle{experimental}
