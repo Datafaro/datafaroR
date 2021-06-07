@@ -51,12 +51,10 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE){
   `...2` <- NULL
   V1 <- NULL
   V2 <- NULL
-  tryCatch({
-    pibFile <- "/mnt/c/Users/drdsd/Downloads/pib_gasto_2007.xls"
-  },
-  error = function(e){
+  pibFile <- "/mnt/c/Users/drdsd/Downloads/pib_gasto_2007.xls"
+  if (!file.exists(pibFile)) {
     pibFile <- downloader(indicador)
-  })
+  }
   pib <- readxl::read_excel(pibFile, sheet = 'PIB$_Trim', skip = 5, col_names = F)
   pib <- tidyr::drop_na(pib, ...2)
   pib <- pib[1:11,]
@@ -440,13 +438,10 @@ pib_origen_trim <- function(indicador = NULL, metadata = FALSE){
       max_changes = 62
     )
   }
-  tryCatch({
-    file <- "/mnt/c/Users/drdsd/Downloads/pib_origen_2007.xlsx"
-  },
-  error = function(e){
+  file <- "/mnt/c/Users/drdsd/Downloads/pib_origen_2007.xlsx"
+  if (!file.exists(file)) {
     file <- downloader(indicador)
-  })
-
+  }
 
   # Valor agregado
   va <- readxl::read_excel(file, sheet = "PIB$_Trim", skip = 6, col_names = F) %>%
@@ -668,13 +663,10 @@ pib_ive <- function(indicador = NULL){
       max_changes = 2
     )
   }
-  tryCatch({
-    file = "/mnt/c/Users/drdsd/Downloads/pib_2007.xlsx"
-  },
-  error = function(e){
+  file <- "/mnt/c/Users/drdsd/Downloads/pib_2007.xlsx"
+  if (!file.exists(file)) {
     file <- downloader(indicador)
-  })
-
+  }
   ive <- readxl::read_excel(file, skip = 8, col_names = F) %>%
     dplyr::filter(!stringr::str_detect(...1, "Preliminar")) %>%
     dplyr::mutate(
@@ -784,12 +776,10 @@ pib_deflactor <- function(indicador = NULL) {
   `...1` <- NULL
   ano <- NULL
   `...2` <- NULL
-  tryCatch({
-    file = "/mnt/c/Users/drdsd/Downloads/pib_deflactor_2007.xls"
-  },
-  error = function(e){
+  file <- "/mnt/c/Users/drdsd/Downloads/pib_deflactor_2007.xls"
+  if (!file.exists(file)) {
     file <- downloader(indicador)
-  })
+  }
   def <- readxl::read_excel(file, skip = 4, col_names = F)
   def %>%
     dplyr::mutate(
@@ -929,12 +919,10 @@ imae_mensual <- function(indicador = NULL, metadata = FALSE) {
   }
   ano <- NULL
   mes <- NULL
-  tryCatch({
-    file = "/mnt/c/Users/drdsd/Downloads/imae.xlsx"
-  },
-  error = function(e){
+  file <- "/mnt/c/Users/drdsd/Downloads/imae.xlsx"
+  if (!file.exists(file)) {
     file <- downloader(indicador)
-  })
+  }
   imae <- readxl::read_excel(file, skip = 5)
   #unlink(file_path)
   # Serie original
@@ -1040,12 +1028,10 @@ pib_per_capita <- function(indicador = NULL, metadata = FALSE){
       file_ext = "xls"
     )
   }
-  tryCatch({
-    file = "/mnt/c/Users/drdsd/Downloads/pib_dolares.xls"
-  },
-  error = function(e){
+  file <- "/mnt/c/lUsers/drdsd/Downloads/pib_dolares.xls"
+  if (!file.exists(file)) {
     file <- downloader(indicador)
-  })
+  }
   readxl::read_excel(file, skip = 7, col_names = F) %>%
     dplyr::mutate(
       ...1 = stringr::str_remove_all(...1, "[^0-9]"),
@@ -1095,12 +1081,10 @@ ipc_mensual_2020 <- function(indicador = NULL, metadata = FALSE){
   }
   `...2` <- NULL
   `...1` <- NULL
-  tryCatch({
-    file = "/mnt/c/Users/drdsd/Downloads/ipc_base_2019-2020.xls"
-  },
-  error = function(e){
+  file <- "/mnt/c/Users/drdsd/Downloads/ipc_base_2019-2020.xls"
+  if (!file.exists(file)) {
     file <- downloader(indicador)
-  })
+  }
   datos <- readxl::read_excel(file, col_names = F)
   datos <- tidyr::drop_na(datos, ...2)
   datos <- tidyr::fill(datos, ...1)
@@ -1152,12 +1136,10 @@ ipc_anualizado <- function(indicador = NULL, metadata = FALSE){
       file_ext = "xls"
     )
   }
-  tryCatch({
-    file = "/mnt/c/Users/drdsd/Downloads/ipc_anual_base_2019-2020.xls"
-  },
-  error = function(e){
+  file <- "/mnt/c/Users/drdsd/Downloads/ipc_anual_base_2019-2020.xls"
+  if (!file.exists(file)) {
     file <- downloader(indicador)
-  })
+  }
   readxl::read_excel(file, skip = 7, col_names = F) %>%
     dplyr::mutate(dplyr::across(dplyr::everything(), .fns = as.numeric)) %>%
     tidyr::drop_na(...1) %>%
@@ -1199,12 +1181,10 @@ inflacion_promedio_12_meses <- function(indicador = NULL, metadata = FALSE){
       file_ext = "xls"
     )
   }
-  tryCatch({
-    file = "/mnt/c/Users/drdsd/Downloads/ipc_anual_1947_2020.xls"
-  },
-  error = function(e){
+  file <- "/mnt/c/Users/drdsd/Downloads/ipc_anual_1947_2020.xls"
+  if (!file.exists(file)) {
     file <- downloader(indicador)
-  })
+  }
   readxl::read_excel(file, skip = 6, col_names = F)[,1:4] %>%
     dplyr::mutate(
       dplyr::across(
@@ -1251,12 +1231,10 @@ ipc_subyacente <- function(indicador = NULL, metadata = FALSE){
       file_ext = "xlsx"
     )
   }
-  tryCatch({
-    file = "/mnt/c/Users/drdsd/Downloads/ipc_subyacente_base_2019-2020.xlsx"
-  },
-  error = function(e){
+  file <- "/mnt/c/Users/drdsd/Downloads/ipc_subyacente_base_2019-2020.xlsx"
+  if (!file.exists(file)) {
     file <- downloader(indicador)
-  })
+  }
   readxl::read_excel(file, skip = 5, col_names = F)[,1:6] %>%
     tidyr::drop_na(...2) %>%
     tidyr::fill(...1) %>%
@@ -1300,12 +1278,10 @@ ipc_transables_no_transables <- function(indicador = NULL, metadata = FALSE){
       file_ext = "xls"
     )
   }
-  tryCatch({
-    file = "/mnt/c/Users/drdsd/Downloads/ipc_tnt_base_2019-2020.xls"
-  },
-  error = function(e){
+  file <- "/mnt/c/Users/drdsd/Downloads/ipc_tnt_base_2019-2020.xls"
+  if (!file.exists(file)) {
     file <- downloader(indicador)
-  })
+  }
   ipc <- readxl::read_excel(file, skip = 5, col_names = F) %>%
     tidyr::drop_na(...2) %>%
     dplyr::filter(!stringr::str_detect(...2, "[0-9]"))
@@ -1367,12 +1343,10 @@ tipo_cambio_dolar_diario <- function(indicador = NULL, metadata = FALSE){
       file_ext = "xls"
     )
   }
-  tryCatch({
-    file = "/mnt/c/Users/drdsd/Downloads/TASA_DOLAR_REFERENCIA_MC.xls"
-  },
-  error = function(e){
+  file <- "/mnt/c/Users/drdsd/Downloads/TASA_DOLAR_REFERENCIA_MC.xls"
+  if (!file.exists(file)) {
     file <- downloader(indicador)
-  })
+  }
   readxl::read_excel(file, sheet = "Diaria", skip = 2) %>%
     Dmisc::vars_to_date(year = 1, month = 2, day = 3) %>%
     setNames(c("date", "compra", "venta")) %>%
@@ -1413,12 +1387,10 @@ tipo_cambio_dolar_mensual <- function(indicador = NULL, metadata = FALSE){
       file_ext = "xls"
     )
   }
-  tryCatch({
-    file = "/mnt/c/Users/drdsd/Downloads/TASA_DOLAR_REFERENCIA_MC.xls"
-  },
-  error = function(e){
+  file <- "/mnt/c/Users/drdsd/Downloads/TASA_DOLAR_REFERENCIA_MC.xls"
+  if (!file.exists(file)) {
     file <- downloader(indicador)
-  })
+  }
   readxl::read_excel(file, sheet = "PromMensual", skip = 2) %>%
     dplyr::mutate(tipo = "Promedio mensual") %>%
     dplyr::bind_rows(
@@ -1464,12 +1436,10 @@ tipo_cambio_dolar_trim <- function(indicador = NULL, metadata = FALSE){
       file_ext = "xls"
     )
   }
-  tryCatch({
-    file = "/mnt/c/Users/drdsd/Downloads/TASA_DOLAR_REFERENCIA_MC.xls"
-  },
-  error = function(e){
+  file <- "/mnt/c/Users/drdsd/Downloads/TASA_DOLAR_REFERENCIA_MC.xls"
+  if (!file.exists(file)) {
     file <- downloader(indicador)
-  })
+  }
   readxl::read_excel(file, sheet = "PromTrimestral", skip = 2) %>%
     dplyr::mutate(tipo = "Promedio trimestral") %>%
     dplyr::bind_rows(
@@ -1515,12 +1485,10 @@ tipo_cambio_dolar_anual <- function(indicador = NULL, metadata = FALSE){
       file_ext = "xls"
     )
   }
-  tryCatch({
-    file = "/mnt/c/Users/drdsd/Downloads/TASA_DOLAR_REFERENCIA_MC.xls"
-  },
-  error = function(e){
+  file <- "/mnt/c/Users/drdsd/Downloads/TASA_DOLAR_REFERENCIA_MC.xls"
+  if (!file.exists(file)) {
     file <- downloader(indicador)
-  })
+  }
   readxl::read_excel(file, sheet = "PromAnual", skip = 2) %>%
     dplyr::mutate(tipo = "Promedio anual") %>%
     dplyr::bind_rows(
@@ -1566,12 +1534,10 @@ balanza_pagos_anual <- function(indicador = NULL, metadata = FALSE){
       file_ext = "xls"
     )
   }
-  tryCatch({
-    file = "/mnt/c/Users/drdsd/Downloads/bpagos_6.xls"
-  },
-  error = function(e){
+  file <- "/mnt/c/Users/drdsd/Downloads/bpagos_6.xls"
+  if (!file.exists(file)) {
     file <- downloader(indicador)
-  })
+  }
   readxl::read_excel(file, skip = 4) %>%
     tidyr::drop_na(2) %>%
     dplyr::bind_cols(nvl_balanza_pagos) %>%
@@ -1618,12 +1584,10 @@ balanza_pagos_trim <- function(indicador = NULL, metadata = FALSE){
       file_ext = "xls"
     )
   }
-  tryCatch({
-    file = "/mnt/c/Users/drdsd/Downloads/bpagos__trim_6.xls"
-  },
-  error = function(e){
+  file <- "/mnt/c/Users/drdsd/Downloads/bpagos__trim_6.xls"
+  if (!file.exists(file)) {
     file <- downloader(indicador)
-  })
+  }
   bpa <- readxl::read_excel(file, col_names = F) %>%
     tidyr::drop_na(...2) %>%
     t() %>%
@@ -1698,12 +1662,10 @@ exportaciones_trim <- function(indicador = NULL, metadata = FALSE){
       max_changes = 64*4
     )
   }
-  tryCatch({
-    file = "/mnt/c/Users/drdsd/Downloads/Exportaciones_Trimestrales_6.xls"
-  },
-  error = function(e){
+  file <- "/mnt/c/Users/drdsd/Downloads/Exportaciones_Trimestrales_6.xls"
+  if (!file.exists(file)) {
     file <- downloader(indicador)
-  })
+  }
   export <- readxl::read_excel(file, skip = 3, col_names = F) %>%
     tidyr::drop_na(...3) %>%
     t() %>%
@@ -1761,12 +1723,10 @@ exportaciones_anual <- function(indicador = NULL, metadata = FALSE){
       file_ext = "xls"
     )
   }
-  tryCatch({
-    file = "/mnt/c/Users/drdsd/Downloads/Exportaciones_Anuales_6.xls"
-  },
-  error = function(e){
+  file <- "/mnt/c/Users/drdsd/Downloads/Exportaciones_Anuales_6.xls"
+  if (!file.exists(file)) {
     file <- downloader(indicador)
-  })
+  }
   readxl::read_excel(file, skip = 6) %>%
     tidyr::drop_na(`2010`) %>%
     dplyr::bind_cols(nvl_exportaciones) %>%
@@ -1814,12 +1774,10 @@ importaciones_trim <- function(indicador = NULL, metadata = FALSE){
       max_changes = 54*5
     )
   }
-  tryCatch({
-    file = "/mnt/c/Users/drdsd/Downloads/Importaciones_Trimestrales_6.xls"
-  },
-  error = function(e){
+  file <- "/mnt/c/Users/drdsd/Downloads/Importaciones_Trimestrales_6.xls"
+  if (!file.exists(file)) {
     file <- downloader(indicador)
-  })
+  }
   imports <- readxl::read_excel(file, skip = 5, col_names = F) %>%
     tidyr::drop_na(...3) %>%
     t() %>%
@@ -1878,12 +1836,10 @@ importaciones_anual <- function(indicador = NULL, metadata = FALSE){
       file_ext = "xls"
     )
   }
-  tryCatch({
-    file = "/mnt/c/Users/drdsd/Downloads/Importaciones_Anuales_6.xls"
-  },
-  error = function(e){
+  file <- "/mnt/c/Users/drdsd/Downloads/Importaciones_Anuales_6.xls"
+  if (!file.exists(file)) {
     file <- downloader(indicador)
-  })
+  }
   readxl::read_excel(file, skip = 7) %>%
     tidyr::drop_na(`2010`) %>%
     dplyr::bind_cols(nvl_importaciones) %>%
@@ -1941,12 +1897,10 @@ panorama_bc <- function(indicador = NULL, metadata = FALSE){
       file_ext = "xls"
     )
   }
-  tryCatch({
-    file = "/mnt/c/Users/drdsd/Downloads/panorama_pbc.xls"
-  },
-  error = function(e){
+  file <- "/mnt/c/Users/drdsd/Downloads/panorama_pbc.xls"
+  if (!file.exists(file)) {
     file <- downloader(indicador)
-  })
+  }
   pan <- readxl::read_excel(file, skip = 12, col_names = F) %>%
     tidyr::drop_na(...6) %>%
     Dmisc::vars_to_date(year = 1, month = 2) %>%
@@ -2011,12 +1965,10 @@ panorama_posd <- function(indicador = NULL, metadata = FALSE){
       file_ext = "xls"
     )
   }
-  tryCatch({
-    file = "/mnt/c/Users/drdsd/Downloads/panorama_posd.xls"
-  },
-  error = function(e){
+  file <- "/mnt/c/Users/drdsd/Downloads/panorama_posd.xls"
+  if (!file.exists(file)) {
     file <- downloader(indicador)
-  })
+  }
   readxl::read_excel(file, skip = 12, col_names = F) %>%
     tidyr::drop_na(...6) %>%
     Dmisc::vars_to_date(year = 1, month = 2) %>%
@@ -2077,12 +2029,10 @@ panorama_bm <- function(indicador = NULL, metadata = FALSE){
       file_ext = "xls"
     )
   }
-  tryCatch({
-    file = "/mnt/c/Users/drdsd/Downloads/panorama_pbm.xls"
-  },
-  error = function(e){
+  file <- "/mnt/c/Users/drdsd/Downloads/panorama_pbm.xls"
+  if (!file.exists(file)) {
     file <- downloader(indicador)
-  })
+  }
   readxl::read_excel(file, skip = 12, col_names = F) %>%
     tidyr::drop_na(...6) %>%
     Dmisc::vars_to_date(year = 1, month = 2) %>%
@@ -2145,12 +2095,10 @@ panorama_psd <- function(indicador = NULL, metadata = FALSE){
       file_ext = "xls"
     )
   }
-  tryCatch({
-    file = "/mnt/c/Users/drdsd/Downloads/panorama_psd.xls"
-  },
-  error = function(e){
+  file <- "/mnt/c/Users/drdsd/Downloads/panorama_psd.xls"
+  if (!file.exists(file)) {
     file <- downloader(indicador)
-  })
+  }
   readxl::read_excel(file, skip = 12, col_names = F) %>%
     tidyr::drop_na(...6) %>%
     Dmisc::vars_to_date(year = 1, month = 2) %>%
@@ -2210,12 +2158,10 @@ panorama_osf <- function(indicador = NULL, metadata = FALSE){
       file_ext = "xls"
     )
   }
-  tryCatch({
-    file = "/mnt/c/Users/drdsd/Downloads/panorama_osf.xls"
-  },
-  error = function(e){
+  file <- "/mnt/c/Users/drdsd/Downloads/panorama_osf.xls"
+  if (!file.exists(file)) {
     file <- downloader(indicador)
-  })
+  }
   readxl::read_excel(file, skip = 12, col_names = F) %>%
     tidyr::drop_na(...6) %>%
     Dmisc::vars_to_date(year = 1, month = 2) %>%
@@ -2277,12 +2223,10 @@ panorama_sf <- function(indicador = NULL, metadata = FALSE){
       file_ext = "xls"
     )
   }
-  tryCatch({
-    file = "/mnt/c/Users/drdsd/Downloads/panorama_sf.xls"
-  },
-  error = function(e){
+  file <- "/mnt/c/Users/drdsd/Downloads/panorama_sf.xls"
+  if (!file.exists(file)) {
     file <- downloader(indicador)
-  })
+  }
   readxl::read_excel(file, skip = 12, col_names = F) %>%
     tidyr::drop_na(...6) %>%
     Dmisc::vars_to_date(year = 1, month = 2) %>%
