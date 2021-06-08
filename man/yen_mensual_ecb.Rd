@@ -4,7 +4,7 @@
 \alias{yen_mensual_ecb}
 \title{Tipo de cambio Yen Japonés /Euro Mensual}
 \usage{
-yen_mensual_ecb(indicador = NULL)
+yen_mensual_ecb(indicador = NULL, metadata = FALSE)
 }
 \arguments{
 \item{indicador}{Vea \code{\link{downloader}}}

@@ -370,7 +370,7 @@ pib_gasto_anual <- function(data = NULL, metadata = FALSE){
         "orden", "Orden de los componentes", "", "int",
         "nivel", "Nivel de los componentes", "", "int",
         "componente", "Componente", "", "text",
-        "ano", "Año", "", "int",
+        "ano", "Año", "", "ydate",
         "pib", "Valor del PIB", "Millones de RD$", "f1",
         "ponderacion", "Ponderación por componente", "Porcentaje (%)", "f2",
         "ive", "Índice de Valores Encadenados (IVE) del PIB", "Índice (2007=100)", "f1",
@@ -625,7 +625,7 @@ pib_origen_anual <- function(data = NULL, metadata = FALSE){
         "orden", "Orden de las ramas", "", "int",
         "nivel", "Nivel de las ramas", "", "int",
         "rae", "Rama de Actividad Económica", "", "text",
-        "ano", "Año", "", "int",
+        "ano", "Año", "", "ydate",
         "valor_agregado", "Valor agregado de la rama", "Millones de RD$", "f1",
         "ponderacion", "Ponderación por rama", "Razón", "f3",
         "ive", "Índice de Volumen Encadenados (IVE)", "Índice", "f1",
@@ -1044,6 +1044,11 @@ pib_per_capita <- function(indicador = NULL, metadata = FALSE){
 }
 
 
+
+
+# Precios ----
+
+
 #' Índice de Precios al Consumidor (octubre 2019 - septiembre 2020)
 #'
 #'  \lifecycle{experimental}
@@ -1311,6 +1316,10 @@ ipc_transables_no_transables <- function(indicador = NULL, metadata = FALSE){
 }
 
 
+
+# Mercado cambiario ----
+
+
 #' Tipo de cambio dólar diario
 #'
 #'  \lifecycle{experimental}
@@ -1498,6 +1507,10 @@ tipo_cambio_dolar_anual <- function(indicador = NULL, metadata = FALSE){
     setNames(c("ano", "compra", "venta", "tipo")) %>%
     type.convert(as.is = T)
 }
+
+
+
+# Sector externo ----
 
 
 #' Balanza de pagos anual
@@ -1851,6 +1864,13 @@ importaciones_anual <- function(indicador = NULL, metadata = FALSE){
 }
 
 
+
+# Sector monetario y financiero ----
+
+
+## Panoramas ----
+
+
 #' Panorama Banco Central
 #'
 #'  \lifecycle{experimental}
@@ -1914,7 +1934,8 @@ panorama_bc <- function(indicador = NULL, metadata = FALSE){
                "activos_internos_osd", "activos_internos_os", "activos_internos_op",
                "activos_internos_totales", "base_monetaria", "bm_ampliada_bmc",
                "bm_ampliada_dvop", "tipo_de_cambio_me")) %>%
-    dplyr::select(1:17)
+    dplyr::select(1:17) %>%
+    type.convert(as.is=TRUE)
 }
 
 
@@ -2019,7 +2040,7 @@ panorama_bm <- function(indicador = NULL, metadata = FALSE){
         "activos_internos_total", "Activos internos  (AI) - Total (AI) (14= 4 a 13)", "", "f1",
         "pdsa_total", "Pasivos incluidos en la definición de dinero en sentido amplio (PDSA) (15=3+14=16+17)", "", "f1",
         "pdsa_depositos_transferibles", "PDSA - Depósitos transferibles (16)", "", "f1",
-        "pdsa_odv", "PDSA - Otros depósitos y valores (17)", "", "f1",
+        "pdsa_odv", "PDSA - Otros depósitos y valores (17)", "", "f1"
       )
     )
   }
@@ -2085,7 +2106,7 @@ panorama_psd <- function(indicador = NULL, metadata = FALSE){
         "dsa_od_mn", "Dinero en sentido amplio (DSA) - Otros depósitos - Moneda Nacional (16)", "", "f1",
         "dsa_od_me", "Dinero en sentido amplio (DSA) - Otros depósitos - Moneda Extranjera (17)", "", "f1",
         "dsa_valores_mn", "Dinero en sentido amplio (DSA) - Valores - Moneda Nacional (18)", "", "f1",
-        "dsa_valores_me", "Dinero en sentido amplio (DSA) - Valores - Moneda Extranjera (19)", "", "f1",
+        "dsa_valores_me", "Dinero en sentido amplio (DSA) - Valores - Moneda Extranjera (19)", "", "f1"
       )
     )
   }
@@ -2107,7 +2128,8 @@ panorama_psd <- function(indicador = NULL, metadata = FALSE){
                "activos_internos_osnf", "activos_internos_hogares_isflsh",
                "activos_internos_op", "activos_internos_total", "dsa_total",
                "dsa_bmpp", "dsa_dt_mn", "dsa_dt_me", "dsa_od_mn", "dsa_od_me",
-               "dsa_valores_mn", "dsa_valores_me"))
+               "dsa_valores_mn", "dsa_valores_me")) %>%
+    type.convert(as.is=TRUE)
 }
 
 
@@ -2148,7 +2170,7 @@ panorama_osf <- function(indicador = NULL, metadata = FALSE){
         "activos_internos_total", "Activos internos  (AI) - Total (AI) (14= 4 a 13)", "", "f1",
         "pasivos_total", "Pasivos (15=3+14=16+17)", "", "f1",
         "pasivos_rts", "Pasivos - Reservas técnicas de seguros (16)", "", "f1",
-        "pasivos_oopr", "Pasivos - Otras obligaciones con el público residente (17)", "", "f1",
+        "pasivos_oopr", "Pasivos - Otras obligaciones con el público residente (17)", "", "f1"
       )
     )
   }
@@ -2213,7 +2235,7 @@ panorama_sf <- function(indicador = NULL, metadata = FALSE){
         "pasivos_valores_mn", "Pasivos - Valores - Moneda Nacional (15)", "", "f1",
         "pasivos_valores_me", "Pasivos - Valores - Moneda Extranjera (16)", "", "f1",
         "pasivos_rts", "Pasivos - Reservas técnicas de seguros (17)", "", "f1",
-        "pasivos_otros", "Pasivos - Otros Pasivos (18)", "", "f1",
+        "pasivos_otros", "Pasivos - Otros Pasivos (18)", "", "f1"
       )
     )
   }
@@ -2235,16 +2257,488 @@ panorama_sf <- function(indicador = NULL, metadata = FALSE){
                "activos_internos_hogares_isflsh", "activos_internos_op",
                "activos_internos_total", "pasivos_total", "pasivos_bmpp",
                "pasivos_dep_mn", "pasivos_dep_me", "pasivos_valores_mn",
-               "pasivos_valores_me", "pasivos_rts", "pasivos_otros"))
+               "pasivos_valores_me", "pasivos_rts", "pasivos_otros")) %>%
+    type.convert(as.is=TRUE)
 }
 
 
 
+## Balances sectoriales ----
 
 
 
+#' Balance sectorial de las OSD: Resumen por instrumentos
+#'
+#'  \lifecycle{experimental}
+#'
+#' @param indicador Vea \code{\link{downloader}}
+#' @param metadata indica si se retornan los datos o la metadata del indicador
+#'
+#' @return [data.frame]: los datos del indicador en forma tabular
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'   balance_osd_resumen()
+#' }
+balance_osd_resumen <- function(indicador = NULL, metadata = FALSE){
+  if(metadata){
+    return(
+      tibble::tribble(
+        ~col, ~name, ~unit, ~dtype,
+        "date", "Fecha", "Mensual", "mdate",
+        "activos_billetes_monedas", "Activos - Billetes y monedas", "", "f1",
+        "activos_depositos", "Activos - Depósitos", "", "f1",
+        "activos_vda", "Activos - Valores distintos de acciones (tenencia)", "", "f1",
+        "activos_prestamos", "Activos - Préstamos", "", "f1",
+        "activos_acciones_opc", "Activos - Acciones y otras participaciones de capital", "", "f1",
+        "activos_otros_financieros", "Activos - Otros activos financieros 2/", "", "f1",
+        "activos_no_financieros", "Activos - Activos no financieros", "", "f1",
+        "activos_total", "Total activos", "", "f1",
+        "pyc_depositos_idsa", "Pasivos y Capital - Depósitos - Incluidos en dinero en sentido amplio", "", "f1",
+        "pyc_depositos_edsa", "Pasivos y Capital - Depósitos - Excluidos de dinero en sentido amplio", "", "f1",
+        "pyc_vda", "Pasivos y Capital - Valores distintos de acciones", "", "f1",
+        "pyc_prestamos", "Pasivos y Capital - Préstamos", "", "f1",
+        "pyc_otros_pasivos", "Pasivos y Capital - Otros pasivos 2/", "", "f1",
+        "pyc_acciones_opc", "Pasivos y Capital - Acciones y otras participaciones de capital", "", "f1",
+        "pyc_total", "Total pasivos y capital", "", "f1"
+      )
+    )
+  }
+  if(is.null(indicador)){
+    indicador <- c(
+      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/balance_osd_resumen.xls",
+      file_ext = "xls",
+      max_changes = 2
+    )
+  }
+  file <- "/mnt/c/Users/drdsd/Downloads/balance_osd_resumen.xls"
+  if (!file.exists(file)) {
+    file <- downloader(indicador)
+  }
+  readxl::read_excel(file) %>%
+    tidyr::drop_na(...2) %>%
+    Dmisc::vars_to_date(year = 1, month = 2) %>%
+    setNames(c("date", "activos_billetes_monedas", "activos_depositos", "activos_vda",
+               "activos_prestamos", "activos_acciones_opc",
+               "activos_otros_financieros", "activos_no_financieros", "activos_total",
+               "pyc_depositos_idsa", "pyc_depositos_edsa", "pyc_vda", "pyc_prestamos",
+               "pyc_otros_pasivos", "pyc_acciones_opc", "pyc_total")) %>%
+    type.convert(as.is=TRUE)
+}
 
 
+
+#'  Balance sectorial de las OSD: Instrumentos y sectores institucionales (Activos)
+#'
+#'  \lifecycle{experimental}
+#'
+#' @param indicador Vea \code{\link{downloader}}
+#' @param metadata indica si se retornan los datos o la metadata del indicador
+#'
+#' @return [data.frame]: los datos del indicador en forma tabular
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'   balance_isi_activos()
+#' }
+balance_isi_activos <- function(indicador = NULL, metadata = FALSE){
+  if(metadata){
+    return(
+      tibble::tribble(
+        ~col, ~name, ~unit, ~dtype,
+        "date", "Fecha", "Mensual", "mdate",
+        "bmd_no_residentes", "Billetes y monedas y depósitos - No residentes", "", "f1",
+        "bmd_banco_central", "Billetes y monedas y depósitos - Banco Central", "", "f1",
+        "bmd_osd", "Billetes y monedas y depósitos - Otras sociedades de depósito", "", "f1",
+        "bmd_otros_sectores", "Billetes y monedas y depósitos - Otros sectores", "", "f1",
+        "vda_no_residentes", "Valores distintos de acciones - No residentes", "", "f1",
+        "vda_banco_central", "Valores distintos de acciones - Banco Central", "", "f1",
+        "vda_gobierno_central", "Valores distintos de acciones - Gobierno Central", "", "f1",
+        "vda_osnf", "Valores distintos de acciones - Otras sociedades no financieras", "", "f1",
+        "vda_otros_sectores", "Valores distintos de acciones - Otros sectores 1/", "", "f1",
+        "prestamos_no_residentes", "Préstamos - No residentes", "", "f1",
+        "prestamos_osd", "Préstamos - Otras sociedades de depósito", "", "f1",
+        "prestamos_osf", "Préstamos - Otras sociedades financieras", "", "f1",
+        "prestamos_gobierno_central", "Préstamos - Gobierno central", "", "f1",
+        "prestamos_gel", "Préstamos - Gobierno estatal y local", "", "f1",
+        "prestamos_spnf", "Préstamos - Sociedades públicas no financieras", "", "f1",
+        "prestamos_osnf", "Préstamos - Otras sociedades no financieras", "", "f1",
+        "prestamos_hogares_isflsh", "Préstamos - Hogares e ISFLSH", "", "f1",
+        "otros_activos", "Otros activos", "", "f1",
+        "total_activos", "Total activos", "", "f1"
+      )
+    )
+  }
+  if(is.null(indicador)){
+    indicador <- c(
+      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/balance_osd_activos.xls",
+      file_ext = "xls",
+      max_changes = 2
+    )
+  }
+  file <- "/mnt/c/Users/drdsd/Downloads/balance_osd_activos.xls"
+  if (!file.exists(file)) {
+    file <- downloader(indicador)
+  }
+  readxl::read_excel(file) %>%
+    tidyr::drop_na(...2) %>%
+    Dmisc::vars_to_date(year = 1, month = 2) %>%
+    setNames(c("date", "bmd_no_residentes", "bmd_banco_central", "bmd_osd",
+               "bmd_otros_sectores", "vda_no_residentes", "vda_banco_central",
+               "vda_gobierno_central", "vda_osnf", "vda_otros_sectores",
+               "prestamos_no_residentes", "prestamos_osd", "prestamos_osf",
+               "prestamos_gobierno_central", "prestamos_gel", "prestamos_spnf",
+               "prestamos_osnf", "prestamos_hogares_isflsh", "otros_activos",
+               "total_activos")) %>%
+    type.convert(as.is=TRUE)
+}
+
+
+
+#' Balance sectorial de las OSD: Instrumentos y sectores institucionales (Activos en MN)
+#'
+#'  \lifecycle{experimental}
+#'
+#' @param indicador Vea \code{\link{downloader}}
+#' @param metadata indica si se retornan los datos o la metadata del indicador
+#'
+#' @return [data.frame]: los datos del indicador en forma tabular
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'   balance_isi_activos_mn()
+#' }
+balance_isi_activos_mn <- function(indicador = NULL, metadata = FALSE){
+  if(metadata){
+    return(
+      tibble::tribble(
+        ~col, ~name, ~unit, ~dtype,
+        "date", "Fecha", "Mensual", "mdate",
+        "bmd_no_residentes", "Billetes y monedas y depósitos - No residentes", "", "f1",
+        "bmd_banco_central", "Billetes y monedas y depósitos - Banco Central", "", "f1",
+        "bmd_osd", "Billetes y monedas y depósitos - Otras sociedades de depósito", "", "f1",
+        "bmd_otros_sectores", "Billetes y monedas y depósitos - Otros sectores", "", "f1",
+        "vda_no_residentes", "Valores distintos de acciones - No residentes", "", "f1",
+        "vda_banco_central", "Valores distintos de acciones - Banco Central", "", "f1",
+        "vda_gobierno_central", "Valores distintos de acciones - Gobierno Central", "", "f1",
+        "vda_osnf", "Valores distintos de acciones - Otras sociedades no financieras", "", "f1",
+        "vda_otros_sectores", "Valores distintos de acciones - Otros sectores 1/", "", "f1",
+        "prestamos_no_residentes", "Préstamos - No residentes", "", "f1",
+        "prestamos_osd", "Préstamos - Otras sociedades de depósito", "", "f1",
+        "prestamos_osf", "Préstamos - Otras sociedades financieras", "", "f1",
+        "prestamos_gobierno_central", "Préstamos - Gobierno central", "", "f1",
+        "prestamos_gel", "Préstamos - Gobierno estatal y local", "", "f1",
+        "prestamos_spnf", "Préstamos - Sociedades públicas no financieras", "", "f1",
+        "prestamos_osnf", "Préstamos - Otras sociedades no financieras", "", "f1",
+        "prestamos_hogares_isflsh", "Préstamos - Hogares e ISFLSH", "", "f1",
+        "otros_activos", "Otros activos", "", "f1",
+        "total_activos", "Total activos", "", "f1"
+      )
+    )
+  }
+  if(is.null(indicador)){
+    indicador <- c(
+      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/balance_osd_activos_mn.xls",
+      file_ext = "xls",
+      max_changes = 2
+    )
+  }
+  file <- "/mnt/c/Users/drdsd/Downloads/balance_osd_activos_mn.xls"
+  if (!file.exists(file)) {
+    file <- downloader(indicador)
+  }
+  readxl::read_excel(file) %>%
+    tidyr::drop_na(...2) %>%
+    Dmisc::vars_to_date(year = 1, month = 2) %>%
+    setNames(c("date", "bmd_no_residentes", "bmd_banco_central", "bmd_osd",
+               "bmd_otros_sectores", "vda_no_residentes", "vda_banco_central",
+               "vda_gobierno_central", "vda_osnf", "vda_otros_sectores",
+               "prestamos_no_residentes", "prestamos_osd", "prestamos_osf",
+               "prestamos_gobierno_central", "prestamos_gel", "prestamos_spnf",
+               "prestamos_osnf", "prestamos_hogares_isflsh", "otros_activos",
+               "total_activos")) %>%
+    type.convert(as.is=TRUE)
+}
+
+
+
+#' Balance sectorial de las OSD: Instrumentos y sectores institucionales (Activos en ME)
+#'
+#'  \lifecycle{experimental}
+#'
+#' @param indicador Vea \code{\link{downloader}}
+#' @param metadata indica si se retornan los datos o la metadata del indicador
+#'
+#' @return [data.frame]: los datos del indicador en forma tabular
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'   balance_isi_activos_me()
+#' }
+balance_isi_activos_me <- function(indicador = NULL, metadata = FALSE){
+  if(metadata){
+    return(
+      tibble::tribble(
+        ~col, ~name, ~unit, ~dtype,
+        "date", "Fecha", "Mensual", "mdate",
+        "bmd_no_residentes", "Billetes y monedas y depósitos - No residentes", "", "f1",
+        "bmd_banco_central", "Billetes y monedas y depósitos - Banco Central", "", "f1",
+        "bmd_osd", "Billetes y monedas y depósitos - Otras sociedades de depósito", "", "f1",
+        "bmd_otros_sectores", "Billetes y monedas y depósitos - Otros sectores", "", "f1",
+        "vda_no_residentes", "Valores distintos de acciones - No residentes", "", "f1",
+        "vda_banco_central", "Valores distintos de acciones - Banco Central", "", "f1",
+        "vda_gobierno_central", "Valores distintos de acciones - Gobierno Central", "", "f1",
+        "vda_osnf", "Valores distintos de acciones - Otras sociedades no financieras", "", "f1",
+        "vda_otros_sectores", "Valores distintos de acciones - Otros sectores 1/", "", "f1",
+        "prestamos_no_residentes", "Préstamos - No residentes", "", "f1",
+        "prestamos_osd", "Préstamos - Otras sociedades de depósito", "", "f1",
+        "prestamos_osf", "Préstamos - Otras sociedades financieras", "", "f1",
+        "prestamos_gobierno_central", "Préstamos - Gobierno central", "", "f1",
+        "prestamos_gel", "Préstamos - Gobierno estatal y local", "", "f1",
+        "prestamos_spnf", "Préstamos - Sociedades públicas no financieras", "", "f1",
+        "prestamos_osnf", "Préstamos - Otras sociedades no financieras", "", "f1",
+        "prestamos_hogares_isflsh", "Préstamos - Hogares e ISFLSH", "", "f1",
+        "otros_activos", "Otros activos", "", "f1",
+        "total_activos", "Total activos", "", "f1"
+      )
+    )
+  }
+  if(is.null(indicador)){
+    indicador <- c(
+      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/balance_osd_activos_me.xls",
+      file_ext = "xls",
+      max_changes = 2
+    )
+  }
+  file <- "/mnt/c/Users/drdsd/Downloads/balance_osd_activos_me.xls"
+  if (!file.exists(file)) {
+    file <- downloader(indicador)
+  }
+  readxl::read_excel(file) %>%
+    tidyr::drop_na(...2) %>%
+    Dmisc::vars_to_date(year = 1, month = 2) %>%
+    setNames(c("date", "bmd_no_residentes", "bmd_banco_central", "bmd_osd",
+               "bmd_otros_sectores", "vda_no_residentes", "vda_banco_central",
+               "vda_gobierno_central", "vda_osnf", "vda_otros_sectores",
+               "prestamos_no_residentes", "prestamos_osd", "prestamos_osf",
+               "prestamos_gobierno_central", "prestamos_gel", "prestamos_spnf",
+               "prestamos_osnf", "prestamos_hogares_isflsh", "otros_activos",
+               "total_activos")) %>%
+    dplyr::select(c("date", "bmd_no_residentes", "bmd_banco_central", "bmd_osd",
+                    "bmd_otros_sectores", "vda_no_residentes", "vda_banco_central",
+                    "vda_gobierno_central", "vda_osnf", "vda_otros_sectores",
+                    "prestamos_no_residentes", "prestamos_osd", "prestamos_osf",
+                    "prestamos_gobierno_central", "prestamos_gel", "prestamos_spnf",
+                    "prestamos_osnf", "prestamos_hogares_isflsh", "otros_activos",
+                    "total_activos"))%>%
+    type.convert(as.is=TRUE)
+}
+
+
+
+#' Balance sectorial de las OSD: Instrumentos y sectores institucionales (Pasivos)
+#'
+#'  \lifecycle{experimental}
+#'
+#' @param indicador Vea \code{\link{downloader}}
+#' @param metadata indica si se retornan los datos o la metadata del indicador
+#'
+#' @return [data.frame]: los datos del indicador en forma tabular
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'   balance_isi_pasivos()
+#' }
+balance_isi_pasivos <- function(indicador = NULL, metadata = FALSE){
+  if(metadata){
+    return(
+      tibble::tribble(
+        ~col, ~name, ~unit, ~dtype,
+        "date", "Fecha", "Mensual", "mdate",
+        "depositos_no_residentes", "Depósitos - No residentes", "", "f1",
+        "depositos_osd", "Depósitos - Otras sociedades de depósito", "", "f1",
+        "depositos_osf", "Depósitos - Otras sociedades financieras", "", "f1",
+        "depositos_gobierno_central", "Depósitos - Gobierno central", "", "f1",
+        "depositos_gel", "Depósitos - Gobiernos estatales y locales", "", "f1",
+        "depositos_spnf",  "Depósitos - Sociedades públicas no financieras", "", "f1",
+        "depositos_osnf", "Depósitos - Otras sociedades no financieras", "", "f1",
+        "depositos_hogares_isflsh", "Depósitos - Hogares e ISFLSH", "", "f1",
+        "prestamos_no_residentes", "Préstamos - No residentes", "", "f1",
+        "prestamos_banco_central", "Préstamos - Banco Central", "", "f1",
+        "prestamos_osd", "Préstamos - Otras sociedades de depósito", "", "f1",
+        "prestamos_osf",  "Préstamos - Otras sociedades financieras", "", "f1",
+        "prestamos_otros_sectores", "Préstamos - Otros sectores 1/", "", "f1",
+        "valores", "Valores", "", "f1",
+        "otros_pasivos_capital", "Otros pasivos y capital", "", "f1",
+        "total_pasivos_capital", "Total pasivos y capital", "", "f1"
+      )
+    )
+  }
+  if(is.null(indicador)){
+    indicador <- c(
+      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/balance_osd_pasivos.xls",
+      file_ext = "xls",
+      max_changes = 2
+    )
+  }
+  file <- "/mnt/c/Users/drdsd/Downloads/balance_osd_pasivos.xls"
+  if (!file.exists(file)) {
+    file <- downloader(indicador)
+  }
+  readxl::read_excel(file) %>%
+    tidyr::drop_na(...2) %>%
+    Dmisc::vars_to_date(year = 1, month = 2) %>%
+    setNames(c("date", "depositos_no_residentes", "depositos_osd", "depositos_osf",
+               "depositos_gobierno_central", "depositos_gel", "depositos_spnf",
+               "depositos_osnf", "depositos_hogares_isflsh", "prestamos_no_residentes",
+               "prestamos_banco_central", "prestamos_osd", "prestamos_osf",
+               "prestamos_otros_sectores", "valores", "otros_pasivos_capital",
+               "total_pasivos_capital")) %>%
+    type.convert(as.is=TRUE)
+}
+
+
+
+#'  Balance sectorial de las OSD: Instrumentos y sectores institucionales (Pasivos en MN)
+#'
+#'  \lifecycle{experimental}
+#'
+#' @param indicador Vea \code{\link{downloader}}
+#' @param metadata indica si se retornan los datos o la metadata del indicador
+#'
+#' @return [data.frame]: los datos del indicador en forma tabular
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'   balance_isi_pasivos_mn()
+#' }
+balance_isi_pasivos_mn <- function(indicador = NULL, metadata = FALSE){
+  if(metadata){
+    return(
+      tibble::tribble(
+        ~col, ~name, ~unit, ~dtype,
+        "date", "Fecha", "Mensual", "mdate",
+        "depositos_no_residentes", "Depósitos - No residentes", "", "f1",
+        "depositos_osd", "Depósitos - Otras sociedades de depósito", "", "f1",
+        "depositos_osf", "Depósitos - Otras sociedades financieras", "", "f1",
+        "depositos_gobierno_central", "Depósitos - Gobierno central", "", "f1",
+        "depositos_gel", "Depósitos - Gobiernos estatales y locales", "", "f1",
+        "depositos_spnf",  "Depósitos - Sociedades públicas no financieras", "", "f1",
+        "depositos_osnf", "Depósitos - Otras sociedades no financieras", "", "f1",
+        "depositos_hogares_isflsh", "Depósitos - Hogares e ISFLSH", "", "f1",
+        "prestamos_no_residentes", "Préstamos - No residentes", "", "f1",
+        "prestamos_banco_central", "Préstamos - Banco Central", "", "f1",
+        "prestamos_osd", "Préstamos - Otras sociedades de depósito", "", "f1",
+        "prestamos_osf",  "Préstamos - Otras sociedades financieras", "", "f1",
+        "prestamos_otros_sectores", "Préstamos - Otros sectores 1/", "", "f1",
+        "valores", "Valores", "", "f1",
+        "otros_pasivos", "Otros pasivos", "", "f1",
+        "total_pasivos", "Total pasivos", "", "f1"
+      )
+    )
+  }
+  if(is.null(indicador)){
+    indicador <- c(
+      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/balance_osd_pasivos_mn.xls",
+      file_ext = "xls",
+      max_changes = 2
+    )
+  }
+  file <- "/mnt/c/Users/drdsd/Downloads/balance_osd_pasivos_mn.xls"
+  if (!file.exists(file)) {
+    file <- downloader(indicador)
+  }
+  readxl::read_excel(file) %>%
+    tidyr::drop_na(...2) %>%
+    Dmisc::vars_to_date(year = 1, month = 2) %>%
+    setNames(c("date", "depositos_no_residentes", "depositos_osd", "depositos_osf",
+               "depositos_gobierno_central", "depositos_gel", "depositos_spnf",
+               "depositos_osnf", "depositos_hogares_isflsh", "prestamos_no_residentes",
+               "prestamos_banco_central", "prestamos_osd", "prestamos_osf",
+               "prestamos_otros_sectores", "valores", "otros_pasivos",
+               "total_pasivos")) %>%
+    type.convert(as.is=TRUE)
+}
+
+
+
+#'  Balance sectorial de las OSD: Instrumentos y sectores institucionales (Activos en ME)
+#'
+#'  \lifecycle{experimental}
+#'
+#' @param indicador Vea \code{\link{downloader}}
+#' @param metadata indica si se retornan los datos o la metadata del indicador
+#'
+#' @return [data.frame]: los datos del indicador en forma tabular
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'   balance_isi_pasivos_me()
+#' }
+balance_isi_pasivos_me<- function(indicador = NULL, metadata = FALSE){
+  if(metadata){
+    return(
+      tibble::tribble(
+        ~col, ~name, ~unit, ~dtype,
+        "date", "Fecha", "Mensual", "mdate",
+        "depositos_no_residentes", "Depósitos - No residentes", "", "f1",
+        "depositos_osd", "Depósitos - Otras sociedades de depósito", "", "f1",
+        "depositos_osf", "Depósitos - Otras sociedades financieras", "", "f1",
+        "depositos_gobierno_central", "Depósitos - Gobierno central", "", "f1",
+        "depositos_gel", "Depósitos - Gobiernos estatales y locales", "", "f1",
+        "depositos_spnf",  "Depósitos - Sociedades públicas no financieras", "", "f1",
+        "depositos_osnf", "Depósitos - Otras sociedades no financieras", "", "f1",
+        "depositos_hogares_isflsh", "Depósitos - Hogares e ISFLSH", "", "f1",
+        "prestamos_no_residentes", "Préstamos - No residentes", "", "f1",
+        "prestamos_banco_central", "Préstamos - Banco Central", "", "f1",
+        "prestamos_osd", "Préstamos - Otras sociedades de depósito", "", "f1",
+        "prestamos_osf",  "Préstamos - Otras sociedades financieras", "", "f1",
+        "prestamos_otros_sectores", "Préstamos - Otros sectores 1/", "", "f1",
+        "valores", "Valores", "", "f1",
+        "otros_pasivos", "Otros pasivos", "", "f1",
+        "total_pasivos", "Total pasivos", "", "f1"
+      )
+    )
+  }
+  if(is.null(indicador)){
+    indicador <- c(
+      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/balance_osd_pasivos_me.xls",
+      file_ext = "xls",
+      max_changes = 2
+    )
+  }
+  file <- "/mnt/c/Users/drdsd/Downloads/balance_osd_pasivos_me.xls"
+  if (!file.exists(file)) {
+    file <- downloader(indicador)
+  }
+  readxl::read_excel(file) %>%
+    tidyr::drop_na(...2) %>%
+    Dmisc::vars_to_date(year = 1, month = 2) %>%
+    setNames(c("date", "depositos_no_residentes", "depositos_osd", "depositos_osf",
+               "depositos_gobierno_central", "depositos_gel", "depositos_spnf",
+               "depositos_osnf", "depositos_hogares_isflsh", "prestamos_no_residentes",
+               "prestamos_banco_central", "prestamos_osd", "prestamos_osf",
+               "prestamos_otros_sectores", "valores", "otros_pasivos",
+               "total_pasivos")) %>%
+    type.convert(as.is=TRUE)
+}
+
+
+## Base Monetaria y Agregados Monetarios ----
 
 
 
@@ -2281,21 +2775,6 @@ Estado de Operaciones del sector público no financiero (% del PIB)
 https://cdn.bancentral.gov.do/documents/estadisticas/documents/Operaciones_PIB_Anual.xlsx
 
 MONETARIO
-
-II. Balances Sectoriales
-1. Balance sectorial de las OSD: Resumen por instrumentos
-
-2. Balance sectorial de las OSD: Instrumentos y sectores institucionales (Activos)
-
-a. Balance sectorial de las OSD: Instrumentos y sectores institucionales (Activos en MN)
-
-b. Balance sectorial de las OSD: Instrumentos y sectores institucionales (Activos en ME)
-
-3. Balance sectorial de las OSD: Instrumentos y sectores institucionales (Pasivos)
-
-a. Balance sectorial de las OSD: Instrumentos y sectores institucionales (Pasivos en MN)
-
-b. Balance sectorial de las OSD: Instrumentos y sectores institucionales (Activos en ME)
 
 III. Base Monetaria y Agregados Monetarios
 1. Base monetaria

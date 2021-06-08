@@ -4,7 +4,7 @@
 \alias{us_dollar_mensual_ecb}
 \title{Tipo de cambio USD/Euro Mensual}
 \usage{
-us_dollar_mensual_ecb(indicador = NULL)
+us_dollar_mensual_ecb(indicador = NULL, metadata = FALSE)
 }
 \arguments{
 \item{indicador}{Vea \code{\link{downloader}}}

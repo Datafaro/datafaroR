@@ -4,7 +4,7 @@
 \alias{pound_sterling_mensual_ecb}
 \title{Tipo de cambio libra esterlina}
 \usage{
-pound_sterling_mensual_ecb(indicador = NULL)
+pound_sterling_mensual_ecb(indicador = NULL, metadata = FALSE)
 }
 \arguments{
 \item{indicador}{Vea \code{\link{downloader}}}
