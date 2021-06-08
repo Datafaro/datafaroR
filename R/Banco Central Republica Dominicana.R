@@ -1686,7 +1686,7 @@ exportaciones_trim <- function(indicador = NULL, metadata = FALSE){
     dplyr::filter(is.na(V2) | V2 != "Total") %>%
     tidyr::fill(V1)
   export$V1[1:2] <- c("1900", "1900")
-  export$V2[1:2] <- c("Q1", "Q2")
+  export$V2[1:2] <- c("E-M", "A-J")
   export %>%
     Dmisc::vars_to_date(year = 1, quarter = 2) %>%
     t() %>%
@@ -1796,7 +1796,7 @@ importaciones_trim <- function(indicador = NULL, metadata = FALSE){
     t() %>%
     as.data.frame()
   imports$V1[1:2] <- c("1900", "1900")
-  imports$V2[1:2] <- c("Q1", "Q2")
+  imports$V2[1:2] <- c("E-M", "A-J")
 
   imports %>%
     dplyr::filter(V2 != "Total") %>%
