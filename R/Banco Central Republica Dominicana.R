@@ -745,7 +745,7 @@ pib_ive_anual <- function(indicador = NULL, metadata = FALSE){
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype,
-        "ano", "Año", "", "int",
+        "ano", "Año", "", "ydate",
         "ive", "Índice de Volumen Encadenados (IVE)", "Índice", "f1",
         "variacion_interanual", "Variación (%) interanual", "Porcentaje (%)", "f1"
       )
@@ -1012,7 +1012,7 @@ pib_per_capita <- function(indicador = NULL, metadata = FALSE){
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype,
-        "ano", "Año", "", "int",
+        "ano", "Año", "", "ydate",
         "poblacion", "Población", "Miles", "int",
         "pib", "PIB Corriente RD$", "Millones de RD$", "f1",
         "pib_pc", "PIB Corriente per cápita RD$", "RD$", "f1",
@@ -1127,7 +1127,7 @@ ipc_anualizado <- function(indicador = NULL, metadata = FALSE){
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype,
-        "ano", "Año", "", "int",
+        "ano", "Año", "", "ydate",
         "ipc_2010", "IPC (2010 = 100)", "Índice", "f1",
         "ipc_2020", "IPC (Oct. 2019 - Sep. 2020)", "Índice", "f1",
         "inflacion_anualizada", "Tasa de inflación anualizada", "Porcentaje (%)", "f1",
@@ -1173,7 +1173,7 @@ inflacion_promedio_12_meses <- function(indicador = NULL, metadata = FALSE){
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype,
-        "ano", "Año", "", "int",
+        "ano", "Año", "", "ydate",
         "ipc_2010", "IPC (2010 = 100)", "Índice", "f1",
         "ipc_2020", "IPC (Oct. 2019 - Sep. 2020)", "Índice", "f1",
         "inflacion_promedio_12_meses", "Tasa de inflación promedio 12 meses", "Porcentaje (%)", "f1"
@@ -1481,7 +1481,7 @@ tipo_cambio_dolar_anual <- function(indicador = NULL, metadata = FALSE){
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype,
-        "ano", "Año", "", "int",
+        "ano", "Año", "", "ydate",
         "compra", "Precio de compra", "RD$/US$", "f2",
         "venta", "Precio de venta", "RD$/US$", "f2",
         "tipo", "Tipo de indicador", "", "text"
@@ -1536,7 +1536,7 @@ balanza_pagos_anual <- function(indicador = NULL, metadata = FALSE){
         "orden", "Orden", "", "int",
         "nivel", "Nivel", "", "int",
         "conceptos", "Conceptos", "", "text",
-        "ano", "Año", "", "int",
+        "ano", "Año", "", "ydate",
         "valor", "Valor", "Millones de US$", "f1"
       )
     )
@@ -1725,7 +1725,7 @@ exportaciones_anual <- function(indicador = NULL, metadata = FALSE){
         "nivel", "Nivel", "", "int",
         "codigo", "Código del producto", "", "text",
         "detalle", "Detalle", "", "text",
-        "ano", "Año", "", "int",
+        "ano", "Año", "", "ydate",
         "valor", "Valor", "Millones de US$", "f1"
       )
     )
@@ -1838,7 +1838,7 @@ importaciones_anual <- function(indicador = NULL, metadata = FALSE){
         "nivel", "Nivel", "", "int",
         "codigo", "Código del producto", "", "text",
         "detalle", "Detalle", "", "text",
-        "ano", "Año", "", "int",
+        "ano", "Año", "", "ydate",
         "valor", "Valor", "Millones de US$", "f1"
       )
     )
