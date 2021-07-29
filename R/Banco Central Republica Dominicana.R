@@ -1316,6 +1316,34 @@ ipc_transables_no_transables <- function(indicador = NULL, metadata = FALSE){
 }
 
 
+ipc_mensual_2010 <- function(indicador = NULL, metadata = FALSE){
+  if(metadata){
+    return(
+      tibble::tribble(
+        ~col, ~name, ~unit, ~dtype,
+        "date", "Fecha", "Mensual", "mdate",
+        "indice", "IPC", "Índice", "f1",
+        "variacion_mensual", "Variación porcentual mensual", "Porcentaje (%)", "f1",
+        "variacion_con_diciembre", "Variación porcentual con diciembre", "Porcentaje (%)", "f1",
+        "variacion_anual", "Variación porcentual anual", "Porcentaje (%)", "f1",
+        "variacion_promedio_12_meses", "Variación promedio 12 meses", "Porcentaje (%)", "f1"
+      )
+    )
+  }
+  if(is.null(indicador)){
+    indicador = c(
+      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/precios/documents/ipc_base_2019-2020.xls",
+      file_ext = "xls"
+    )
+  }
+  `...2` <- NULL
+  `...1` <- NULL
+  file <- "/mnt/c/Users/drdsd/Downloads/ipc_base_2019-2020.xls"
+  if (!file.exists(file)) {
+    file <- downloader(indicador)
+  }
+}
+
 
 # Mercado cambiario ----
 
@@ -1361,6 +1389,11 @@ tipo_cambio_dolar_diario <- function(indicador = NULL, metadata = FALSE){
     setNames(c("date", "compra", "venta")) %>%
     type.convert(as.is = T)
 }
+
+
+#' @rdname tipo_cambio_dolar_diario
+#' @export
+tipo_cambio_usd_dop_diario <- function(...) tipo_cambio_dolar_diario(...)
 
 
 #' Tipo de cambio dólar mensual
@@ -1412,6 +1445,10 @@ tipo_cambio_dolar_mensual <- function(indicador = NULL, metadata = FALSE){
 }
 
 
+#' @rdname tipo_cambio_dolar_mensual
+#' @export
+tipo_cambio_usd_dop_mensual <- function(...) tipo_cambio_dolar_mensual(...)
+
 #' Tipo de cambio dólar trimestral
 #'
 #'  \lifecycle{experimental}
@@ -1449,16 +1486,23 @@ tipo_cambio_dolar_trim <- function(indicador = NULL, metadata = FALSE){
   if (!file.exists(file)) {
     file <- downloader(indicador)
   }
-  readxl::read_excel(file, sheet = "PromTrimestral", skip = 2) %>%
+  tbl <- readxl::read_excel(file, sheet = "PromTrimestral", skip = 2) %>%
     dplyr::mutate(tipo = "Promedio trimestral") %>%
     dplyr::bind_rows(
       readxl::read_excel(file, sheet = "FPTrimestral", skip = 2) %>%
         dplyr::mutate(tipo = "Final de período trimestral")
-    ) %>%
+    )
+
+  tbl %>%
     Dmisc::vars_to_date(year = 1, quarter = 2) %>%
     setNames(c("date", "compra", "venta", "tipo")) %>%
     type.convert(as.is = T)
 }
+
+
+#' @rdname tipo_cambio_dolar_trim
+#' @export
+tipo_cambio_usd_dop_trim <- function(...) tipo_cambio_dolar_trim(...)
 
 
 #' Tipo de cambio dólar anual
@@ -1507,6 +1551,11 @@ tipo_cambio_dolar_anual <- function(indicador = NULL, metadata = FALSE){
     setNames(c("ano", "compra", "venta", "tipo")) %>%
     type.convert(as.is = T)
 }
+
+
+#' @rdname tipo_cambio_dolar_anual
+#' @export
+tipo_cambio_usd_dop_anual <- function(...) tipo_cambio_dolar_anual(...)
 
 
 

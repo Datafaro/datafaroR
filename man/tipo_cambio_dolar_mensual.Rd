@@ -2,9 +2,12 @@
 % Please edit documentation in R/Banco Central Republica Dominicana.R
 \name{tipo_cambio_dolar_mensual}
 \alias{tipo_cambio_dolar_mensual}
+\alias{tipo_cambio_usd_dop_mensual}
 \title{Tipo de cambio dólar mensual}
 \usage{
 tipo_cambio_dolar_mensual(indicador = NULL, metadata = FALSE)
+
+tipo_cambio_usd_dop_mensual(...)
 }
 \arguments{
 \item{indicador}{Vea \code{\link{downloader}}}

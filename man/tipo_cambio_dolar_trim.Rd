@@ -2,9 +2,12 @@
 % Please edit documentation in R/Banco Central Republica Dominicana.R
 \name{tipo_cambio_dolar_trim}
 \alias{tipo_cambio_dolar_trim}
+\alias{tipo_cambio_usd_dop_trim}
 \title{Tipo de cambio dólar trimestral}
 \usage{
 tipo_cambio_dolar_trim(indicador = NULL, metadata = FALSE)
+
+tipo_cambio_usd_dop_trim(...)
 }
 \arguments{
 \item{indicador}{Vea \code{\link{downloader}}}
