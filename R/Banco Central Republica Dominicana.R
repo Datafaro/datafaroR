@@ -1648,6 +1648,7 @@ balanza_pagos_trim <- function(indicador = NULL, metadata = FALSE){
   }
   file <- "/mnt/c/Users/drdsd/Downloads/bpagos__trim_6.xls"
   if (!file.exists(file)) {
+    print("Downloading...")
     file <- downloader(indicador)
   }
   bpa <- readxl::read_excel(file, col_names = F) %>%
@@ -1684,7 +1685,31 @@ balanza_pagos_trim <- function(indicador = NULL, metadata = FALSE){
     bpan %>%
       dplyr::left_join(bpaa) %>%
       setNames(c("orden", "nivel", "conceptos", "date", "valor", "valor_acumulado")) %>%
-      type.convert(as.is = T)
+      type.convert(as.is = T) %>%
+      dplyr::left_join(
+        readr::read_csv(url("http://159.203.111.74/app/datos/pib-gasto-trim/d?out=csv&t=24d6e719-e8fc-421e-942c-95b59f170879")) %>%
+          type.convert(as.is = T) %>%
+          dplyr::filter(componente == "Producto Interno Bruto") %>%
+          dplyr::select(date, pib, pib_acumulado)
+        ) %>%
+      dplyr::left_join(
+        readr::read_csv(url("http://159.203.111.74/app/datos/tipo-cambio-usd-dop-trim/d?out=csv&t=24d6e719-e8fc-421e-942c-95b59f170879")) %>%
+          type.convert(as.is = T)
+      )%>%
+      dplyr::mutate(
+        valor__ppib = valor/pib*100,
+        valor_acumulado__ppib = valor_acumulado/pib_acumulado*100
+      ) %>%
+      dplyr::select(-pib, -pib_acumulado) %>%
+      dplyr::group_by(conceptos) %>%
+      dplyr::arrange(conceptos, date) %>%
+      dplyr::mutate(
+        valor__tc = (valor/dplyr::lag(valor)-1)*100,
+        valor__tca = (valor/dplyr::lag(valor, 4)-1)*100,
+        valor_acumulado__tca = (valor_acumulado/dplyr::lag(valor_acumulado, 4)-1)*100
+      ) %>%
+      dplyr::ungroup() %>%
+      dplyr::arrange(orden, nivel)
 }
 
 

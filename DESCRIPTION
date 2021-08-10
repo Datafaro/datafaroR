@@ -1,6 +1,6 @@
 Package: domar
 Title: Dominican Admnistrative Registries
-Version: 0.12.3
+Version: 0.13.0
 Authors@R: c( 
     person(given = "Daniel E.",
            family = "de la Rosa",
@@ -8,7 +8,7 @@ Authors@R: c(
            email = "drdsdaniel@gmail.com"),
     person(
            family = 'GCPareto',
-           role = 'aut'
+           role = 'cph'
            )
            )
 Maintainer@R: Daniel E. de la Rosa <drdsdaniel@gmail.com>
