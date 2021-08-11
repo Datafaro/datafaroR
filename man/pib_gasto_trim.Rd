@@ -17,9 +17,6 @@ pib_gasto_trim(indicador = NULL, metadata = FALSE)
 \description{
 \lifecycle{experimental}
 }
-\details{
-Max. filas cambian: 18
-}
 \examples{
 \dontrun{
 pib_gasto_trim()

@@ -6,7 +6,6 @@
 #'
 #'   \lifecycle{experimental}
 #'
-#'   Max. filas cambian: 18
 #'
 #' @param indicador Vea \code{\link{downloader}}
 #' @param metadata indica si se retornan los datos o la metadata del indicador
@@ -22,22 +21,27 @@
 pib_gasto_trim <- function(indicador = NULL, metadata = FALSE){
   if(metadata){
     return(
-      tibble::tribble(
-        ~col, ~name, ~unit, ~dtype,
-        "orden", "Orden de los componentes", "", "int",
-        "nivel", "Nivel de los componentes", "", "int",
-        "componente", "Componente", "", "text",
-        "date", "Fecha", "Trimestres", "qdate",
-        "pib", "Valor del PIB", "Millones de RD$", "f1",
-        "ponderacion", "Ponderación por componente", "Porcentaje (%)", "f2",
-        "pib_acumulado", "PIB acumulado", "Millones de RD$", "f1",
-        "ponderacion_acumulada", "Ponderación por componente (PIB acumulado)", "Porcentaje (%)", "f2",
-        "ive_pib", "Índice de Valores Encadenados (IVE) del PIB", "Índice (2007=100)", "f1",
-        "tc_pib", "Tasa de crecimiento PIB", "Porcentaje (%)", "f1",
-        "incidencia", "Incidencia por componente del PIB", "", "f1",
-        "ive_acumulado", "Índice de Valores Encadenados (IVE) - PIB Acumulado", "Índice (2007=100)", "f1",
-        "tc_pib_acumulado", "Tasa de crecimiento - PIB Acumulado", "Porcentaje (%)", "f1",
-        "incidencia_acumulada", "Incidencia por componente del PIB Acumulado", "", "f1"
+      list(
+        "kvars" = c("orden", "nivel", "componente", "date"),
+        "max_changes" = 18,
+        "var_info" =
+          tibble::tribble(
+            ~col, ~name, ~unit, ~dtype,
+            "orden", "Orden de los componentes", "", "int",
+            "nivel", "Nivel de los componentes", "", "int",
+            "componente", "Componente", "", "text",
+            "date", "Fecha", "Trimestres", "qdate",
+            "pib", "Valor del PIB", "Millones de RD$", "f1",
+            "ponderacion", "Ponderación por componente", "Porcentaje (%)", "f2",
+            "pib_acumulado", "PIB acumulado", "Millones de RD$", "f1",
+            "ponderacion_acumulada", "Ponderación por componente (PIB acumulado)", "Porcentaje (%)", "f2",
+            "ive_pib", "Índice de Valores Encadenados (IVE) del PIB", "Índice (2007=100)", "f1",
+            "tc_pib", "Tasa de crecimiento PIB", "Porcentaje (%)", "f1",
+            "incidencia", "Incidencia por componente del PIB", "", "f1",
+            "ive_acumulado", "Índice de Valores Encadenados (IVE) - PIB Acumulado", "Índice (2007=100)", "f1",
+            "tc_pib_acumulado", "Tasa de crecimiento - PIB Acumulado", "Porcentaje (%)", "f1",
+            "incidencia_acumulada", "Incidencia por componente del PIB Acumulado", "", "f1"
+          )
       )
     )
   }
@@ -1690,12 +1694,8 @@ balanza_pagos_trim <- function(indicador = NULL, metadata = FALSE){
         readr::read_csv(url("http://159.203.111.74/app/datos/pib-gasto-trim/d?out=csv&t=24d6e719-e8fc-421e-942c-95b59f170879")) %>%
           type.convert(as.is = T) %>%
           dplyr::filter(componente == "Producto Interno Bruto") %>%
-          dplyr::select(date, pib, pib_acumulado)
+          dplyr::select(date, pib_usd, pib_acumulado_usd)
         ) %>%
-      dplyr::left_join(
-        readr::read_csv(url("http://159.203.111.74/app/datos/tipo-cambio-usd-dop-trim/d?out=csv&t=24d6e719-e8fc-421e-942c-95b59f170879")) %>%
-          type.convert(as.is = T)
-      )%>%
       dplyr::mutate(
         valor__ppib = valor/pib*100,
         valor_acumulado__ppib = valor_acumulado/pib_acumulado*100
