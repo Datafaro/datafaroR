@@ -19,11 +19,18 @@
 #' pib_gasto_trim()
 #' }
 pib_gasto_trim <- function(indicador = NULL, metadata = FALSE){
+  if(is.null(indicador)){
+    indicador <- c(
+      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-real/documents/pib_gasto_2007.xls",
+      file_ext = "xls",
+      max_changes = 18
+    )
+  }
   if(metadata){
     return(
       list(
         "kvars" = c("orden", "nivel", "componente", "date"),
-        "max_changes" = 18,
+        "max_changes" = indicador$max_changes,
         "var_info" =
           tibble::tribble(
             ~col, ~name, ~unit, ~dtype,
@@ -43,13 +50,6 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE){
             "incidencia_acumulada", "Incidencia por componente del PIB Acumulado", "", "f1"
           )
       )
-    )
-  }
-  if(is.null(indicador)){
-    indicador <- c(
-      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-real/documents/pib_gasto_2007.xls",
-      file_ext = "xls",
-      max_changes = 18
     )
   }
   `...2` <- NULL
@@ -105,7 +105,7 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE){
   pib2 <- as.data.frame(pib2)
   names(pib2) <- pib2[1,]
   pib2 <- pib2[-1,]
-  pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "ponderacion")
+  pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "pib__ponderacion")
 
   pib <- dplyr::left_join(pib, pib2)
 
@@ -160,7 +160,7 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE){
   pib2 <- as.data.frame(pib2)
   names(pib2) <- pib2[1,]
   pib2 <- pib2[-1,]
-  pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "ponderacion_acumulada")
+  pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "pib_acumulado__ponderacion")
 
   pib <- dplyr::left_join(pib, pib2)
 
@@ -189,7 +189,7 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE){
   pib2 <- as.data.frame(pib2)
   names(pib2) <- pib2[1,]
   pib2 <- pib2[-1,]
-  pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "ive_pib")
+  pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "pib__ive")
 
   pib <- dplyr::left_join(pib, pib2)
 
@@ -218,7 +218,7 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE){
   pib2 <- as.data.frame(pib2)
   names(pib2) <- pib2[1,]
   pib2 <- pib2[-1,]
-  pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "tc_pib")
+  pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "pib__tci")
 
   pib <- dplyr::left_join(pib, pib2)
 
@@ -246,7 +246,7 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE){
   pib2 <- as.data.frame(pib2)
   names(pib2) <- pib2[1,]
   pib2 <- pib2[-1,]
-  pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "incidencia")
+  pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "pib__incidencia")
 
   pib <- dplyr::left_join(pib, pib2)
 
@@ -276,7 +276,7 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE){
   pib2 <- as.data.frame(pib2)
   names(pib2) <- pib2[1,]
   pib2 <- pib2[-1,]
-  pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "ive_acumulado")
+  pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "pib_acumulado__ive")
 
   pib <- dplyr::left_join(pib, pib2)
 
@@ -305,7 +305,7 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE){
   pib2 <- as.data.frame(pib2)
   names(pib2) <- pib2[1,]
   pib2 <- pib2[-1,]
-  pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "tc_pib_acumulado")
+  pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "pib_acumulado__tci")
 
   pib <- dplyr::left_join(pib, pib2)
 
@@ -333,19 +333,34 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE){
   pib2 <- as.data.frame(pib2)
   names(pib2) <- pib2[1,]
   pib2 <- pib2[-1,]
-  pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "incidencia_acumulada")
+  pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "pib_acumulado__incidencia")
 
   pib <- dplyr::left_join(pib, pib2)
 
   pib$date <- lubridate::ceiling_date(as.Date(tsibble::yearquarter(pib$date)), unit = "quarter")
   pib$date <- lubridate::add_with_rollback(pib$date, lubridate::days(-1))
 
-  unlink(pibFile)
 
   pib %>%
     dplyr::left_join(domar::nvl_pib_gasto) %>%
     dplyr::relocate(c(orden, nivel)) %>%
-    type.convert(as.is = T)
+    type.convert(as.is = T) %>%
+    dplyr::left_join(
+      download_domar("tipo-cambio-usd-dop-trim") |>
+        dplyr::filter(stringr::str_detect(tipo, "Promedio")) |>
+        dplyr::select(date, tipo_cambio = compra)
+    ) %>%
+    dplyr::mutate(
+      pib__usd = pib/tipo_cambio,
+      year = lubridate::year(date)
+    ) %>%
+    dplyr::group_by(year) %>%
+    dplyr::mutate(
+      tipo_cambio_acum = dplyr::cummean(tipo_cambio),
+      pib_acumulado__usd = pib_acumulado/tipo_cambio_acum
+    ) %>%
+    dplyr::ungroup() %>%
+    dplyr::select(-c(year, dplyr::starts_with("tipo_camb")))
 }
 
 
@@ -1452,6 +1467,7 @@ tipo_cambio_dolar_mensual <- function(indicador = NULL, metadata = FALSE){
 #' @rdname tipo_cambio_dolar_mensual
 #' @export
 tipo_cambio_usd_dop_mensual <- function(...) tipo_cambio_dolar_mensual(...)
+
 
 #' Tipo de cambio dólar trimestral
 #'
