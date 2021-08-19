@@ -100,3 +100,10 @@ from_python <- function(keys, values, data = NULL, metadata = FALSE){
 #' @importFrom magrittr %>%
 #' @usage lhs \%>\% rhs
 NULL
+
+
+download_domar <- function(id){
+  id = stringr::str_replace_all(id, "_", "-")
+  readr::read_csv(url(glue::glue("{info$domar_url}/app/datos/{id}/d?out=csv&t={info$token}"))) %>%
+    type.convert(as.is = T)
+}
