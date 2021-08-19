@@ -1485,21 +1485,27 @@ tipo_cambio_usd_dop_mensual <- function(...) tipo_cambio_dolar_mensual(...)
 #'   tipo_cambio_dolar_trim()
 #' }
 tipo_cambio_dolar_trim <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
-    return(
-      tibble::tribble(
-        ~col, ~name, ~unit, ~dtype,
-        "date", "Fecha", "Trimestral", "qdate",
-        "compra", "Precio de compra", "RD$/US$", "f2",
-        "venta", "Precio de venta", "RD$/US$", "f2",
-        "tipo", "Tipo de indicador", "", "text"
-      )
-    )
-  }
   if(is.null(indicador)){
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/mercado-cambiario/documents/TASA_DOLAR_REFERENCIA_MC.xls",
-      file_ext = "xls"
+      file_ext = "xls",
+      max_changes = 4
+    )
+  }
+  if(metadata){
+    return(
+      list(
+        "kvars" = c("date", "tipo"),
+        "max_changes" = indicador$max_changes,
+        "var_info" =
+          tibble::tribble(
+            ~col, ~name, ~unit, ~dtype,
+            "date", "Fecha", "Trimestral", "qdate",
+            "compra", "Precio de compra", "RD$/US$", "f2",
+            "venta", "Precio de venta", "RD$/US$", "f2",
+            "tipo", "Tipo de indicador", "", "text"
+          )
+      )
     )
   }
   file <- "/mnt/c/Users/drdsd/Downloads/TASA_DOLAR_REFERENCIA_MC.xls"
