@@ -28,29 +28,24 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE){
   }
   if(metadata){
     return(
-      list(
-        "kvars" = c("orden", "nivel", "componente", "date"),
-        "max_changes" = indicador$max_changes,
-        "var_info" =
           tibble::tribble(
-            ~col, ~name, ~unit, ~dtype,
-            "orden", "Orden de los componentes", "", "int",
-            "nivel", "Nivel de los componentes", "", "int",
-            "componente", "Componente", "", "text",
-            "date", "Fecha", "Trimestres", "qdate",
-            "pib", "Valor del PIB", "Millones de RD$", "f1",
-            "ponderacion", "Ponderación por componente", "Porcentaje (%)", "f2",
-            "pib_acumulado", "PIB acumulado", "Millones de RD$", "f1",
-            "ponderacion_acumulada", "Ponderación por componente (PIB acumulado)", "Porcentaje (%)", "f2",
-            "ive_pib", "Índice de Valores Encadenados (IVE) del PIB", "Índice (2007=100)", "f1",
-            "tc_pib", "Tasa de crecimiento PIB", "Porcentaje (%)", "f1",
-            "incidencia", "Incidencia por componente del PIB", "", "f1",
-            "ive_acumulado", "Índice de Valores Encadenados (IVE) - PIB Acumulado", "Índice (2007=100)", "f1",
-            "tc_pib_acumulado", "Tasa de crecimiento - PIB Acumulado", "Porcentaje (%)", "f1",
-            "incidencia_acumulada", "Incidencia por componente del PIB Acumulado", "", "f1"
+            ~col, ~name, ~unit, ~dtype, ~key,
+            "orden", "Orden de los componentes", "", "int", 1,
+            "nivel", "Nivel de los componentes", "", "int", 1,
+            "componente", "Componente", "", "text", 1,
+            "date", "Fecha", "Trimestres", "qdate", 1,
+            "pib", "Valor del PIB", "Millones de RD$", "f1", 0,
+            "ponderacion", "Ponderación por componente", "Porcentaje (%)", "f2", 0,
+            "pib_acumulado", "PIB acumulado", "Millones de RD$", "f1", 0,
+            "ponderacion_acumulada", "Ponderación por componente (PIB acumulado)", "Porcentaje (%)", "f2", 0,
+            "ive_pib", "Índice de Valores Encadenados (IVE) del PIB", "Índice (2007=100)", "f1", 0,
+            "tc_pib", "Tasa de crecimiento PIB", "Porcentaje (%)", "f1", 0,
+            "incidencia", "Incidencia por componente del PIB", "", "f1", 0,
+            "ive_acumulado", "Índice de Valores Encadenados (IVE) - PIB Acumulado", "Índice (2007=100)", "f1", 0,
+            "tc_pib_acumulado", "Tasa de crecimiento - PIB Acumulado", "Porcentaje (%)", "f1", 0,
+            "incidencia_acumulada", "Incidencia por componente del PIB Acumulado", "", "f1", 0
           )
       )
-    )
   }
   `...2` <- NULL
   V1 <- NULL
@@ -915,25 +910,25 @@ pib_deflactor_anual <- function(indicador = NULL){
 #'   imae_mensual(indicador)
 #' }
 imae_mensual <- function(indicador = NULL, metadata = FALSE) {
-  if(metadata){
-    return(
-      tibble::tribble(
-        ~col, ~name, ~unit, ~dtype,
-        "date", "Fecha", "Mensual", "mdate",
-        "indice", "Índice Mensual de Actividad Económica (IMAE)", "Índice", "f1",
-        "serie", "Serie", "", "text",
-        "variacion_interanual", "Variación (%) interanual", "Porcentaje (%)", "f1",
-        "variacion_acumulada", "Variación (%) acumulada", "Porcentaje (%)", "f1",
-        "variacion_promedio_12_meses", "Variación (%) promedio 12 meses", "Porcentaje (%)", "f1",
-        "variacion_periodo_anterior", "Variación (%) periodo anterior", "Porcentaje (%)", "f1"
-      )
-    )
-  }
   if(is.null(indicador)){
     indicador = c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-real/documents/imae.xlsx",
       file_ext = "xlsx",
       max_changes = 9
+    )
+  }
+  if(metadata){
+    return(
+      tibble::tribble(
+        ~col, ~name, ~unit, ~dtype, ~key,
+        "date", "Fecha", "Mensual", "mdate", 1
+        "indice", "Índice Mensual de Actividad Económica (IMAE)", "Índice", "f1", 0,
+        "serie", "Serie", "", "text", 1,
+        "variacion_interanual", "Variación (%) interanual", "Porcentaje (%)", "f1", 0,
+        "variacion_acumulada", "Variación (%) acumulada", "Porcentaje (%)", "f1", 0,
+        "variacion_promedio_12_meses", "Variación (%) promedio 12 meses", "Porcentaje (%)", "f1", 0,
+        "variacion_periodo_anterior", "Variación (%) periodo anterior", "Porcentaje (%)", "f1", 0
+      )
     )
   }
   ano <- NULL
