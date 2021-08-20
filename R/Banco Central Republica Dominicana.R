@@ -34,16 +34,16 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE){
             "nivel", "Nivel de los componentes", "", "int", 1,
             "componente", "Componente", "", "text", 1,
             "date", "Fecha", "Trimestres", "qdate", 1,
-            "pib", "Valor del PIB", "Millones de RD$", "f1", 0,
-            "ponderacion", "Ponderación por componente", "Porcentaje (%)", "f2", 0,
+            "pib", "PIB", "Millones de RD$", "f1", 0,
+            "pib__ponderacion", "Ponderación por componente", "Porcentaje (%)", "f2", 0,
             "pib_acumulado", "PIB acumulado", "Millones de RD$", "f1", 0,
-            "ponderacion_acumulada", "Ponderación por componente (PIB acumulado)", "Porcentaje (%)", "f2", 0,
-            "ive_pib", "Índice de Valores Encadenados (IVE) del PIB", "Índice (2007=100)", "f1", 0,
-            "tc_pib", "Tasa de crecimiento PIB", "Porcentaje (%)", "f1", 0,
-            "incidencia", "Incidencia por componente del PIB", "", "f1", 0,
-            "ive_acumulado", "Índice de Valores Encadenados (IVE) - PIB Acumulado", "Índice (2007=100)", "f1", 0,
-            "tc_pib_acumulado", "Tasa de crecimiento - PIB Acumulado", "Porcentaje (%)", "f1", 0,
-            "incidencia_acumulada", "Incidencia por componente del PIB Acumulado", "", "f1", 0
+            "pib_acumulado__ponderacion", "Ponderación por componente (PIB acumulado)", "Porcentaje (%)", "f2", 0,
+            "pib__ive", "Índice de Valores Encadenados (IVE) del PIB", "Índice (2007=100)", "f1", 0,
+            "pib__tci", "Tasa de crecimiento PIB", "Porcentaje (%)", "f1", 0,
+            "pib__incidencia", "Incidencia por componente del PIB", "", "f1", 0,
+            "pib_acumulado__ive", "Índice de Valores Encadenados (IVE) - PIB Acumulado", "Índice (2007=100)", "f1", 0,
+            "pib_acumulado__tci", "Tasa de crecimiento - PIB Acumulado", "Porcentaje (%)", "f1", 0,
+            "pib_acumulado__incidencia", "Incidencia por componente del PIB Acumulado", "", "f1", 0
           )
       )
   }
@@ -427,21 +427,21 @@ pib_origen_trim <- function(indicador = NULL, metadata = FALSE){
   if(metadata){
     return(
       tibble::tribble(
-        ~col, ~name, ~unit, ~dtype,
-        "orden", "Orden de las ramas", "", "int",
-        "nivel", "Nivel de las ramas", "", "int",
-        "rae", "Rama de Actividad Económica", "", "text",
-        "date", "Fecha", "Trimestral", "qdate",
-        "valor_agregado", "Valor agregado de la rama", "Millones de RD$", "f1",
-        "ponderacion", "Ponderación por rama", "Razón", "f3",
-        "va_acumulado", "Valor agregado acumulado", "Millones de RD$", "f1",
-        "ponderacion_acum", "Ponderación acumulada", "Razón", "f3",
-        "ive", "Índice de Volumen Encadenados (IVE)", "Índice", "f1",
-        "tasa_crecimiento", "Tasa de crecimiento", "Porcentaje (%)", "f1",
-        "incidencia", "Incidencia", "", "f1",
-        "ive_acum", "Índice de Valores Encadenados (IVE) acumulado", "Índice", "f1",
-        "tasa_crecimiento_acum", "Tasa de crecimiento acumulada", "Porcentaje (%)", "f1",
-        "incidencia_acum", "Incidencia acumulada", "", "f1"
+        ~col, ~name, ~unit, ~dtype, ~key,
+        "orden", "Orden de las ramas", "", "int", 1,
+        "nivel", "Nivel de las ramas", "", "int", 1,
+        "rae", "Rama de Actividad Económica", "", "text", 1,
+        "date", "Fecha", "Trimestral", "qdate", 1,
+        "valor_agregado", "Valor agregado de la rama", "Millones de RD$", "f1", 0,
+        "ponderacion", "Ponderación por rama", "Razón", "f3", 0,
+        "va_acumulado", "Valor agregado acumulado", "Millones de RD$", "f1", 0,
+        "ponderacion_acum", "Ponderación acumulada", "Razón", "f3", 0,
+        "ive", "Índice de Volumen Encadenados (IVE)", "Índice", "f1", 0,
+        "tasa_crecimiento", "Tasa de crecimiento", "Porcentaje (%)", "f1", 0,
+        "incidencia", "Incidencia", "", "f1", 0,
+        "ive_acum", "Índice de Valores Encadenados (IVE) acumulado", "Índice", "f1", 0,
+        "tasa_crecimiento_acum", "Tasa de crecimiento acumulada", "Porcentaje (%)", "f1", 0,
+        "incidencia_acum", "Incidencia acumulada", "", "f1", 0
       )
     )
   }
@@ -469,7 +469,7 @@ pib_origen_trim <- function(indicador = NULL, metadata = FALSE){
     tidyr::fill(V1) %>%
     janitor::row_to_names(1) %>%
     Dmisc::vars_to_date(year = 1, quarter = 2) %>%
-    tidyr::pivot_longer(-date, names_to = "rae", values_to = "valor_agregado")
+    tidyr::pivot_longer(-date, names_to = "rae", values_to = "pib")
 
   # Ponderacion
   pva <- readxl::read_excel(file, sheet = "PIB$_Trim", skip = 42, col_names = F) %>%
@@ -483,7 +483,7 @@ pib_origen_trim <- function(indicador = NULL, metadata = FALSE){
     tidyr::fill(V1) %>%
     janitor::row_to_names(1) %>%
     Dmisc::vars_to_date(year = 1, quarter = 2) %>%
-    tidyr::pivot_longer(-date, names_to = "rae", values_to = "ponderacion")
+    tidyr::pivot_longer(-date, names_to = "rae", values_to = "pib__ponderacion")
 
   # Valor agregado acumulado
   vaa <- readxl::read_excel(file, sheet = "PIB$_Trim_Acum", skip = 6, col_names = F) %>%
@@ -497,7 +497,7 @@ pib_origen_trim <- function(indicador = NULL, metadata = FALSE){
     tidyr::fill(V1) %>%
     janitor::row_to_names(1) %>%
     Dmisc::vars_to_date(1, 2) %>%
-    tidyr::pivot_longer(-date, names_to = "rae", values_to = "va_acumulado")
+    tidyr::pivot_longer(-date, names_to = "rae", values_to = "pib_acumulado")
 
   # Valor agregado acumulado
   pvaa <- readxl::read_excel(file, sheet = "PIB$_Trim_Acum", skip = 42, col_names = F) %>%
@@ -511,7 +511,7 @@ pib_origen_trim <- function(indicador = NULL, metadata = FALSE){
     tidyr::fill(V1) %>%
     janitor::row_to_names(1) %>%
     Dmisc::vars_to_date(1, 2) %>%
-    tidyr::pivot_longer(-date, names_to = "rae", values_to = "ponderacion_acum")
+    tidyr::pivot_longer(-date, names_to = "rae", values_to = "pib_acumulado__ponderacion")
 
   # Indice de valores encadenados (IVE)
   ive <- readxl::read_excel(file, sheet = "PIBK_Trim", skip = 6, col_names = F) %>%
@@ -525,7 +525,7 @@ pib_origen_trim <- function(indicador = NULL, metadata = FALSE){
     tidyr::fill(V1) %>%
     janitor::row_to_names(1) %>%
     Dmisc::vars_to_date(1, 2) %>%
-    tidyr::pivot_longer(-date, names_to = "rae", values_to = "ive")
+    tidyr::pivot_longer(-date, names_to = "rae", values_to = "pib__ive")
 
   # Tasa de crecimiento
   tc <- readxl::read_excel(file, sheet = "PIBK_Trim", skip = 42, col_names = F) %>%
@@ -539,7 +539,7 @@ pib_origen_trim <- function(indicador = NULL, metadata = FALSE){
     tidyr::fill(V1) %>%
     janitor::row_to_names(1) %>%
     Dmisc::vars_to_date(1, 2) %>%
-    tidyr::pivot_longer(-date, names_to = "rae", values_to = "tasa_crecimiento")
+    tidyr::pivot_longer(-date, names_to = "rae", values_to = "pib__tci")
 
   # Incidencia
   iva <- readxl::read_excel(file, sheet = "PIBK_Trim", skip = 78, col_names = F) %>%
@@ -553,7 +553,7 @@ pib_origen_trim <- function(indicador = NULL, metadata = FALSE){
     tidyr::fill(V1) %>%
     janitor::row_to_names(1) %>%
     Dmisc::vars_to_date(1, 2) %>%
-    tidyr::pivot_longer(-date, names_to = "rae", values_to = "incidencia")
+    tidyr::pivot_longer(-date, names_to = "rae", values_to = "pib__incidencia")
 
   # Indice de valores encadenados (IVE) acumulado
   ivea <- readxl::read_excel(file, sheet = "PIBK_Trim_Acum", skip = 6, col_names = F) %>%
@@ -567,7 +567,7 @@ pib_origen_trim <- function(indicador = NULL, metadata = FALSE){
     tidyr::fill(V1) %>%
     janitor::row_to_names(1) %>%
     Dmisc::vars_to_date(1, 2) %>%
-    tidyr::pivot_longer(-date, names_to = "rae", values_to = "ive_acum")
+    tidyr::pivot_longer(-date, names_to = "rae", values_to = "pib_acumulado__ive")
 
   # Tasa de crecimiento
   tca <- readxl::read_excel(file, sheet = "PIBK_Trim_Acum", skip = 42, col_names = F) %>%
@@ -581,7 +581,7 @@ pib_origen_trim <- function(indicador = NULL, metadata = FALSE){
     tidyr::fill(V1) %>%
     janitor::row_to_names(1) %>%
     Dmisc::vars_to_date(1, 2) %>%
-    tidyr::pivot_longer(-date, names_to = "rae", values_to = "tasa_crecimiento_acum")
+    tidyr::pivot_longer(-date, names_to = "rae", values_to = "pib_acumulado__tci")
 
   # Incidencia
   ivaa <- readxl::read_excel(file, sheet = "PIBK_Trim_Acum", skip = 78, col_names = F) %>%
@@ -595,7 +595,7 @@ pib_origen_trim <- function(indicador = NULL, metadata = FALSE){
     tidyr::fill(V1) %>%
     janitor::row_to_names(1) %>%
     Dmisc::vars_to_date(1, 2) %>%
-    tidyr::pivot_longer(-date, names_to = "rae", values_to = "incidencia_acum")
+    tidyr::pivot_longer(-date, names_to = "rae", values_to = "pib_acumulado__incidencia")
 
   #unlink(file)
 
