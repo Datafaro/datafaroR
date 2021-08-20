@@ -921,7 +921,7 @@ imae_mensual <- function(indicador = NULL, metadata = FALSE) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype, ~key,
-        "date", "Fecha", "Mensual", "mdate", 1
+        "date", "Fecha", "Mensual", "mdate", 1,
         "indice", "Índice Mensual de Actividad Económica (IMAE)", "Índice", "f1", 0,
         "serie", "Serie", "", "text", 1,
         "variacion_interanual", "Variación (%) interanual", "Porcentaje (%)", "f1", 0,
