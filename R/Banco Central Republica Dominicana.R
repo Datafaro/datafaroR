@@ -467,7 +467,11 @@ pib_origen_trim <- function(indicador = NULL, metadata = FALSE){
       V1 = stringr::str_remove_all(V1, stringr::regex("[^0-9]"))
     ) %>%
     tidyr::fill(V1) %>%
-    janitor::row_to_names(1) %>%
+    janitor::row_to_names(1)
+
+  names(va)[1:2] <- c("year", "quarter")
+
+  va <- va%>%
     Dmisc::vars_to_date(year = 1, quarter = 2) %>%
     tidyr::pivot_longer(-date, names_to = "rae", values_to = "pib")
 
@@ -481,7 +485,11 @@ pib_origen_trim <- function(indicador = NULL, metadata = FALSE){
       V1 = stringr::str_remove_all(V1, stringr::regex("[^0-9]"))
     ) %>%
     tidyr::fill(V1) %>%
-    janitor::row_to_names(1) %>%
+    janitor::row_to_names(1)
+
+  names(pva)[1:2] <- c("year", "quarter")
+
+  pva <- pva %>%
     Dmisc::vars_to_date(year = 1, quarter = 2) %>%
     tidyr::pivot_longer(-date, names_to = "rae", values_to = "pib__ponderacion")
 
@@ -495,8 +503,12 @@ pib_origen_trim <- function(indicador = NULL, metadata = FALSE){
       V1 = stringr::str_remove_all(V1, stringr::regex("[^0-9]"))
     ) %>%
     tidyr::fill(V1) %>%
-    janitor::row_to_names(1) %>%
-    Dmisc::vars_to_date(1, 2) %>%
+    janitor::row_to_names(1)
+
+  names(vaa)[1:2] <- c("year", "quarter")
+
+  vaa <- vaa  %>%
+    Dmisc::vars_to_date(year = 1, quarter = 2) %>%
     tidyr::pivot_longer(-date, names_to = "rae", values_to = "pib_acumulado")
 
   # Valor agregado acumulado
@@ -509,8 +521,12 @@ pib_origen_trim <- function(indicador = NULL, metadata = FALSE){
       V1 = stringr::str_remove_all(V1, stringr::regex("[^0-9]"))
     ) %>%
     tidyr::fill(V1) %>%
-    janitor::row_to_names(1) %>%
-    Dmisc::vars_to_date(1, 2) %>%
+    janitor::row_to_names(1)
+
+  names(pvaa)[1:2] <- c("year", "quarter")
+
+  pvaa <- pvaa   %>%
+    Dmisc::vars_to_date(year = 1, quarter = 2) %>%
     tidyr::pivot_longer(-date, names_to = "rae", values_to = "pib_acumulado__ponderacion")
 
   # Indice de valores encadenados (IVE)
@@ -523,8 +539,12 @@ pib_origen_trim <- function(indicador = NULL, metadata = FALSE){
       V1 = stringr::str_remove_all(V1, stringr::regex("[^0-9]"))
     ) %>%
     tidyr::fill(V1) %>%
-    janitor::row_to_names(1) %>%
-    Dmisc::vars_to_date(1, 2) %>%
+    janitor::row_to_names(1)
+
+  names(ive)[1:2] <- c("year", "quarter")
+
+  ive <- ive   %>%
+    Dmisc::vars_to_date(year = 1, quarter = 2) %>%
     tidyr::pivot_longer(-date, names_to = "rae", values_to = "pib__ive")
 
   # Tasa de crecimiento
@@ -537,8 +557,12 @@ pib_origen_trim <- function(indicador = NULL, metadata = FALSE){
       V1 = stringr::str_remove_all(V1, stringr::regex("[^0-9]"))
     ) %>%
     tidyr::fill(V1) %>%
-    janitor::row_to_names(1) %>%
-    Dmisc::vars_to_date(1, 2) %>%
+    janitor::row_to_names(1)
+
+  names(tc)[1:2] <- c("year", "quarter")
+
+  tc <- tc   %>%
+    Dmisc::vars_to_date(year = 1, quarter = 2) %>%
     tidyr::pivot_longer(-date, names_to = "rae", values_to = "pib__tci")
 
   # Incidencia
@@ -551,8 +575,12 @@ pib_origen_trim <- function(indicador = NULL, metadata = FALSE){
       V1 = stringr::str_remove_all(V1, stringr::regex("[^0-9]"))
     ) %>%
     tidyr::fill(V1) %>%
-    janitor::row_to_names(1) %>%
-    Dmisc::vars_to_date(1, 2) %>%
+    janitor::row_to_names(1)
+
+  names(iva)[1:2] <- c("year", "quarter")
+
+  iva <- iva   %>%
+    Dmisc::vars_to_date(year = 1, quarter = 2) %>%
     tidyr::pivot_longer(-date, names_to = "rae", values_to = "pib__incidencia")
 
   # Indice de valores encadenados (IVE) acumulado
@@ -565,8 +593,12 @@ pib_origen_trim <- function(indicador = NULL, metadata = FALSE){
       V1 = stringr::str_remove_all(V1, stringr::regex("[^0-9]"))
     ) %>%
     tidyr::fill(V1) %>%
-    janitor::row_to_names(1) %>%
-    Dmisc::vars_to_date(1, 2) %>%
+    janitor::row_to_names(1)
+
+  names(ivea)[1:2] <- c("year", "quarter")
+
+  ivea <- ivea   %>%
+    Dmisc::vars_to_date(year = 1, quarter = 2) %>%
     tidyr::pivot_longer(-date, names_to = "rae", values_to = "pib_acumulado__ive")
 
   # Tasa de crecimiento
@@ -579,8 +611,12 @@ pib_origen_trim <- function(indicador = NULL, metadata = FALSE){
       V1 = stringr::str_remove_all(V1, stringr::regex("[^0-9]"))
     ) %>%
     tidyr::fill(V1) %>%
-    janitor::row_to_names(1) %>%
-    Dmisc::vars_to_date(1, 2) %>%
+    janitor::row_to_names(1)
+
+  names(tca)[1:2] <- c("year", "quarter")
+
+  tca <- tca   %>%
+    Dmisc::vars_to_date(year = 1, quarter = 2) %>%
     tidyr::pivot_longer(-date, names_to = "rae", values_to = "pib_acumulado__tci")
 
   # Incidencia
@@ -593,8 +629,12 @@ pib_origen_trim <- function(indicador = NULL, metadata = FALSE){
       V1 = stringr::str_remove_all(V1, stringr::regex("[^0-9]"))
     ) %>%
     tidyr::fill(V1) %>%
-    janitor::row_to_names(1) %>%
-    Dmisc::vars_to_date(1, 2) %>%
+    janitor::row_to_names(1)
+
+  names(ivaa)[1:2] <- c("year", "quarter")
+
+  ivaa <- ivaa   %>%
+    Dmisc::vars_to_date(year = 1, quarter = 2) %>%
     tidyr::pivot_longer(-date, names_to = "rae", values_to = "pib_acumulado__incidencia")
 
   #unlink(file)
