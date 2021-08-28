@@ -1,5 +1,5 @@
 nvl_estado_operaciones_spnf <- tibble::tribble(
-  ~orden, ~estado,
+  ~orden, ~operacion,
   "1", "GOBIERNO CENTRAL PRESUPUESTARIO2",
   "1.1", "Transacciones que afectan al patrimonio neto:",
   "1.1.1", "Ingreso",

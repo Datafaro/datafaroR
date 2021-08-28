@@ -927,9 +927,9 @@ estado_operaciones_spnf <- function(indicador = NULL, metadata = FALSE){
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype, ~key,
-        "orden", "Orden de los componentes", "", "int", 1,
-        "nivel", "Nivel de los componentes", "", "int", 1,
-        "estado", "Componente", "", "text", 1,
+        "orden", "Orden de las operaciones", "", "int", 1,
+        "nivel", "Nivel de las operaciones", "", "int", 1,
+        "operacion", "Operación", "", "text", 1,
         "date", "Fecha", "Meses", "mdate", 1,
         "valor", "Valor", "Millones de RD$", "f1", 0
       )
@@ -966,13 +966,13 @@ estado_operaciones_spnf <- function(indicador = NULL, metadata = FALSE){
     t() %>%
     as.data.frame()
 
-  datos[1,1] <- "estado"
+  datos[1,1] <- "operacion"
 
   datos %>%
     janitor::row_to_names(1) %>%
-    dplyr::bind_cols(nvl_estado_operaciones_spnf %>% dplyr::select(-estado))%>%
+    dplyr::bind_cols(nvl_estado_operaciones_spnf %>% dplyr::select(-operacion))%>%
     dplyr::relocate(orden, nivel) %>%
-    tidyr::pivot_longer(-c(orden, nivel, estado), names_to = "date", values_to = "valor") %>%
+    tidyr::pivot_longer(-c(orden, nivel, operacion), names_to = "date", values_to = "valor") %>%
     type.convert(as.is = TRUE)
 }
 
