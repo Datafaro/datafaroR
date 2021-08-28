@@ -919,7 +919,20 @@ estado_operaciones_spnf <- function(indicador = NULL, metadata = FALSE){
   if(is.null(indicador)){
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/documents/Operaciones_Mensual.xlsx",
-      file_ext = "xlsx"
+      file_ext = "xlsx",
+      max_changes = 108*55
+    )
+  }
+  if(metadata){
+    return(
+      tibble::tribble(
+        ~col, ~name, ~unit, ~dtype, ~key,
+        "orden", "Orden de los componentes", "", "int", 1,
+        "nivel", "Nivel de los componentes", "", "int", 1,
+        "estado", "Componente", "", "text", 1,
+        "date", "Fecha", "Meses", "mdate", 1,
+        "valor", "Valor", "Millones de RD$", "f1", 0
+      )
     )
   }
   file <- "/mnt/c/Users/drdsd/Downloads/Operaciones_Mensual.xlsx"
