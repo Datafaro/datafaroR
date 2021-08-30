@@ -2394,7 +2394,7 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE){
 #' \dontrun{
 #' pib_gasto_anual()
 #' }
-pib_gasto_anual <- function(data = NULL, metadata = FALSE){
+pib_gasto_anual <- function(indicador = NULL, metadata = FALSE){
   if(metadata){
     return(
       tibble::tribble(
@@ -2410,12 +2410,9 @@ pib_gasto_anual <- function(data = NULL, metadata = FALSE){
         "pib__incidencia", "Incidencia por componente del PIB", "", "f1", 0
       )
     )
-  } else if(is.null(data)){
-    datos <- pib_gasto_trim()
-  } else {
-    datos <- data
   }
-  datos %>%
+
+  download_domar("pib-gasto-trim") %>%
     dplyr::select(1:4, dplyr::contains("acum")) %>%
     dplyr::filter(lubridate::month(date) == 12) %>%
     setNames(c("orden", "nivel", "componente", "ano", "pib", "pib__ponderacion", "pib__ive", "pib__tci", "pib__incidencia")) %>%
