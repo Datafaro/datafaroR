@@ -111,7 +111,7 @@ nvl_estado_operaciones_spnf <- tibble::tribble(
 )
 
 
-nvl_estado_operaciones_spnf <- nivelador(nvl_estado_operaciones_spnf)
+nvl_estado_operaciones_spnf <- domar:::nivelador(nvl_estado_operaciones_spnf)
 
 
 usethis::use_data(nvl_estado_operaciones_spnf, overwrite = TRUE)

@@ -1524,8 +1524,12 @@ indicadores_bcrd <- function(indicador = NULL, metadata = FALSE){
   datos %>%
     janitor::row_to_names(1) %>%
     dplyr::bind_cols(nvl_indicadores_bcrd %>% dplyr::select(-indicador)) %>%
+    dplyr::relocate(orden, nivel) %>%
     tidyr::pivot_longer(-c(orden, nivel, indicador), names_to = "date", values_to = "valor", values_transform = list(valor = as.numeric)) %>%
-    type.convert(as.is = TRUE)
+    type.convert(as.is = TRUE) %>%
+    dplyr::group_by(indicador) %>%
+    dplyr::mutate(valor__tci = (valor/dplyr::lag(valor, 12)-1)*100) %>%
+    dplyr::ungroup()
 }
 
 

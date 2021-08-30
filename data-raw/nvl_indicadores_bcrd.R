@@ -46,7 +46,7 @@ nvl_indicadores_bcrd <- tibble::tribble(
 )
 
 
-nvl_indicadores_bcrd <- nivelador(nvl_indicadores_bcrd)
+nvl_indicadores_bcrd <- domar:::nivelador(nvl_indicadores_bcrd)
 
 
 usethis::use_data(nvl_indicadores_bcrd, overwrite = TRUE)
