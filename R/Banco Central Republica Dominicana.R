@@ -68,11 +68,11 @@ tipo_cambio_dolar_mensual <- function(indicador = NULL, metadata = FALSE){
   if(metadata){
     return(
       tibble::tribble(
-        ~col, ~name, ~unit, ~dtype,
-        "date", "Fecha", "Mensual", "mdate",
-        "compra", "Precio de compra", "RD$/US$", "f2",
-        "venta", "Precio de venta", "RD$/US$", "f2",
-        "tipo", "Tipo de indicador", "", "text"
+        ~col, ~name, ~unit, ~dtype, ~key,
+        "date", "Fecha", "Mensual", "mdate", 1,
+        "compra", "Precio de compra", "RD$/US$", "f2", 0,
+        "venta", "Precio de venta", "RD$/US$", "f2", 0,
+        "tipo", "Tipo de indicador", "", "text", 1
       )
     )
   }
@@ -1937,7 +1937,7 @@ panorama_sf <- function(indicador = NULL, metadata = FALSE){
 
 
 
-#' Tasas de interás activas nominales mensuales 2017-current - Banco Múltiples
+#' Tasas de interés activas nominales mensuales 2017-current - Banco Múltiples
 #'
 #'  \lifecycle{experimental}
 #'
