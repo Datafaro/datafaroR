@@ -982,398 +982,11 @@ estado_operaciones_spnf <- function(indicador = NULL, metadata = FALSE){
 # Sector monetario y financiero ----
 
 
-## Panoramas ----
+## Base Monetaria y Agregados Monetarios ----
 
 
-#' Panorama Banco Central
-#'
-#'  \lifecycle{experimental}
-#'
-#' @param indicador Vea \code{\link{downloader}}
-#' @param metadata indica si se retornan los datos o la metadata del indicador
-#'
-#' @return [data.frame]: los datos del indicador en forma tabular
-#'
-#' @export
-#'
-#' @examples
-#' \dontrun{
-#'   panorama_bc()
-#' }
-panorama_bc <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
-    return(
-      tibble::tribble(
-        ~col, ~name, ~unit, ~dtype,
-        "date", "Fecha", "Mensual", "mdate",
-        "aen_pfnr_cp", "Activos externos netos (AEN) 2/ - Activos frente a no residentes - Activos de reserva oficial - (1)", "", "f1",
-        "aen_afnr_otros", "Activos externos netos (AEN) 2/ - Activos frente a no residentes - Otros - (2)", "", "f1",
-        "aen_pfnr_cp", "Activos externos netos (AEN) 2/ - Pasivos frente a no residentes - C.P. - (3)", "", "f1",
-        "aen_afnr_lp", "Activos externos netos (AEN) 2/ - Pasivos frente a no residentes - L.P. - (4)", "", "f1",
-        "aen_rin", "Activos externos netos (AEN) 2/ - Reservas internacionales netas - ('(4A)=1-3)", "", "f1",
-        "aen_total", "Activos externos netos (AEN) 2/ - Total - ('(5)=(1+2)- (3+4))", "", "f1",
-        "activos_internos_gc", "Activos internos (AI) - Gobierno central (neto) - (6)", "", "f1",
-        "activos_internos_spf", "Activos internos (AI) - Sociedades públicas no financieras - (7)", "", "f1",
-        "activos_internos_osd", "Activos internos (AI) - Otras sociedades de depósito - (8)", "", "f1",
-        "activos_internos_os", "Activos internos (AI) - Otros sectores - (9)", "", "f1",
-        "activos_internos_op", "Activos internos (AI) - Otras partidas (neto) 3/ - (10)", "", "f1",
-        "activos_internos_totales", "Activos internos (AI) - Total - (11)", "", "f1",
-        "base_monetaria", "Base Monetaria - (AEN+AI=BM)  - ((12) = (5)+(11)= (13+14))", "", "f1",
-        "bm_ampliada_bmc", "Base monetaria amplia 4/- Billetes y monedas en circulación - (13)", "", "f1",
-        "bm_ampliada_dvop", "Base monetaria amplia 4/- Depósitos, valores y otros pasivos - (14)", "", "f1",
-        "tipo_de_cambio_me", "Tipo de cambio para conversión de ME en el balance - (15)", "", "f1"
-      )
-    )
-  }
-  if(is.null(indicador)){
-    indicador <- c(
-      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/panorama_pbc.xls",
-      file_ext = "xls"
-    )
-  }
-  file <- "/mnt/c/Users/drdsd/Downloads/panorama_pbc.xls"
-  if (!file.exists(file)) {
-    file <- downloader(indicador)
-  }
-  pan <- readxl::read_excel(file, skip = 12, col_names = F) %>%
-    tidyr::drop_na(...6) %>%
-    Dmisc::vars_to_date(year = 1, month = 2) %>%
-    t()
-  rsms <- rowSums(type.convert(pan[-1,], as.is = T), na.rm = T) != 0
-  pan[c(TRUE, rsms),] %>%
-    t() %>%
-    as.data.frame() %>%
-    setNames(c("date", "aen_afnr_aro", "aen_afnr_otros", "aen_pfnr_cp", "aen_afnr_lp",
-               "aen_rin", "aen_total", "activos_internos_gc", "activos_internos_spf",
-               "activos_internos_osd", "activos_internos_os", "activos_internos_op",
-               "activos_internos_totales", "base_monetaria", "bm_ampliada_bmc",
-               "bm_ampliada_dvop", "tipo_de_cambio_me")) %>%
-    dplyr::select(1:17) %>%
-    type.convert(as.is=TRUE)
-}
 
 
-#' Panorama Otras Sociedades de Depósitos
-#'
-#'  \lifecycle{experimental}
-#'
-#' @param indicador Vea \code{\link{downloader}}
-#' @param metadata indica si se retornan los datos o la metadata del indicador
-#'
-#' @return [data.frame]: los datos del indicador en forma tabular
-#'
-#' @export
-#'
-#' @examples
-#' \dontrun{
-#'   panorama_posd()
-#' }
-panorama_posd <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
-    return(
-      tibble::tribble(
-        ~col, ~name, ~unit, ~dtype,
-        "date", "Fecha", "Mensual", "mdate",
-        "aen_afnr", "Activos externos netos (AEN) - Activos frente a no residentes (1)", "", "f1",
-        "aen_pfnr", "Activos externos netos (AEN) - Pasivos frente a no residentes (2)", "", "f1",
-        "aen_total", "Activos externos netos (AEN) - Total (3=1+2)", "", "f1",
-        "activos_internos_gc", "Activos internos  (AI) - Gobierno central (neto) (4)", "", "f1",
-        "activos_internos_gel", "Activos internos  (AI) - Gobierno estatal y local (5)", "", "f1",
-        "activos_internos_spnf", "Activos internos  (AI) - Sociedades públicas no financieras (6)", "", "f1",
-        "activos_internos_bc_bym", "Activos internos  (AI) - Banco central - Billetes y monedas (7)", "", "f1",
-        "activos_internos_bc_dep", "Activos internos  (AI) - Banco central - Depósitos (8)", "", "f1",
-        "activos_internos_bc_valores", "Activos internos  (AI) - Banco central - Valores (9)", "", "f1",
-        "activos_internos_osf", "Activos internos  (AI) - Otras sociedades financieras (10)", "", "f1",
-        "activos_internos_osnf", "Activos internos  (AI) - Otras sociedades no financieras (11)", "", "f1",
-        "activos_internos_hogares_isflsh", "Activos internos  (AI) - Hogares e ISFLSH (12)", "", "f1",
-        "activos_internos_op", "Activos internos  (AI) - Otras partidas (neto) 1/ (13)", "", "f1",
-        "activos_internos_total", "Activos internos  (AI) - Total (AI) (14= 4 a 13)", "", "f1",
-        "pdsa_total", "Pasivos incluidos en la definición de dinero en sentido amplio (PDSA) (15=3+14=16+17)", "", "f1",
-        "pdsa_depositos_transferibles", "PDSA - Depósitos transferibles (16)", "", "f1",
-        "pdsa_odv", "PDSA - Otros depósitos y valores (17)", "", "f1"
-      )
-    )
-  }
-  if(is.null(indicador)){
-    indicador <- c(
-      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/panorama_posd.xls",
-      file_ext = "xls"
-    )
-  }
-  file <- "/mnt/c/Users/drdsd/Downloads/panorama_posd.xls"
-  if (!file.exists(file)) {
-    file <- downloader(indicador)
-  }
-  readxl::read_excel(file, skip = 12, col_names = F) %>%
-    tidyr::drop_na(...6) %>%
-    Dmisc::vars_to_date(year = 1, month = 2) %>%
-    setNames(c("date", "aen_afnr", "aen_pfnr", "aen_total", "activos_internos_gc",
-               "activos_internos_gel", "activos_internos_spnf", "activos_internos_bc_bym",
-               "activos_internos_bc_dep", "activos_internos_bc_valores",
-               "activos_internos_osf", "activos_internos_osnf", "activos_internos_hogares_isflsh",
-               "activos_internos_op", "activos_internos_total", "pdsa_total",
-               "pdsa_depositos_transferibles", "pdsa_odv")) %>%
-    type.convert(as.is=T)
-}
-
-
-#' Panorama banco múltiples
-#'
-#'  \lifecycle{experimental}
-#'
-#' @param indicador Vea \code{\link{downloader}}
-#' @param metadata indica si se retornan los datos o la metadata del indicador
-#'
-#' @return [data.frame]: los datos del indicador en forma tabular
-#'
-#' @export
-#'
-#' @examples
-#' \dontrun{
-#'   panorama_bm()
-#' }
-panorama_bm <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
-    return(
-      tibble::tribble(
-        ~col, ~name, ~unit, ~dtype,
-        "date", "Fecha", "Mensual", "mdate",
-        "aen_afnr", "Activos externos netos (AEN) - Activos frente a no residentes (1)", "", "f1",
-        "aen_pfnr", "Activos externos netos (AEN) - Pasivos frente a no residentes (2)", "", "f1",
-        "aen_total", "Activos externos netos (AEN) - Total (3=1+2)", "", "f1",
-        "activos_internos_gc", "Activos internos  (AI) - Gobierno central (neto) (4)", "", "f1",
-        "activos_internos_gel", "Activos internos  (AI) - Gobierno estatal y local (5)", "", "f1",
-        "activos_internos_spnf", "Activos internos  (AI) - Sociedades públicas no financieras (6)", "", "f1",
-        "activos_internos_bc_bym", "Activos internos  (AI) - Banco central - Billetes y monedas (7)", "", "f1",
-        "activos_internos_bc_dep", "Activos internos  (AI) - Banco central - Depósitos (8)", "", "f1",
-        "activos_internos_bc_valores", "Activos internos  (AI) - Banco central - Valores (9)", "", "f1",
-        "activos_internos_osf", "Activos internos  (AI) - Otras sociedades financieras (10)", "", "f1",
-        "activos_internos_osnf", "Activos internos  (AI) - Otras sociedades no financieras (11)", "", "f1",
-        "activos_internos_hogares_isflsh", "Activos internos  (AI) - Hogares e ISFLSH (12)", "", "f1",
-        "activos_internos_op", "Activos internos  (AI) - Otras partidas (neto) 1/ (13)", "", "f1",
-        "activos_internos_total", "Activos internos  (AI) - Total (AI) (14= 4 a 13)", "", "f1",
-        "pdsa_total", "Pasivos incluidos en la definición de dinero en sentido amplio (PDSA) (15=3+14=16+17)", "", "f1",
-        "pdsa_depositos_transferibles", "PDSA - Depósitos transferibles (16)", "", "f1",
-        "pdsa_odv", "PDSA - Otros depósitos y valores (17)", "", "f1"
-      )
-    )
-  }
-  if(is.null(indicador)){
-    indicador <- c(
-      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/panorama_pbm.xls",
-      file_ext = "xls"
-    )
-  }
-  file <- "/mnt/c/Users/drdsd/Downloads/panorama_pbm.xls"
-  if (!file.exists(file)) {
-    file <- downloader(indicador)
-  }
-  readxl::read_excel(file, skip = 12, col_names = F) %>%
-    tidyr::drop_na(...6) %>%
-    Dmisc::vars_to_date(year = 1, month = 2) %>%
-    setNames(c("date", "aen_afnr", "aen_pfnr", "aen_total", "activos_internos_gc",
-               "activos_internos_gel", "activos_internos_spnf", "activos_internos_bc_bym",
-               "activos_internos_bc_dep", "activos_internos_bc_valores",
-               "activos_internos_osf", "activos_internos_osnf", "activos_internos_hogares_isflsh",
-               "activos_internos_op", "activos_internos_total", "pdsa_total",
-               "pdsa_depositos_transferibles", "pdsa_odv")) %>%
-    type.convert(as.is=T)
-}
-
-
-#' Panorama Sociedades de Depósitos
-#'
-#'  \lifecycle{experimental}
-#'
-#' @param indicador Vea \code{\link{downloader}}
-#' @param metadata indica si se retornan los datos o la metadata del indicador
-#'
-#' @return [data.frame]: los datos del indicador en forma tabular
-#'
-#' @export
-#'
-#' @examples
-#' \dontrun{
-#'   panorama_psd()
-#' }
-panorama_psd <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
-    return(
-      tibble::tribble(
-        ~col, ~name, ~unit, ~dtype,
-        "date", "Fecha", "Mensual", "mdate",
-        "aen_afnr", "Activos externos netos (AEN) - Activos frente a no residentes (1)", "", "f1",
-        "aen_pfnr", "Activos externos netos (AEN) - Pasivos frente a no residentes (2)", "", "f1",
-        "aen_total", "Activos externos netos (AEN) - Total (3=1+2)", "", "f1",
-        "activos_internos_gc", "Activos internos  (AI) - Gobierno central (neto) (4)", "", "f1",
-        "activos_internos_spnf", "Activos internos  (AI) - Sociedades públicas no financieras (5)", "", "f1",
-        "activos_internos_gel", "Activos internos  (AI) - Gobierno estatal y local (6)", "", "f1",
-        "activos_internos_osf", "Activos internos  (AI) - Otras sociedades financieras (7)", "", "f1",
-        "activos_internos_osnf", "Activos internos  (AI) - Otras sociedades no financieras (8)", "", "f1",
-        "activos_internos_hogares_isflsh", "Activos internos  (AI) - Hogares e ISFLSH (9)", "", "f1",
-        "activos_internos_op", "Activos internos  (AI) - Otras partidas (neto) 1/ (10)", "", "f1",
-        "activos_internos_total", "Activos internos  (AI) - Total (AI) (11 = 4 a 10)", "", "f1",
-        "dsa_total", "Dinero en sentido amplio (DSA) (12 = 3 + 11 + 13 al 18)", "", "f1",
-        "dsa_bmpp", "Dinero en sentido amplio (DSA) - Billetes y monedas en poder del público (13)", "", "f1",
-        "dsa_dt_mn", "Dinero en sentido amplio (DSA) - Depósitos transferibles - Moneda Nacional (14)", "", "f1",
-        "dsa_dt_me", "Dinero en sentido amplio (DSA) - Depósitos transferibles - Moneda Extranjera (15)", "", "f1",
-        "dsa_od_mn", "Dinero en sentido amplio (DSA) - Otros depósitos - Moneda Nacional (16)", "", "f1",
-        "dsa_od_me", "Dinero en sentido amplio (DSA) - Otros depósitos - Moneda Extranjera (17)", "", "f1",
-        "dsa_valores_mn", "Dinero en sentido amplio (DSA) - Valores - Moneda Nacional (18)", "", "f1",
-        "dsa_valores_me", "Dinero en sentido amplio (DSA) - Valores - Moneda Extranjera (19)", "", "f1"
-      )
-    )
-  }
-  if(is.null(indicador)){
-    indicador <- c(
-      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/panorama_psd.xls",
-      file_ext = "xls"
-    )
-  }
-  file <- "/mnt/c/Users/drdsd/Downloads/panorama_psd.xls"
-  if (!file.exists(file)) {
-    file <- downloader(indicador)
-  }
-  readxl::read_excel(file, skip = 12, col_names = F) %>%
-    tidyr::drop_na(...6) %>%
-    Dmisc::vars_to_date(year = 1, month = 2) %>%
-    setNames(c("date", "aen_afnr", "aen_pfnr", "aen_total", "activos_internos_gc",
-               "activos_internos_spnf", "activos_internos_gel", "activos_internos_osf",
-               "activos_internos_osnf", "activos_internos_hogares_isflsh",
-               "activos_internos_op", "activos_internos_total", "dsa_total",
-               "dsa_bmpp", "dsa_dt_mn", "dsa_dt_me", "dsa_od_mn", "dsa_od_me",
-               "dsa_valores_mn", "dsa_valores_me")) %>%
-    type.convert(as.is=TRUE)
-}
-
-
-#' Panorama otras sociedades financieras
-#'
-#'  \lifecycle{experimental}
-#'
-#' @param indicador Vea \code{\link{downloader}}
-#' @param metadata indica si se retornan los datos o la metadata del indicador
-#'
-#' @return [data.frame]: los datos del indicador en forma tabular
-#'
-#' @export
-#'
-#' @examples
-#' \dontrun{
-#'   panorama_osf()
-#' }
-panorama_osf <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
-    return(
-      tibble::tribble(
-        ~col, ~name, ~unit, ~dtype,
-        "date", "Fecha", "Mensual", "mdate",
-        "aen_afnr", "Activos externos netos (AEN) - Activos frente a no residentes (1)", "", "f1",
-        "aen_pfnr", "Activos externos netos (AEN) - Pasivos frente a no residentes (2)", "", "f1",
-        "aen_total", "Activos externos netos (AEN) - Total (3=1+2)", "", "f1",
-        "activos_internos_gc", "Activos internos  (AI) - Gobierno central (neto) (4)", "", "f1",
-        "activos_internos_gel", "Activos internos  (AI) - Gobierno estatal y local (5)", "", "f1",
-        "activos_internos_spnf", "Activos internos  (AI) - Sociedades públicas no financieras (6)", "", "f1",
-        "activos_internos_bc_bym", "Activos internos  (AI) - Banco central - Billetes y monedas (7)", "", "f1",
-        "activos_internos_bc_dep", "Activos internos  (AI) - Banco central - Depósitos y valores de encaje (8)", "", "f1",
-        "activos_internos_bc_otros", "Activos internos  (AI) - Banco central - Otros activos (9)", "", "f1",
-        "activos_internos_osd", "Activos internos  (AI) - Otras sociedades de depósitos (10)", "", "f1",
-        "activos_internos_snf", "Activos internos  (AI) - Sociedades no financieras (11)", "", "f1",
-        "activos_internos_hogares_isflsh", "Activos internos  (AI) - Hogares e ISFLSH (12)", "", "f1",
-        "activos_internos_op", "Activos internos  (AI) - Otras partidas (neto) 1/ (13)", "", "f1",
-        "activos_internos_total", "Activos internos  (AI) - Total (AI) (14= 4 a 13)", "", "f1",
-        "pasivos_total", "Pasivos (15=3+14=16+17)", "", "f1",
-        "pasivos_rts", "Pasivos - Reservas técnicas de seguros (16)", "", "f1",
-        "pasivos_oopr", "Pasivos - Otras obligaciones con el público residente (17)", "", "f1"
-      )
-    )
-  }
-  if(is.null(indicador)){
-    indicador <- c(
-      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/panorama_osf.xls",
-      file_ext = "xls"
-    )
-  }
-  file <- "/mnt/c/Users/drdsd/Downloads/panorama_osf.xls"
-  if (!file.exists(file)) {
-    file <- downloader(indicador)
-  }
-  readxl::read_excel(file, skip = 12, col_names = F) %>%
-    tidyr::drop_na(...6) %>%
-    Dmisc::vars_to_date(year = 1, month = 2) %>%
-    setNames(c("date", "aen_afnr", "aen_pfnr", "aen_total", "activos_internos_gc",
-               "activos_internos_gel", "activos_internos_spnf", "activos_internos_bc_bym",
-               "activos_internos_bc_dep", "activos_internos_bc_otros",
-               "activos_internos_osd", "activos_internos_snf", "activos_internos_hogares_isflsh",
-               "activos_internos_op", "activos_internos_total", "pasivos_total",
-               "pasivos_rts", "pasivos_oopr")) %>%
-    type.convert(as.is=T)
-}
-
-
-#' Panorama sociedades financieras
-#'
-#'  \lifecycle{experimental}
-#'
-#' @param indicador Vea \code{\link{downloader}}
-#' @param metadata indica si se retornan los datos o la metadata del indicador
-#'
-#' @return [data.frame]: los datos del indicador en forma tabular
-#'
-#' @export
-#'
-#' @examples
-#' \dontrun{
-#'   panorama_sf()
-#' }
-panorama_sf <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
-    return(
-      tibble::tribble(
-        ~col, ~name, ~unit, ~dtype,
-        "date", "Fecha", "Mensual", "mdate",
-        "aen_afnr", "Activos externos netos (AEN) - Activos frente a no residentes (1)", "", "f1",
-        "aen_pfnr", "Activos externos netos (AEN) - Pasivos frente a no residentes (2)", "", "f1",
-        "aen_total", "Activos externos netos (AEN) - Total (3=1-2)", "", "f1",
-        "activos_internos_gc", "Activos internos  (AI) - Gobierno central (neto) (4)", "", "f1",
-        "activos_internos_spnf", "Activos internos  (AI) - Sociedades públicas no financieras (5)", "", "f1",
-        "activos_internos_gel", "Activos internos  (AI) - Gobierno estatal y local (6)", "", "f1",
-        "activos_internos_snf", "Activos internos  (AI) - Sociedades no financieras (7)", "", "f1",
-        "activos_internos_hogares_isflsh", "Activos internos  (AI) - Hogares e ISFLSH (8)", "", "f1",
-        "activos_internos_op", "Activos internos  (AI) - Otras partidas (neto) 1/ (9)", "", "f1",
-        "activos_internos_total", "Activos internos  (AI) - Total (AI) (10 = 4 a 9)", "", "f1",
-        "pasivos_total", "Pasivos (11 = 3 + 10 = 12 al 18)", "", "f1",
-        "pasivos_bmpp", "Pasivos - Billetes y monedas en poder del público (12)", "", "f1",
-        "pasivos_dep_mn", "Pasivos - Depósitos - Moneda Nacional (13)", "", "f1",
-        "pasivos_dep_me", "Pasivos - Depósitos - Moneda Extranjera (14)", "", "f1",
-        "pasivos_valores_mn", "Pasivos - Valores - Moneda Nacional (15)", "", "f1",
-        "pasivos_valores_me", "Pasivos - Valores - Moneda Extranjera (16)", "", "f1",
-        "pasivos_rts", "Pasivos - Reservas técnicas de seguros (17)", "", "f1",
-        "pasivos_otros", "Pasivos - Otros Pasivos (18)", "", "f1"
-      )
-    )
-  }
-  if(is.null(indicador)){
-    indicador <- c(
-      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/panorama_sf.xls",
-      file_ext = "xls"
-    )
-  }
-  file <- "/mnt/c/Users/drdsd/Downloads/panorama_sf.xls"
-  if (!file.exists(file)) {
-    file <- downloader(indicador)
-  }
-  readxl::read_excel(file, skip = 12, col_names = F) %>%
-    tidyr::drop_na(...6) %>%
-    Dmisc::vars_to_date(year = 1, month = 2) %>%
-    setNames(c("date", "aen_afnr", "aen_pfnr", "aen_total", "activos_internos_gc",
-               "activos_internos_spnf", "activos_internos_gel", "activos_internos_snf",
-               "activos_internos_hogares_isflsh", "activos_internos_op",
-               "activos_internos_total", "pasivos_total", "pasivos_bmpp",
-               "pasivos_dep_mn", "pasivos_dep_me", "pasivos_valores_mn",
-               "pasivos_valores_me", "pasivos_rts", "pasivos_otros")) %>%
-    type.convert(as.is=TRUE)
-}
 
 
 
@@ -1852,9 +1465,464 @@ balance_isi_pasivos_me<- function(indicador = NULL, metadata = FALSE){
 }
 
 
-## Base Monetaria y Agregados Monetarios ----
+
+## Indicadores monetarios y financieros del Banco Central ----
 
 
+#'  Indicadores monetarios y armonizados del Banco Central
+#'
+#'  \lifecycle{experimental}
+#'
+#' @param indicador Vea \code{\link{downloader}}
+#' @param metadata indica si se retornan los datos o la metadata del indicador
+#'
+#' @return [data.frame]: los datos del indicador en forma tabular
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'   indicadores_bcrd()
+#' }
+indicadores_bcrd <- function(indicador = NULL, metadata = FALSE){
+  if(is.null(indicador)){
+    indicador <- c(
+      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/serie_indicadores_bcrd.xlsx",
+      file_ext = "xlsx",
+      max_changes = 108*55
+    )
+  }
+  if(metadata){
+    return(
+      tibble::tribble(
+        ~col, ~name, ~unit, ~dtype, ~key,
+        "orden", "Orden del indicador", "", "int", 1,
+        "nivel", "Nivel del indicador", "", "int", 1,
+        "indicador", "Indicador", "", "text", 1,
+        "date", "Fecha", "Meses", "mdate", 1,
+        "valor", "Valor", "Millones de RD$", "f1", 0
+      )
+    )
+  }
+  file <- "/mnt/c/Users/drdsd/Downloads/serie_indicadores_bcrd.xlsx"
+  if (!file.exists(file)) {
+    file <- downloader(indicador)
+  } else {
+    print("Local file...")
+  }
+  datos <- readxl::read_excel(file, skip = 4, col_names = F)
+  datos <- datos %>%
+    tidyr::drop_na(...1)
+  datos <- datos[1:(match("En millones RD$", datos$...1)-1),]
+  datos[1,1] <- "0"
+  t(datos) %>%
+    as.data.frame() %>%
+    Dmisc::vars_to_date(date = "V1") %>%
+    t() %>%
+    as.data.frame() -> datos
+  datos[1,1] <- "indicador"
+  datos %>%
+    janitor::row_to_names(1) %>%
+    dplyr::bind_cols(nvl_indicadores_bcrd %>% dplyr::select(-indicador)) %>%
+    tidyr::pivot_longer(-c(orden, nivel, indicador), names_to = "date", values_to = "valor", values_transform = list(valor = as.numeric)) %>%
+    type.convert(as.is = TRUE)
+}
+
+
+
+
+## Panoramas ----
+
+
+#' Panorama Banco Central
+#'
+#'  \lifecycle{experimental}
+#'
+#' @param indicador Vea \code{\link{downloader}}
+#' @param metadata indica si se retornan los datos o la metadata del indicador
+#'
+#' @return [data.frame]: los datos del indicador en forma tabular
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'   panorama_bc()
+#' }
+panorama_bc <- function(indicador = NULL, metadata = FALSE){
+  if(metadata){
+    return(
+      tibble::tribble(
+        ~col, ~name, ~unit, ~dtype,
+        "date", "Fecha", "Mensual", "mdate",
+        "aen_pfnr_cp", "Activos externos netos (AEN) 2/ - Activos frente a no residentes - Activos de reserva oficial - (1)", "", "f1",
+        "aen_afnr_otros", "Activos externos netos (AEN) 2/ - Activos frente a no residentes - Otros - (2)", "", "f1",
+        "aen_pfnr_cp", "Activos externos netos (AEN) 2/ - Pasivos frente a no residentes - C.P. - (3)", "", "f1",
+        "aen_afnr_lp", "Activos externos netos (AEN) 2/ - Pasivos frente a no residentes - L.P. - (4)", "", "f1",
+        "aen_rin", "Activos externos netos (AEN) 2/ - Reservas internacionales netas - ('(4A)=1-3)", "", "f1",
+        "aen_total", "Activos externos netos (AEN) 2/ - Total - ('(5)=(1+2)- (3+4))", "", "f1",
+        "activos_internos_gc", "Activos internos (AI) - Gobierno central (neto) - (6)", "", "f1",
+        "activos_internos_spf", "Activos internos (AI) - Sociedades públicas no financieras - (7)", "", "f1",
+        "activos_internos_osd", "Activos internos (AI) - Otras sociedades de depósito - (8)", "", "f1",
+        "activos_internos_os", "Activos internos (AI) - Otros sectores - (9)", "", "f1",
+        "activos_internos_op", "Activos internos (AI) - Otras partidas (neto) 3/ - (10)", "", "f1",
+        "activos_internos_totales", "Activos internos (AI) - Total - (11)", "", "f1",
+        "base_monetaria", "Base Monetaria - (AEN+AI=BM)  - ((12) = (5)+(11)= (13+14))", "", "f1",
+        "bm_ampliada_bmc", "Base monetaria amplia 4/- Billetes y monedas en circulación - (13)", "", "f1",
+        "bm_ampliada_dvop", "Base monetaria amplia 4/- Depósitos, valores y otros pasivos - (14)", "", "f1",
+        "tipo_de_cambio_me", "Tipo de cambio para conversión de ME en el balance - (15)", "", "f1"
+      )
+    )
+  }
+  if(is.null(indicador)){
+    indicador <- c(
+      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/panorama_pbc.xls",
+      file_ext = "xls"
+    )
+  }
+  file <- "/mnt/c/Users/drdsd/Downloads/panorama_pbc.xls"
+  if (!file.exists(file)) {
+    file <- downloader(indicador)
+  }
+  pan <- readxl::read_excel(file, skip = 12, col_names = F) %>%
+    tidyr::drop_na(...6) %>%
+    Dmisc::vars_to_date(year = 1, month = 2) %>%
+    t()
+  rsms <- rowSums(type.convert(pan[-1,], as.is = T), na.rm = T) != 0
+  pan[c(TRUE, rsms),] %>%
+    t() %>%
+    as.data.frame() %>%
+    setNames(c("date", "aen_afnr_aro", "aen_afnr_otros", "aen_pfnr_cp", "aen_afnr_lp",
+               "aen_rin", "aen_total", "activos_internos_gc", "activos_internos_spf",
+               "activos_internos_osd", "activos_internos_os", "activos_internos_op",
+               "activos_internos_totales", "base_monetaria", "bm_ampliada_bmc",
+               "bm_ampliada_dvop", "tipo_de_cambio_me")) %>%
+    dplyr::select(1:17) %>%
+    type.convert(as.is=TRUE)
+}
+
+
+#' Panorama Otras Sociedades de Depósitos
+#'
+#'  \lifecycle{experimental}
+#'
+#' @param indicador Vea \code{\link{downloader}}
+#' @param metadata indica si se retornan los datos o la metadata del indicador
+#'
+#' @return [data.frame]: los datos del indicador en forma tabular
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'   panorama_posd()
+#' }
+panorama_posd <- function(indicador = NULL, metadata = FALSE){
+  if(metadata){
+    return(
+      tibble::tribble(
+        ~col, ~name, ~unit, ~dtype,
+        "date", "Fecha", "Mensual", "mdate",
+        "aen_afnr", "Activos externos netos (AEN) - Activos frente a no residentes (1)", "", "f1",
+        "aen_pfnr", "Activos externos netos (AEN) - Pasivos frente a no residentes (2)", "", "f1",
+        "aen_total", "Activos externos netos (AEN) - Total (3=1+2)", "", "f1",
+        "activos_internos_gc", "Activos internos  (AI) - Gobierno central (neto) (4)", "", "f1",
+        "activos_internos_gel", "Activos internos  (AI) - Gobierno estatal y local (5)", "", "f1",
+        "activos_internos_spnf", "Activos internos  (AI) - Sociedades públicas no financieras (6)", "", "f1",
+        "activos_internos_bc_bym", "Activos internos  (AI) - Banco central - Billetes y monedas (7)", "", "f1",
+        "activos_internos_bc_dep", "Activos internos  (AI) - Banco central - Depósitos (8)", "", "f1",
+        "activos_internos_bc_valores", "Activos internos  (AI) - Banco central - Valores (9)", "", "f1",
+        "activos_internos_osf", "Activos internos  (AI) - Otras sociedades financieras (10)", "", "f1",
+        "activos_internos_osnf", "Activos internos  (AI) - Otras sociedades no financieras (11)", "", "f1",
+        "activos_internos_hogares_isflsh", "Activos internos  (AI) - Hogares e ISFLSH (12)", "", "f1",
+        "activos_internos_op", "Activos internos  (AI) - Otras partidas (neto) 1/ (13)", "", "f1",
+        "activos_internos_total", "Activos internos  (AI) - Total (AI) (14= 4 a 13)", "", "f1",
+        "pdsa_total", "Pasivos incluidos en la definición de dinero en sentido amplio (PDSA) (15=3+14=16+17)", "", "f1",
+        "pdsa_depositos_transferibles", "PDSA - Depósitos transferibles (16)", "", "f1",
+        "pdsa_odv", "PDSA - Otros depósitos y valores (17)", "", "f1"
+      )
+    )
+  }
+  if(is.null(indicador)){
+    indicador <- c(
+      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/panorama_posd.xls",
+      file_ext = "xls"
+    )
+  }
+  file <- "/mnt/c/Users/drdsd/Downloads/panorama_posd.xls"
+  if (!file.exists(file)) {
+    file <- downloader(indicador)
+  }
+  readxl::read_excel(file, skip = 12, col_names = F) %>%
+    tidyr::drop_na(...6) %>%
+    Dmisc::vars_to_date(year = 1, month = 2) %>%
+    setNames(c("date", "aen_afnr", "aen_pfnr", "aen_total", "activos_internos_gc",
+               "activos_internos_gel", "activos_internos_spnf", "activos_internos_bc_bym",
+               "activos_internos_bc_dep", "activos_internos_bc_valores",
+               "activos_internos_osf", "activos_internos_osnf", "activos_internos_hogares_isflsh",
+               "activos_internos_op", "activos_internos_total", "pdsa_total",
+               "pdsa_depositos_transferibles", "pdsa_odv")) %>%
+    type.convert(as.is=T)
+}
+
+
+#' Panorama banco múltiples
+#'
+#'  \lifecycle{experimental}
+#'
+#' @param indicador Vea \code{\link{downloader}}
+#' @param metadata indica si se retornan los datos o la metadata del indicador
+#'
+#' @return [data.frame]: los datos del indicador en forma tabular
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'   panorama_bm()
+#' }
+panorama_bm <- function(indicador = NULL, metadata = FALSE){
+  if(metadata){
+    return(
+      tibble::tribble(
+        ~col, ~name, ~unit, ~dtype,
+        "date", "Fecha", "Mensual", "mdate",
+        "aen_afnr", "Activos externos netos (AEN) - Activos frente a no residentes (1)", "", "f1",
+        "aen_pfnr", "Activos externos netos (AEN) - Pasivos frente a no residentes (2)", "", "f1",
+        "aen_total", "Activos externos netos (AEN) - Total (3=1+2)", "", "f1",
+        "activos_internos_gc", "Activos internos  (AI) - Gobierno central (neto) (4)", "", "f1",
+        "activos_internos_gel", "Activos internos  (AI) - Gobierno estatal y local (5)", "", "f1",
+        "activos_internos_spnf", "Activos internos  (AI) - Sociedades públicas no financieras (6)", "", "f1",
+        "activos_internos_bc_bym", "Activos internos  (AI) - Banco central - Billetes y monedas (7)", "", "f1",
+        "activos_internos_bc_dep", "Activos internos  (AI) - Banco central - Depósitos (8)", "", "f1",
+        "activos_internos_bc_valores", "Activos internos  (AI) - Banco central - Valores (9)", "", "f1",
+        "activos_internos_osf", "Activos internos  (AI) - Otras sociedades financieras (10)", "", "f1",
+        "activos_internos_osnf", "Activos internos  (AI) - Otras sociedades no financieras (11)", "", "f1",
+        "activos_internos_hogares_isflsh", "Activos internos  (AI) - Hogares e ISFLSH (12)", "", "f1",
+        "activos_internos_op", "Activos internos  (AI) - Otras partidas (neto) 1/ (13)", "", "f1",
+        "activos_internos_total", "Activos internos  (AI) - Total (AI) (14= 4 a 13)", "", "f1",
+        "pdsa_total", "Pasivos incluidos en la definición de dinero en sentido amplio (PDSA) (15=3+14=16+17)", "", "f1",
+        "pdsa_depositos_transferibles", "PDSA - Depósitos transferibles (16)", "", "f1",
+        "pdsa_odv", "PDSA - Otros depósitos y valores (17)", "", "f1"
+      )
+    )
+  }
+  if(is.null(indicador)){
+    indicador <- c(
+      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/panorama_pbm.xls",
+      file_ext = "xls"
+    )
+  }
+  file <- "/mnt/c/Users/drdsd/Downloads/panorama_pbm.xls"
+  if (!file.exists(file)) {
+    file <- downloader(indicador)
+  }
+  readxl::read_excel(file, skip = 12, col_names = F) %>%
+    tidyr::drop_na(...6) %>%
+    Dmisc::vars_to_date(year = 1, month = 2) %>%
+    setNames(c("date", "aen_afnr", "aen_pfnr", "aen_total", "activos_internos_gc",
+               "activos_internos_gel", "activos_internos_spnf", "activos_internos_bc_bym",
+               "activos_internos_bc_dep", "activos_internos_bc_valores",
+               "activos_internos_osf", "activos_internos_osnf", "activos_internos_hogares_isflsh",
+               "activos_internos_op", "activos_internos_total", "pdsa_total",
+               "pdsa_depositos_transferibles", "pdsa_odv")) %>%
+    type.convert(as.is=T)
+}
+
+
+#' Panorama Sociedades de Depósitos
+#'
+#'  \lifecycle{experimental}
+#'
+#' @param indicador Vea \code{\link{downloader}}
+#' @param metadata indica si se retornan los datos o la metadata del indicador
+#'
+#' @return [data.frame]: los datos del indicador en forma tabular
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'   panorama_psd()
+#' }
+panorama_psd <- function(indicador = NULL, metadata = FALSE){
+  if(metadata){
+    return(
+      tibble::tribble(
+        ~col, ~name, ~unit, ~dtype,
+        "date", "Fecha", "Mensual", "mdate",
+        "aen_afnr", "Activos externos netos (AEN) - Activos frente a no residentes (1)", "", "f1",
+        "aen_pfnr", "Activos externos netos (AEN) - Pasivos frente a no residentes (2)", "", "f1",
+        "aen_total", "Activos externos netos (AEN) - Total (3=1+2)", "", "f1",
+        "activos_internos_gc", "Activos internos  (AI) - Gobierno central (neto) (4)", "", "f1",
+        "activos_internos_spnf", "Activos internos  (AI) - Sociedades públicas no financieras (5)", "", "f1",
+        "activos_internos_gel", "Activos internos  (AI) - Gobierno estatal y local (6)", "", "f1",
+        "activos_internos_osf", "Activos internos  (AI) - Otras sociedades financieras (7)", "", "f1",
+        "activos_internos_osnf", "Activos internos  (AI) - Otras sociedades no financieras (8)", "", "f1",
+        "activos_internos_hogares_isflsh", "Activos internos  (AI) - Hogares e ISFLSH (9)", "", "f1",
+        "activos_internos_op", "Activos internos  (AI) - Otras partidas (neto) 1/ (10)", "", "f1",
+        "activos_internos_total", "Activos internos  (AI) - Total (AI) (11 = 4 a 10)", "", "f1",
+        "dsa_total", "Dinero en sentido amplio (DSA) (12 = 3 + 11 + 13 al 18)", "", "f1",
+        "dsa_bmpp", "Dinero en sentido amplio (DSA) - Billetes y monedas en poder del público (13)", "", "f1",
+        "dsa_dt_mn", "Dinero en sentido amplio (DSA) - Depósitos transferibles - Moneda Nacional (14)", "", "f1",
+        "dsa_dt_me", "Dinero en sentido amplio (DSA) - Depósitos transferibles - Moneda Extranjera (15)", "", "f1",
+        "dsa_od_mn", "Dinero en sentido amplio (DSA) - Otros depósitos - Moneda Nacional (16)", "", "f1",
+        "dsa_od_me", "Dinero en sentido amplio (DSA) - Otros depósitos - Moneda Extranjera (17)", "", "f1",
+        "dsa_valores_mn", "Dinero en sentido amplio (DSA) - Valores - Moneda Nacional (18)", "", "f1",
+        "dsa_valores_me", "Dinero en sentido amplio (DSA) - Valores - Moneda Extranjera (19)", "", "f1"
+      )
+    )
+  }
+  if(is.null(indicador)){
+    indicador <- c(
+      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/panorama_psd.xls",
+      file_ext = "xls"
+    )
+  }
+  file <- "/mnt/c/Users/drdsd/Downloads/panorama_psd.xls"
+  if (!file.exists(file)) {
+    file <- downloader(indicador)
+  }
+  readxl::read_excel(file, skip = 12, col_names = F) %>%
+    tidyr::drop_na(...6) %>%
+    Dmisc::vars_to_date(year = 1, month = 2) %>%
+    setNames(c("date", "aen_afnr", "aen_pfnr", "aen_total", "activos_internos_gc",
+               "activos_internos_spnf", "activos_internos_gel", "activos_internos_osf",
+               "activos_internos_osnf", "activos_internos_hogares_isflsh",
+               "activos_internos_op", "activos_internos_total", "dsa_total",
+               "dsa_bmpp", "dsa_dt_mn", "dsa_dt_me", "dsa_od_mn", "dsa_od_me",
+               "dsa_valores_mn", "dsa_valores_me")) %>%
+    type.convert(as.is=TRUE)
+}
+
+
+#' Panorama otras sociedades financieras
+#'
+#'  \lifecycle{experimental}
+#'
+#' @param indicador Vea \code{\link{downloader}}
+#' @param metadata indica si se retornan los datos o la metadata del indicador
+#'
+#' @return [data.frame]: los datos del indicador en forma tabular
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'   panorama_osf()
+#' }
+panorama_osf <- function(indicador = NULL, metadata = FALSE){
+  if(metadata){
+    return(
+      tibble::tribble(
+        ~col, ~name, ~unit, ~dtype,
+        "date", "Fecha", "Mensual", "mdate",
+        "aen_afnr", "Activos externos netos (AEN) - Activos frente a no residentes (1)", "", "f1",
+        "aen_pfnr", "Activos externos netos (AEN) - Pasivos frente a no residentes (2)", "", "f1",
+        "aen_total", "Activos externos netos (AEN) - Total (3=1+2)", "", "f1",
+        "activos_internos_gc", "Activos internos  (AI) - Gobierno central (neto) (4)", "", "f1",
+        "activos_internos_gel", "Activos internos  (AI) - Gobierno estatal y local (5)", "", "f1",
+        "activos_internos_spnf", "Activos internos  (AI) - Sociedades públicas no financieras (6)", "", "f1",
+        "activos_internos_bc_bym", "Activos internos  (AI) - Banco central - Billetes y monedas (7)", "", "f1",
+        "activos_internos_bc_dep", "Activos internos  (AI) - Banco central - Depósitos y valores de encaje (8)", "", "f1",
+        "activos_internos_bc_otros", "Activos internos  (AI) - Banco central - Otros activos (9)", "", "f1",
+        "activos_internos_osd", "Activos internos  (AI) - Otras sociedades de depósitos (10)", "", "f1",
+        "activos_internos_snf", "Activos internos  (AI) - Sociedades no financieras (11)", "", "f1",
+        "activos_internos_hogares_isflsh", "Activos internos  (AI) - Hogares e ISFLSH (12)", "", "f1",
+        "activos_internos_op", "Activos internos  (AI) - Otras partidas (neto) 1/ (13)", "", "f1",
+        "activos_internos_total", "Activos internos  (AI) - Total (AI) (14= 4 a 13)", "", "f1",
+        "pasivos_total", "Pasivos (15=3+14=16+17)", "", "f1",
+        "pasivos_rts", "Pasivos - Reservas técnicas de seguros (16)", "", "f1",
+        "pasivos_oopr", "Pasivos - Otras obligaciones con el público residente (17)", "", "f1"
+      )
+    )
+  }
+  if(is.null(indicador)){
+    indicador <- c(
+      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/panorama_osf.xls",
+      file_ext = "xls"
+    )
+  }
+  file <- "/mnt/c/Users/drdsd/Downloads/panorama_osf.xls"
+  if (!file.exists(file)) {
+    file <- downloader(indicador)
+  }
+  readxl::read_excel(file, skip = 12, col_names = F) %>%
+    tidyr::drop_na(...6) %>%
+    Dmisc::vars_to_date(year = 1, month = 2) %>%
+    setNames(c("date", "aen_afnr", "aen_pfnr", "aen_total", "activos_internos_gc",
+               "activos_internos_gel", "activos_internos_spnf", "activos_internos_bc_bym",
+               "activos_internos_bc_dep", "activos_internos_bc_otros",
+               "activos_internos_osd", "activos_internos_snf", "activos_internos_hogares_isflsh",
+               "activos_internos_op", "activos_internos_total", "pasivos_total",
+               "pasivos_rts", "pasivos_oopr")) %>%
+    type.convert(as.is=T)
+}
+
+
+#' Panorama sociedades financieras
+#'
+#'  \lifecycle{experimental}
+#'
+#' @param indicador Vea \code{\link{downloader}}
+#' @param metadata indica si se retornan los datos o la metadata del indicador
+#'
+#' @return [data.frame]: los datos del indicador en forma tabular
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'   panorama_sf()
+#' }
+panorama_sf <- function(indicador = NULL, metadata = FALSE){
+  if(metadata){
+    return(
+      tibble::tribble(
+        ~col, ~name, ~unit, ~dtype,
+        "date", "Fecha", "Mensual", "mdate",
+        "aen_afnr", "Activos externos netos (AEN) - Activos frente a no residentes (1)", "", "f1",
+        "aen_pfnr", "Activos externos netos (AEN) - Pasivos frente a no residentes (2)", "", "f1",
+        "aen_total", "Activos externos netos (AEN) - Total (3=1-2)", "", "f1",
+        "activos_internos_gc", "Activos internos  (AI) - Gobierno central (neto) (4)", "", "f1",
+        "activos_internos_spnf", "Activos internos  (AI) - Sociedades públicas no financieras (5)", "", "f1",
+        "activos_internos_gel", "Activos internos  (AI) - Gobierno estatal y local (6)", "", "f1",
+        "activos_internos_snf", "Activos internos  (AI) - Sociedades no financieras (7)", "", "f1",
+        "activos_internos_hogares_isflsh", "Activos internos  (AI) - Hogares e ISFLSH (8)", "", "f1",
+        "activos_internos_op", "Activos internos  (AI) - Otras partidas (neto) 1/ (9)", "", "f1",
+        "activos_internos_total", "Activos internos  (AI) - Total (AI) (10 = 4 a 9)", "", "f1",
+        "pasivos_total", "Pasivos (11 = 3 + 10 = 12 al 18)", "", "f1",
+        "pasivos_bmpp", "Pasivos - Billetes y monedas en poder del público (12)", "", "f1",
+        "pasivos_dep_mn", "Pasivos - Depósitos - Moneda Nacional (13)", "", "f1",
+        "pasivos_dep_me", "Pasivos - Depósitos - Moneda Extranjera (14)", "", "f1",
+        "pasivos_valores_mn", "Pasivos - Valores - Moneda Nacional (15)", "", "f1",
+        "pasivos_valores_me", "Pasivos - Valores - Moneda Extranjera (16)", "", "f1",
+        "pasivos_rts", "Pasivos - Reservas técnicas de seguros (17)", "", "f1",
+        "pasivos_otros", "Pasivos - Otros Pasivos (18)", "", "f1"
+      )
+    )
+  }
+  if(is.null(indicador)){
+    indicador <- c(
+      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/panorama_sf.xls",
+      file_ext = "xls"
+    )
+  }
+  file <- "/mnt/c/Users/drdsd/Downloads/panorama_sf.xls"
+  if (!file.exists(file)) {
+    file <- downloader(indicador)
+  }
+  readxl::read_excel(file, skip = 12, col_names = F) %>%
+    tidyr::drop_na(...6) %>%
+    Dmisc::vars_to_date(year = 1, month = 2) %>%
+    setNames(c("date", "aen_afnr", "aen_pfnr", "aen_total", "activos_internos_gc",
+               "activos_internos_spnf", "activos_internos_gel", "activos_internos_snf",
+               "activos_internos_hogares_isflsh", "activos_internos_op",
+               "activos_internos_total", "pasivos_total", "pasivos_bmpp",
+               "pasivos_dep_mn", "pasivos_dep_me", "pasivos_valores_mn",
+               "pasivos_valores_me", "pasivos_rts", "pasivos_otros")) %>%
+    type.convert(as.is=TRUE)
+}
 
 
 

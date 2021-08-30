@@ -1,0 +1,52 @@
+nvl_indicadores_bcrd <- tibble::tribble(
+  ~orden, ~indicador,
+  "1.1", "ACTIVOS INTERNACIONALES BRUTOS (Activos Externos) (US$) (1)",
+  "1.2", "RESERVAS INTERNACIONALES BRUTAS (Activos de Reserva Oficial) (US$) (1)",
+  "1.3", "RESERVAS INTERNACIONALES NETAS   (US$) (1)",
+  "1.4", "ACTIVOS INTERNOS",
+  "1.4.1", "Activos frente al Gobierno Central (2)",
+  "1.4.1.1", "De los cuales: Bono de Capitalización (3)",
+  "1.4.2", "Activos frente al Sector Privado (4)",
+  "1.4.3", "Crédito a Otras Sociedades de Depósito (5)",
+  "1.5", "VALORES EN CIRCULACION (6)",
+  "1.5.1", "Descuento en Valores Emitidos",
+  "1.6", "DEPOSITOS REMUNERADOS DE CORTO PLAZO",
+  "2", "BASE MONETARIA",
+  "2.1", "BASE MONETARIA RESTRINGIDA",
+  "2.1.1", "Billetes y Monedas Emitidos",
+  "2.1.1.1", "De los que: Tenencias OSD en MN",
+  "2.1.2", "Depósitos Encaje Legal y Saldos de Compensación de OSD en BC (MN)",
+  "2.1.3", "Valores del BCRD en posesión de las OSD para fines de encaje legal (MN)",
+  "2.2", "BASE MONETARIA AMPLIADA",
+  "2.2.1", "Base Monetaria Restringida",
+  "2.2.2", "Depósitos Encaje Legal y Saldos de Compensación de OSD en BC (ME)",
+  "2.2.3", "Depósitos Remunerados de Corto Plazo (Overnight)",
+  "2.2.4", "Depósitos Remunerados de Corto Plazo en ME",
+  "2.2.5", "Otros Depósitos de OSD en BCRD",
+  "2.2.6", "Valores a Corto Plazo emitidos por BC en manos de las OSD (MN y ME)",
+  "3", "AGREGADOS MONETARIOS",
+  "3.1", "MEDIO CIRCULANTE (M1)",
+  "3.1.1", "Billetes y monedas en poder del público",
+  "3.1.2", "Depósitos Transferibles en MN",
+  "3.2", "OFERTA MONETARIA AMPLIADA (M2)",
+  "3.2.1", "Medio Circulante (M1)",
+  "3.2.2", "Otros depósitos M/N",
+  "3.2.3", "Valores distintos de acciones MN-emitidos por OSD",
+  "3.2.4", "Valores distintos de acciones MN- emitidos por el BCRD",
+  "3.3", "DINERO EN SENTIDO AMPLIO (M3)",
+  "3.3.1", "Oferta Monetaria Ampliada (M2)",
+  "3.3.2", "Otros depósitos M/E",
+  "3.3.3", "Valores distintos de acciones ME",
+  "4", "MULTIPLICADORES MONETARIOS",
+  "4.1", "MULTIPLICADOR DEL DINERO (K2)",
+  "4.1.1", "K2.1 = M1/BM restringida",
+  "4.1.2", "K2.2 = M2/BM restringida",
+  "4.1.3", "K2.3 = M3/BM ampliada",
+  "5", "TASA DE CAMBIO"
+)
+
+
+nvl_indicadores_bcrd <- nivelador(nvl_indicadores_bcrd)
+
+
+usethis::use_data(nvl_indicadores_bcrd, overwrite = TRUE)
