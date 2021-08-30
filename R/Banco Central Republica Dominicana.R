@@ -569,6 +569,8 @@ balanza_pagos_anual <- function(indicador = NULL, metadata = FALSE){
     tidyr::pivot_longer(-c(1:3), names_to = "ano", values_to = "valor") %>%
     setNames(., tolower(names(.))) %>%
     type.convert(as.is = T)
+
+  download_domar("pib-gasto-anual")
 }
 
 
@@ -2396,16 +2398,16 @@ pib_gasto_anual <- function(data = NULL, metadata = FALSE){
   if(metadata){
     return(
       tibble::tribble(
-        ~col, ~name, ~unit, ~dtype,
-        "orden", "Orden de los componentes", "", "int",
-        "nivel", "Nivel de los componentes", "", "int",
-        "componente", "Componente", "", "text",
-        "ano", "Año", "", "ydate",
-        "pib", "Valor del PIB", "Millones de RD$", "f1",
-        "ponderacion", "Ponderación por componente", "Porcentaje (%)", "f2",
-        "ive", "Índice de Valores Encadenados (IVE) del PIB", "Índice (2007=100)", "f1",
-        "tasa_crecimiento", "Tasa de crecimiento PIB", "Porcentaje (%)", "f1",
-        "incidencia", "Incidencia por componente del PIB", "", "f1"
+        ~col, ~name, ~unit, ~dtype, ~key,
+        "orden", "Orden de los componentes", "", "int", 1,
+        "nivel", "Nivel de los componentes", "", "int", 1,
+        "componente", "Componente", "", "text", 1,
+        "ano", "Año", "", "ydate", 1,
+        "pib", "Valor del PIB", "Millones de RD$", "f1", 0,
+        "pib__ponderacion", "Ponderación por componente", "Porcentaje (%)", "f2", 0,
+        "pib__ive", "Índice de Valores Encadenados (IVE) del PIB", "Índice (2007=100)", "f1", 0,
+        "pib__tci", "Tasa de crecimiento PIB", "Porcentaje (%)", "f1", 0,
+        "pib__incidencia", "Incidencia por componente del PIB", "", "f1", 0
       )
     )
   } else if(is.null(data)){
@@ -2416,7 +2418,7 @@ pib_gasto_anual <- function(data = NULL, metadata = FALSE){
   datos %>%
     dplyr::select(1:4, dplyr::contains("acum")) %>%
     dplyr::filter(lubridate::month(date) == 12) %>%
-    setNames(c("orden", "nivel", "componente", "ano", "pib", "ponderacion", "ive", "tasa_crecimiento", "incidencia")) %>%
+    setNames(c("orden", "nivel", "componente", "ano", "pib", "pib__ponderacion", "pib__ive", "pib__tci", "pib__incidencia")) %>%
     dplyr::mutate(ano = lubridate::year(ano)) %>%
     type.convert(as.is = T)
 }
