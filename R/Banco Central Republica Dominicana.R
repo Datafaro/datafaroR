@@ -247,7 +247,7 @@ ipc_mensual_2020 <- function(indicador = NULL, metadata = FALSE){
         "indice__tc", "Tasa de crecimiento mensual", "Porcentaje (%)", "f1",0,
         "indice__tcd", "Tasa de crecimiento con diciembre", "Porcentaje (%)", "f1",0,
         "indice__tci", "Tasa de crecimiento interanual", "Porcentaje (%)", "f1",0,
-        "indice__tc_12_meses", "Tasa de crecimiento promedio 12 meses", "Porcentaje (%)", "f1",0
+        "indice__tc12meses", "Tasa de crecimiento promedio 12 meses", "Porcentaje (%)", "f1",0
       )
     )
   }
@@ -273,7 +273,7 @@ ipc_mensual_2020 <- function(indicador = NULL, metadata = FALSE){
                     'indice__tc',
                     'indice__tcd',
                     'indice__tci',
-                    'indice__tc_12_meses')
+                    'indice__tc12meses')
   datos <- Dmisc::vars_to_date(datos, year = 1, month = 2)
   datos %>%
     type.convert(as.is = T)
@@ -1933,7 +1933,7 @@ panorama_sf <- function(indicador = NULL, metadata = FALSE){
 
 
 
-## Tasas de interés activas y pasivas anual promedio ponderada de las entidades de intermediación financiera
+## Tasas de interés activas y pasivas anual promedio ponderada de las entidades de intermediación financiera ----
 
 
 
