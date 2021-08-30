@@ -10,15 +10,15 @@
 #'
 #' @examples
 #' \dontrun{
-#'   pound <- pound_sterling_mensual_ecb()
+#'   pound <- tipo_cambio_gbp_eur_mensual()
 #' }
-pound_sterling_mensual_ecb <- function(indicador = NULL, metadata = FALSE){
+tipo_cambio_gbp_eur_mensual <- function(indicador = NULL, metadata = FALSE){
   if(metadata){
     return(
       tibble::tribble(
-        ~col, ~name, ~unit, ~dtype,
-        "date", "Fecha", "Mensual", "mdate",
-        "value", "Tipo de cambio", "", "f2"
+        ~col, ~name, ~unit, ~dtype, ~key,
+        "date", "Fecha", "Mensual", "mdate", 1,
+        "value", "Tipo de cambio", "", "f2", 0
       )
     )
   }
@@ -54,15 +54,15 @@ pound_sterling_mensual_ecb <- function(indicador = NULL, metadata = FALSE){
 #'
 #' @examples
 #' \dontrun{
-#'  usd_eur <- us_dollar_mensual_ecb(indicador)
+#'  usd_eur <- tipo_cambio_usd_eur_mensual()
 #' }
-us_dollar_mensual_ecb <- function(indicador = NULL, metadata = FALSE){
+tipo_cambio_usd_eur_mensual <- function(indicador = NULL, metadata = FALSE){
   if(metadata){
     return(
       tibble::tribble(
-        ~col, ~name, ~unit, ~dtype,
-        "date", "Fecha", "Mensual", "mdate",
-        "value", "Tipo de cambio", "", "f2"
+        ~col, ~name, ~unit, ~dtype, ~key,
+        "date", "Fecha", "Mensual", "mdate", 1,
+        "value", "Tipo de cambio", "", "f2", 0
       )
     )
   }
@@ -98,15 +98,15 @@ us_dollar_mensual_ecb <- function(indicador = NULL, metadata = FALSE){
 #'
 #' @examples
 #' \dontrun{
-#'  yen <- yen_mensual_ecb()
+#'  yen <- tipo_cambio_jpy_eur_mensual()
 #' }
-yen_mensual_ecb <- function(indicador = NULL, metadata = FALSE){
+tipo_cambio_jpy_eur_mensual <- function(indicador = NULL, metadata = FALSE){
   if(metadata){
     return(
       tibble::tribble(
-        ~col, ~name, ~unit, ~dtype,
-        "date", "Fecha", "Mensual", "mdate",
-        "value", "Tipo de cambio", "", "f2"
+        ~col, ~name, ~unit, ~dtype, ~key,
+        "date", "Fecha", "Mensual", "mdate", 1,
+        "value", "Tipo de cambio", "", "f2", 0
       )
     )
   }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/Banco Central Republica Dominicana.R
 \name{tasas_interes_activas_bm_2017}
 \alias{tasas_interes_activas_bm_2017}
-\title{Tasas de interás activas nominales mensuales 2017-current - Banco Múltiples}
+\title{Tasas de interés activas nominales mensuales 2017-current - Banco Múltiples}
 \usage{
 tasas_interes_activas_bm_2017(indicador = NULL, metadata = FALSE)
 }
