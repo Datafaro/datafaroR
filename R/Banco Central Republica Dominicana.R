@@ -2407,16 +2407,18 @@ pib_gasto_anual <- function(indicador = NULL, metadata = FALSE){
         "pib__ponderacion", "Ponderación por componente", "Porcentaje (%)", "f2", 0,
         "pib__ive", "Índice de Valores Encadenados (IVE) del PIB", "Índice (2007=100)", "f1", 0,
         "pib__tci", "Tasa de crecimiento PIB", "Porcentaje (%)", "f1", 0,
-        "pib__incidencia", "Incidencia por componente del PIB", "", "f1", 0
+        "pib__incidencia", "Incidencia por componente del PIB", "", "f1", 0,
+        "pib__usd", "PIB en dólares", "", "f1", 0
       )
     )
   }
 
   download_domar("pib-gasto-trim") %>%
-    dplyr::select(1:4, dplyr::contains("acum")) %>%
+    dplyr::select(1:4, dplyr::contains("acumulado")) %>%
     dplyr::filter(lubridate::month(date) == 12) %>%
-    setNames(c("orden", "nivel", "componente", "ano", "pib", "pib__ponderacion", "pib__ive", "pib__tci", "pib__incidencia")) %>%
-    dplyr::mutate(ano = lubridate::year(ano)) %>%
+    dplyr::mutate(date = lubridate::year(date)) %>%
+    dplyr::rename("ano" = "date") %>%
+    dplyr::rename_with(~stringr::str_replace(., "_acumulado", ""), dplyr::everything()) %>%
     type.convert(as.is = T)
 }
 
