@@ -1528,7 +1528,10 @@ indicadores_bcrd <- function(indicador = NULL, metadata = FALSE){
     tidyr::pivot_longer(-c(orden, nivel, indicador), names_to = "date", values_to = "valor", values_transform = list(valor = as.numeric)) %>%
     type.convert(as.is = TRUE) %>%
     dplyr::group_by(indicador) %>%
-    dplyr::mutate(valor__tci = (valor/dplyr::lag(valor, 12)-1)*100) %>%
+    dplyr::mutate(
+      valor__tci = (valor/dplyr::lag(valor, 12)-1)*100,
+      valor__tci = dplyr::case_when(orden < 40 ~ valor__tci)
+    ) %>%
     dplyr::ungroup()
 }
 
@@ -1926,6 +1929,87 @@ panorama_sf <- function(indicador = NULL, metadata = FALSE){
                "pasivos_dep_mn", "pasivos_dep_me", "pasivos_valores_mn",
                "pasivos_valores_me", "pasivos_rts", "pasivos_otros")) %>%
     type.convert(as.is=TRUE)
+}
+
+
+
+## Tasas de interés activas y pasivas anual promedio ponderada de las entidades de intermediación financiera
+
+
+
+#' Tasas de interás activas nominales mensuales 2017-current - Banco Múltiples
+#'
+#'  \lifecycle{experimental}
+#'
+#' @param indicador Vea \code{\link{downloader}}
+#' @param metadata indica si se retornan los datos o la metadata del indicador
+#'
+#' @return [data.frame]: los datos del indicador en forma tabular
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'   tasas_interes_activas_bm_2017()
+#' }
+tasas_interes_activas_bm_2017 <- function(indicador = NULL, metadata = FALSE){
+  if(is.null(indicador)){
+    indicador <- c(
+      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/tbm_activad.xlsx",
+      file_ext = "xlsx",
+      max_changes = 15
+    )
+  }
+  if(metadata){
+    return(
+      tibble::tribble(
+        ~col, ~name, ~unit, ~dtype, ~key,
+        "grupo", "Grupo", "", "text", 1,
+        "categoria", "Categoría", "", "text", 1,
+        "date", "Fecha", "Meses", "mdate", 1,
+        "valor", "Valor", "", "f1", 0
+      )
+    )
+  }
+  file <- "/mnt/c/Users/drdsd/Downloads/tbm_activad.xlsx"
+  if (!file.exists(file)) {
+    file <- downloader(indicador)
+  } else {
+    print("Local file...")
+  }
+  datos <- readxl::read_excel(file, skip = 4, col_names = F)
+  datos %>%
+    tidyr::fill(...1) %>%
+    dplyr::filter(nchar(...1) >= 4) %>%
+    tidyr::drop_na(...2) %>%
+    dplyr::mutate(
+      year = stringr::str_remove_all(...1, stringr::regex("[^0-9]")),
+      year = dplyr::case_when(
+        nchar(year) > 4 ~ stringr::str_sub(year, 1, 4),
+        nchar(year) < 4 ~ NA_character_,
+        TRUE ~ year
+      ),
+      ...1 = stringr::str_remove_all(...1, stringr::regex("[^a-z]", ignore_case = TRUE))
+    ) %>%
+    tidyr::fill(year) %>%
+    dplyr::relocate(year) %>%
+    dplyr::filter(...1 != "") -> datos
+
+  datos[1:2, 1] <- "1900"
+  datos[1:2, 2] <- "Enero"
+
+  datos <- datos %>%
+    Dmisc::vars_to_date(year = 1, month = 2) %>%
+    t %>%
+    as.data.frame()
+
+  datos[1, 1:2] <- c("grupo", "categoria")
+
+  datos %>%
+    janitor::row_to_names(1) %>%
+    tidyr::fill(grupo) %>%
+    tidyr::pivot_longer(-c(grupo, categoria), names_to = "date", values_to = "valor") %>%
+    type.convert(as.is = TRUE)
 }
 
 
