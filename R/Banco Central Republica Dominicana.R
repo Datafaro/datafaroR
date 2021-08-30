@@ -241,13 +241,13 @@ ipc_mensual_2020 <- function(indicador = NULL, metadata = FALSE){
   if(metadata){
     return(
       tibble::tribble(
-        ~col, ~name, ~unit, ~dtype,
-        "date", "Fecha", "Mensual", "mdate",
-        "indice", "IPC", "Índice", "f1",
-        "variacion_mensual", "Variación porcentual mensual", "Porcentaje (%)", "f1",
-        "variacion_con_diciembre", "Variación porcentual con diciembre", "Porcentaje (%)", "f1",
-        "variacion_anual", "Variación porcentual anual", "Porcentaje (%)", "f1",
-        "variacion_promedio_12_meses", "Variación promedio 12 meses", "Porcentaje (%)", "f1"
+        ~col, ~name, ~unit, ~dtype, ~key,
+        "date", "Fecha", "Mensual", "mdate",1,
+        "indice", "IPC", "Índice", "f1",0,
+        "indice__tc", "Tasa de crecimiento mensual", "Porcentaje (%)", "f1",0,
+        "indice__tcd", "Tasa de crecimiento con diciembre", "Porcentaje (%)", "f1",0,
+        "indice__tci", "Tasa de crecimiento interanual", "Porcentaje (%)", "f1",0,
+        "indice__tc_12_meses", "Tasa de crecimiento promedio 12 meses", "Porcentaje (%)", "f1",0
       )
     )
   }
@@ -270,10 +270,10 @@ ipc_mensual_2020 <- function(indicador = NULL, metadata = FALSE){
   names(datos) <- c('ano',
                     'mes',
                     'indice',
-                    'variacion_mensual',
-                    'variacion_con_diciembre',
-                    'variacion_anual',
-                    'variacion_promedio_12_meses')
+                    'indice__tc',
+                    'indice__tcd',
+                    'indice__tci',
+                    'indice__tc_12_meses')
   datos <- Dmisc::vars_to_date(datos, year = 1, month = 2)
   datos %>%
     type.convert(as.is = T)
