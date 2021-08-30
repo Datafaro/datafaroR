@@ -542,12 +542,12 @@ balanza_pagos_anual <- function(indicador = NULL, metadata = FALSE){
   if(metadata){
     return(
       tibble::tribble(
-        ~col, ~name, ~unit, ~dtype,
-        "orden", "Orden", "", "int",
-        "nivel", "Nivel", "", "int",
-        "conceptos", "Conceptos", "", "text",
-        "ano", "Año", "", "ydate",
-        "valor", "Valor", "Millones de US$", "f1"
+        ~col, ~name, ~unit, ~dtype, ~key,
+        "orden", "Orden", "", "int", 1,
+        "nivel", "Nivel", "", "int", 1,
+        "conceptos", "Conceptos", "", "text", 1,
+        "ano", "Año", "", "ydate", 1,
+        "valor", "Valor", "Millones de US$", "f1", 0
       )
     )
   }
@@ -591,13 +591,13 @@ balanza_pagos_trim <- function(indicador = NULL, metadata = FALSE){
   if(metadata){
     return(
       tibble::tribble(
-        ~col, ~name, ~unit, ~dtype,
-        "orden", "Orden", "", "int",
-        "nivel", "Nivel", "", "int",
-        "conceptos", "Conceptos", "", "text",
-        "date", "Fecha", "Trimestral", "qdate",
-        "valor", "Valor trimestral", "Millones de US$", "f1",
-        "valor_acumulado", "Valor acumulado", "Millones de US$", "f1"
+        ~col, ~name, ~unit, ~dtype, ~key,
+        "orden", "Orden", "", "int", 1,
+        "nivel", "Nivel", "", "int", 1,
+        "conceptos", "Conceptos", "", "text", 1,
+        "date", "Fecha", "Trimestral", "qdate", 1,
+        "valor", "Valor trimestral", "Millones de US$", "f1", 0,
+        "valor_acumulado", "Valor acumulado", "Millones de US$", "f1", 0
       )
     )
   }
