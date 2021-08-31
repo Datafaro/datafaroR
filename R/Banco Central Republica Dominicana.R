@@ -568,9 +568,16 @@ balanza_pagos_anual <- function(indicador = NULL, metadata = FALSE){
     dplyr::select(-conceptos) %>%
     tidyr::pivot_longer(-c(1:3), names_to = "ano", values_to = "valor") %>%
     setNames(., tolower(names(.))) %>%
-    type.convert(as.is = T)
-
-  download_domar("pib-gasto-anual")
+    type.convert(as.is = T) %>%
+    dplyr::left_join(
+      download_domar("pib-gasto-anual") %>%
+    dplyr::filter(orden == 9) %>%
+    dplyr::select(ano, pib = pib__usd)
+    ) %>%
+    dplyr::mutate(
+      valor__ppib = valor/pib*100
+    ) %>%
+    dplyr::select(-pib)
 }
 
 
