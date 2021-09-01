@@ -2023,6 +2023,248 @@ tasas_interes_activas_bm_2017 <- function(indicador = NULL, metadata = FALSE){
 
 
 
+#' Tasas de interés activas nominales mensuales 2013-2016 - Banco Múltiples
+#'
+#'  \lifecycle{experimental}
+#'
+#' @param indicador Vea \code{\link{downloader}}
+#' @param metadata indica si se retornan los datos o la metadata del indicador
+#'
+#' @return [data.frame]: los datos del indicador en forma tabular
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'   tasas_interes_activas_bm_2013()
+#' }
+tasas_interes_activas_bm_2013 <- function(indicador = NULL, metadata = FALSE){
+  if(is.null(indicador)){
+    indicador <- c(
+      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/tbm_activad-2013-2016.xlsx",
+      file_ext = "xlsx",
+      max_changes = 12
+    )
+  }
+  if(metadata){
+    return(
+      tibble::tribble(
+        ~col, ~name, ~unit, ~dtype, ~key,
+        "grupo", "Grupo", "", "text", 1,
+        "categoria", "Categoría", "", "text", 1,
+        "date", "Fecha", "Meses", "mdate", 1,
+        "valor", "Valor", "", "f1", 0
+      )
+    )
+  }
+  file <- "/mnt/c/Users/drdsd/Downloads/tbm_activad-2013-2016.xlsx"
+  if (!file.exists(file)) {
+    file <- downloader(indicador)
+  } else {
+    print("Local file...")
+  }
+  datos <- readxl::read_excel(file, skip = 4, col_names = F)
+  datos %>%
+    tidyr::drop_na(...2) %>%
+    dplyr::mutate(
+      year = as.numeric(...1)
+    ) %>%
+    dplyr::relocate(year) %>%
+    tidyr::fill(year) %>%
+    dplyr::mutate(
+      ...1 = stringr::str_remove_all(...1, "[0-9]")
+    ) -> datos
+  datos[1:2,1] <- 1900
+  datos[1:2, 2] <- "Enero"
+  datos %>%
+    dplyr::filter(...1 != "") %>%
+    Dmisc::vars_to_date(year = 1, month = 2) %>%
+    t() %>%
+    as.data.frame() %>%
+    dplyr::mutate(
+      V2 = dplyr::case_when(
+        is.na(V2) ~ V1,
+        TRUE ~ V2
+      )
+    ) -> datos
+
+  datos[1, 1:2] <- c("grupo", "categoria")
+  datos %>%
+    janitor::row_to_names(1) %>%
+    tidyr::fill(grupo) %>%
+    tidyr::pivot_longer(-c("grupo", "categoria"), names_to = "date", values_to = "valor") %>%
+    type.convert(as.is = TRUE)
+}
+
+
+
+#' Tasas de interés activas nominales mensuales 2008-2012 - Banco Múltiples
+#'
+#'  \lifecycle{experimental}
+#'
+#' @param indicador Vea \code{\link{downloader}}
+#' @param metadata indica si se retornan los datos o la metadata del indicador
+#'
+#' @return [data.frame]: los datos del indicador en forma tabular
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'   tasas_interes_activas_bm_2008()
+#' }
+tasas_interes_activas_bm_2008 <- function(indicador = NULL, metadata = FALSE){
+  if(is.null(indicador)){
+    indicador <- c(
+      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/tbm_activad-2008-2012.xls",
+      file_ext = "xls",
+      max_changes = 12
+    )
+  }
+  if(metadata){
+    return(
+      tibble::tribble(
+        ~col, ~name, ~unit, ~dtype, ~key,
+        "grupo", "Grupo", "", "text", 1,
+        "categoria", "Categoría", "", "text", 1,
+        "date", "Fecha", "Meses", "mdate", 1,
+        "valor", "Valor", "", "f1", 0
+      )
+    )
+  }
+  file <- "/mnt/c/Users/drdsd/Downloads/tbm_activad-2008-2012.xls"
+  if (!file.exists(file)) {
+    file <- downloader(indicador)
+  } else {
+    print("Local file...")
+  }
+  datos <- readxl::read_excel(file, skip = 7, col_names = F)
+  datos %>%
+    tidyr::drop_na(...2) %>%
+    dplyr::mutate(
+      year = as.numeric(...1),
+      ...1 = stringr::str_remove_all(...1, stringr::regex("[^a-z]", ignore_case = TRUE))
+    ) %>%
+    dplyr::relocate(year) %>%
+    t() %>%
+    as.data.frame() %>%
+    dplyr::mutate(
+      V2 = paste(tidyr::replace_na(V2, ""), tidyr::replace_na(V3, ""))
+    ) %>%
+    dplyr::select(-V3) %>%
+    t() %>%
+    as.data.frame() %>%
+    tidyr::fill(year) -> datos
+  datos[1:2, 1] <- 1990
+  datos[1:2, 2] <- "Enero"
+  datos %>%
+    dplyr::filter(...1 != "") %>%
+    Dmisc::vars_to_date(year = 1, month = 2) %>%
+    t() %>%
+    as.data.frame() %>%
+    dplyr::mutate(
+      V2 = dplyr::case_when(
+        V2 == " " ~ V1,
+        TRUE ~ V2
+      )
+    ) %>%
+    tidyr::fill(V1) -> datos
+
+  datos[1, 1:2] <- c("grupo", "categoria")
+  datos %>%
+    janitor::row_to_names(1) %>%
+    tidyr::pivot_longer(-c("grupo", "categoria"), names_to = "date", values_to = "valor") %>%
+    type.convert(as.is = TRUE)
+}
+
+
+
+#' Tasas de interés activas nominales mensuales 1991-2007 - Banco Múltiples
+#'
+#'  \lifecycle{experimental}
+#'
+#' @param indicador Vea \code{\link{downloader}}
+#' @param metadata indica si se retornan los datos o la metadata del indicador
+#'
+#' @return [data.frame]: los datos del indicador en forma tabular
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'   tasas_interes_activas_bm_1991()
+#' }
+tasas_interes_activas_bm_1991 <- function(indicador = NULL, metadata = FALSE){
+  if(is.null(indicador)){
+    indicador <- c(
+      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/tbm_activad-1991-2007.xls",
+      file_ext = "xls",
+      max_changes = 12
+    )
+  }
+  if(metadata){
+    return(
+      tibble::tribble(
+        ~col, ~name, ~unit, ~dtype, ~key,
+        "grupo", "Grupo", "", "text", 1,
+        "categoria", "Categoría", "", "text", 1,
+        "date", "Fecha", "Meses", "mdate", 1,
+        "valor", "Valor", "", "f1", 0
+      )
+    )
+  }
+  file <- "/mnt/c/Users/drdsd/Downloads/tbm_activa-1991-2007.xls"
+  if (!file.exists(file)) {
+    file <- downloader(indicador)
+  } else {
+    print("Local file...")
+  }
+  datos <- readxl::read_excel(file, skip = 7, col_names = F)
+  datos %>%
+    dplyr::mutate(
+      ...1 = stringr::str_remove_all(...1, stringr::regex("\\*")),
+      year = as.numeric(...1)
+    ) %>%
+    dplyr::relocate(year) %>%
+    tidyr::fill(year) %>%
+    dplyr::select(-...2) %>%
+    tidyr::drop_na(...3) %>%
+    dplyr::mutate(
+      ...1 = stringr::str_remove_all(...1, stringr::regex("[^a-z]", ignore_case = TRUE))
+    ) %>%
+    t() %>%
+    as.data.frame() %>%
+    dplyr::mutate(
+      V2 = paste(tidyr::replace_na(V2, ""), tidyr::replace_na(V3, "")),
+      V2 = stringr::str_remove_all(V2, "\\*"),
+      V2 = stringr::str_remove_all(V2, "\\- ")
+    ) %>%
+    dplyr::select(-V3) %>%
+    t() %>%
+    as.data.frame() -> datos
+  datos[1:2, 1] <- 1900
+  datos[1:2, 2] <- "Enero"
+  datos %>%
+    dplyr::filter(...1 != "") %>%
+    Dmisc::vars_to_date(year = 1, month = 2) %>%
+    t() %>%
+    as.data.frame() -> datos
+  datos[1, 1:2] <- c("grupo", "categoria")
+  datos %>%
+    janitor::row_to_names(1) %>%
+    dplyr::mutate(
+      grupo = dplyr::case_when(
+        categoria == "Preferencial" ~ categoria,
+        TRUE ~ grupo
+      )
+    ) %>%
+    tidyr::fill(grupo) %>%
+    tidyr::pivot_longer(-c(grupo, categoria), names_to = "date", values_to = "valor") %>%
+    type.convert(as.is = TRUE)
+}
+
+
+
 # Sector real----
 
 
