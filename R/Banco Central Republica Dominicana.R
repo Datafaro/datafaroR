@@ -547,7 +547,8 @@ balanza_pagos_anual <- function(indicador = NULL, metadata = FALSE){
         "nivel", "Nivel", "", "int", 1,
         "conceptos", "Conceptos", "", "text", 1,
         "ano", "Año", "", "ydate", 1,
-        "valor", "Valor", "Millones de US$", "f1", 0
+        "valor", "Valor", "Millones de US$", "f1", 0,
+        "valor__ppib", "Valor", "Porcentaje del PIB", "f1", 0
       )
     )
   }
@@ -606,7 +607,12 @@ balanza_pagos_trim <- function(indicador = NULL, metadata = FALSE){
         "conceptos", "Conceptos", "", "text", 1,
         "date", "Fecha", "Trimestral", "qdate", 1,
         "valor", "Valor trimestral", "Millones de US$", "f1", 0,
-        "valor_acumulado", "Valor acumulado", "Millones de US$", "f1", 0
+        "valor_acumulado", "Valor acumulado", "Millones de US$", "f1", 0,
+        "valor__ppib", "Valor trimestral", "Porcentaje del PIB", "f1", 0,
+        "valor_acumulado__ppib", "Valor acumulado", "Porcentaje del PIB", "f1", 0,
+        "valor__tc", "Valor trimestral", "Tasa de crecimiento", "f1", 0,
+        "valor__tci", "Valor trimestral", "Tasa de crecimiento interanual", "f1", 0,
+        "valor_acumulado__tci", "Valor acumulado", "Tasa de crecimiento interanual", "f1", 0
       )
     )
   }
@@ -671,8 +677,8 @@ balanza_pagos_trim <- function(indicador = NULL, metadata = FALSE){
     dplyr::arrange(conceptos, date) %>%
     dplyr::mutate(
       valor__tc = (valor/dplyr::lag(valor)-1)*100,
-      valor__tca = (valor/dplyr::lag(valor, 4)-1)*100,
-      valor_acumulado__tca = (valor_acumulado/dplyr::lag(valor_acumulado, 4)-1)*100
+      valor__tci = (valor/dplyr::lag(valor, 4)-1)*100,
+      valor_acumulado__tci = (valor_acumulado/dplyr::lag(valor_acumulado, 4)-1)*100
     ) %>%
     dplyr::ungroup() %>%
     dplyr::arrange(orden, nivel)
@@ -1509,7 +1515,8 @@ indicadores_bcrd <- function(indicador = NULL, metadata = FALSE){
         "nivel", "Nivel del indicador", "", "int", 1,
         "indicador", "Indicador", "", "text", 1,
         "date", "Fecha", "Meses", "mdate", 1,
-        "valor", "Valor", "Millones de RD$", "f1", 0
+        "valor", "Valor", "Millones de RD$", "f1", 0,
+        "valor__tci", "Valor", "Tasa de crecimiento interanual", "f1", 0
       )
     )
   }
@@ -2698,16 +2705,16 @@ pib_origen_trim <- function(indicador = NULL, metadata = FALSE){
         "nivel", "Nivel de las ramas", "", "int", 1,
         "rae", "Rama de Actividad Económica", "", "text", 1,
         "date", "Fecha", "Trimestral", "qdate", 1,
-        "valor_agregado", "Valor agregado de la rama", "Millones de RD$", "f1", 0,
-        "ponderacion", "Ponderación por rama", "Razón", "f3", 0,
-        "va_acumulado", "Valor agregado acumulado", "Millones de RD$", "f1", 0,
-        "ponderacion_acum", "Ponderación acumulada", "Razón", "f3", 0,
-        "ive", "Índice de Volumen Encadenados (IVE)", "Índice", "f1", 0,
-        "tasa_crecimiento", "Tasa de crecimiento", "Porcentaje (%)", "f1", 0,
-        "incidencia", "Incidencia", "", "f1", 0,
-        "ive_acum", "Índice de Valores Encadenados (IVE) acumulado", "Índice", "f1", 0,
-        "tasa_crecimiento_acum", "Tasa de crecimiento acumulada", "Porcentaje (%)", "f1", 0,
-        "incidencia_acum", "Incidencia acumulada", "", "f1", 0
+        "pib", "Valor agregado de la rama", "Millones de RD$", "f1", 0,
+        "pib__ponderacion", "Ponderación por rama", "Razón", "f3", 0,
+        "pib_acumulado", "Valor agregado acumulado", "Millones de RD$", "f1", 0,
+        "pib_acumulado__ponderacion", "Ponderación acumulada", "Razón", "f3", 0,
+        "pib__ive", "Índice de Volumen Encadenados (IVE)", "Índice", "f1", 0,
+        "pib__tci", "Tasa de crecimiento", "Porcentaje (%)", "f1", 0,
+        "pib__incidencia", "Incidencia", "", "f1", 0,
+        "pib_acumulado__ive", "Índice de Valores Encadenados (IVE) acumulado", "Índice", "f1", 0,
+        "pib_acumulado__tci", "Tasa de crecimiento acumulada", "Porcentaje (%)", "f1", 0,
+        "pib_acumulado__incidencia", "Incidencia acumulada", "", "f1", 0
       )
     )
   }
@@ -2946,11 +2953,11 @@ pib_origen_anual <- function(data = NULL, metadata = FALSE){
         "nivel", "Nivel de las ramas", "", "int",
         "rae", "Rama de Actividad Económica", "", "text",
         "ano", "Año", "", "ydate",
-        "valor_agregado", "Valor agregado de la rama", "Millones de RD$", "f1",
-        "ponderacion", "Ponderación por rama", "Razón", "f3",
-        "ive", "Índice de Volumen Encadenados (IVE)", "Índice", "f1",
-        "tasa_crecimiento", "Tasa de crecimiento", "Porcentaje (%)", "f1",
-        "incidencia", "Incidencia", "", "f1",
+        "pib", "Valor agregado de la rama", "Millones de RD$", "f1",
+        "pib__ponderacion", "Ponderación por rama", "Razón", "f3",
+        "pib__ive", "Índice de Volumen Encadenados (IVE)", "Índice", "f1",
+        "pib__tci", "Tasa de crecimiento", "Porcentaje (%)", "f1",
+        "pib__incidencia", "Incidencia", "", "f1",
       )
     )
   } else if(is.null(data)){
@@ -2962,7 +2969,7 @@ pib_origen_anual <- function(data = NULL, metadata = FALSE){
   datos %>%
     dplyr::select(1:4, dplyr::contains("acum")) %>%
     dplyr::filter(lubridate::month(date) == 12) %>%
-    setNames(c("orden", "nivel", "ano", "rae", "valor_agregado", "ponderacion", "ive", "tasa_crecimiento", "incidencia")) %>%
+    setNames(c("orden", "nivel", "ano", "rae", "pib", "pib__ponderacion", "pib__ive", "pib__tci", "pib__incidencia")) %>%
     dplyr::mutate(ano = lubridate::year(ano)) %>%
     type.convert(as.is = T)
 }
@@ -3001,11 +3008,11 @@ pib_ive <- function(indicador = NULL){
     tidyr::fill(ano, .direction = "up")
 
   ive[, 1:4] %>%
-    setNames(c("ano", "trim", "ive", "variacion_interanual")) %>%
+    setNames(c("ano", "trim", "ive", "ive__tci")) %>%
     dplyr::mutate(serie = "Serie original") %>%
     dplyr::bind_rows(
       ive[, c(1, 2, 5, 6)] %>%
-        setNames(c("ano", "trim", "ive", "variacion_interanual")) %>%
+        setNames(c("ano", "trim", "ive", "ive__tci")) %>%
         dplyr::mutate(serie = "Serie desestacionalizada")
     )
 }
@@ -3033,7 +3040,7 @@ pib_ive_trim <- function(indicador = NULL, metadata = FALSE){
         ~col, ~name, ~unit, ~dtype,
         "date", "Fecha", "Trimestres", "qdate",
         "ive", "Índice de Volumen Encadenados (IVE)", "Índice", "f1",
-        "variacion_interanual", "Variación (%) interanual", "Porcentaje (%)", "f1",
+        "ive__tci", "Variación (%) interanual", "Porcentaje (%)", "f1",
         "serie", "Serie", "", "text"
       )
     )
@@ -3067,7 +3074,7 @@ pib_ive_anual <- function(indicador = NULL, metadata = FALSE){
         ~col, ~name, ~unit, ~dtype,
         "ano", "Año", "", "ydate",
         "ive", "Índice de Volumen Encadenados (IVE)", "Índice", "f1",
-        "variacion_interanual", "Variación (%) interanual", "Porcentaje (%)", "f1"
+        "ive__tci", "Variación (%) interanual", "Porcentaje (%)", "f1"
       )
     )
   }
