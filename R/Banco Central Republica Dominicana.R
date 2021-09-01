@@ -666,13 +666,13 @@ balanza_pagos_trim <- function(indicador = NULL, metadata = FALSE){
       readr::read_csv(url(glue::glue("{info$domar_url}/app/datos/pib-gasto-trim/d?out=csv&t={info$token}"))) %>%
         type.convert(as.is = T) %>%
         dplyr::filter(componente == "Producto Interno Bruto") %>%
-        dplyr::select(date, pib_usd, pib_acumulado_usd)
+        dplyr::select(date, pib__usd, pib_acumulado__usd)
     ) %>%
     dplyr::mutate(
-      valor__ppib = valor/pib*100,
-      valor_acumulado__ppib = valor_acumulado/pib_acumulado*100
+      valor__ppib = valor/pib__usd*100,
+      valor_acumulado__ppib = valor_acumulado/pib_acumulado__usd*100
     ) %>%
-    dplyr::select(-pib, -pib_acumulado) %>%
+    dplyr::select(-pib__usd, -pib_acumulado__usd) %>%
     dplyr::group_by(conceptos) %>%
     dplyr::arrange(conceptos, date) %>%
     dplyr::mutate(
