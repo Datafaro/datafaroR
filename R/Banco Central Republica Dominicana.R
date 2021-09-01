@@ -663,7 +663,7 @@ balanza_pagos_trim <- function(indicador = NULL, metadata = FALSE){
     setNames(c("orden", "nivel", "conceptos", "date", "valor", "valor_acumulado")) %>%
     type.convert(as.is = T) %>%
     dplyr::left_join(
-      readr::read_csv(url("http://159.203.111.74/app/datos/pib-gasto-trim/d?out=csv&t=24d6e719-e8fc-421e-942c-95b59f170879")) %>%
+      readr::read_csv(url(glue::glue("http://{info$domar_url}/app/datos/pib-gasto-trim/d?out=csv&t={info$token}"))) %>%
         type.convert(as.is = T) %>%
         dplyr::filter(componente == "Producto Interno Bruto") %>%
         dplyr::select(date, pib_usd, pib_acumulado_usd)
