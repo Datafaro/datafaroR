@@ -1554,6 +1554,76 @@ indicadores_bcrd <- function(indicador = NULL, metadata = FALSE){
 
 
 
+## Indicadores monetarios de las otras sociedades de depósitos (OSD) ----
+
+
+#'  Indicadores Armonizados OSD (Activos y Pasivos Externos, Préstamos y Depósitos)
+#'
+#'  \lifecycle{experimental}
+#'
+#' @param indicador Vea \code{\link{downloader}}
+#' @param metadata indica si se retornan los datos o la metadata del indicador
+#'
+#' @return [data.frame]: los datos del indicador en forma tabular
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'   indicadores_osd()
+#' }
+indicadores_osd <- function(indicador = NULL, metadata = FALSE){
+  if(is.null(indicador)){
+    indicador <- c(
+      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/serie_indicadores_osd.xlsx",
+      file_ext = "xlsx",
+      max_changes = 68*3
+    )
+  }
+  if(metadata){
+    return(
+      tibble::tribble(
+        ~col, ~name, ~unit, ~dtype, ~key,
+        "orden", "Orden del indicador", "", "int", 1,
+        "nivel", "Nivel del indicador", "", "int", 1,
+        "indicador", "Indicador", "", "text", 1,
+        "date", "Fecha", "Meses", "mdate", 1,
+        "valor", "Valor", "Millones de RD$", "f1", 0,
+        "valor__tci", "Valor", "Tasa de crecimiento interanual", "f1", 0
+      )
+    )
+  }
+  file <- "/mnt/c/Users/drdsd/Downloads/serie_indicadores_osd.xlsx"
+  if (!file.exists(file)) {
+    file <- downloader(indicador)
+  } else {
+    print("Local file...")
+  }
+  datos <- readxl::read_excel(file, skip = 4, col_names = F)
+  datos %>%
+    tidyr::drop_na(...2) %>%
+    t() %>%
+    as.data.frame() -> datos
+
+  datos[1,1] <- 0
+  datos %>%
+    Dmisc::vars_to_date(date = 1) %>%
+    t() %>%
+    as.data.frame() -> datos
+
+  datos[1,1] <- "indicador"
+
+  datos %>%
+    janitor::row_to_names(1) %>%
+    dplyr::bind_cols(nvl_indicadores_osd %>% dplyr::select(-indicador)) %>%
+    dplyr::relocate(orden, nivel) %>%
+    tidyr::pivot_longer(-c(orden, nivel, indicador), names_to = "date", values_to = "valor") %>%
+    type.convert(as.is = TRUE)
+}
+
+
+
+
 ## Panoramas ----
 
 
