@@ -219,6 +219,80 @@ tipo_cambio_usd_dop_anual <- function(...) tipo_cambio_dolar_anual(...)
 
 
 
+
+# Mercado Laboral ----
+
+
+#' Resumen principales indicadores del Mercado Laboral
+#'
+#'  \lifecycle{experimental}
+#'
+#' @param indicador Vea \code{\link{downloader}}
+#' @param metadata indica si se retornan los datos o la metadata del indicador
+#'
+#' @return [data.frame]: los datos del indicador en forma tabular
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'   resumen_indicadores_mercado_laboral()
+#' }
+resumen_indicadores_mercado_laboral <- function(indicador = NULL, metadata = FALSE){
+  if(metadata){
+    return(
+      tibble::tribble(
+        ~col, ~name, ~unit, ~dtype, ~key,
+        "orden", "Orden", "", "int", 1,
+        "nivel", "Nivel", "", "int", 1,
+        "indicador", "Indicador", "", "text", 1,
+        "date", "Fecha", "Trimestral", "qdate", 1,
+        "valor", "Valor", "Porcentaje (%)", "f1", 0
+      )
+    )
+  }
+  if(is.null(indicador)){
+    indicador <- c(
+      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/mercado-de-trabajo/documents/00_Indicadores.xlsx",
+      file_ext = "xls"
+    )
+  }
+  file <- "/mnt/c/Users/drdsd/Downloads/00_Indicadores.xlsx"
+  if (!file.exists(file)) {
+    file <- downloader(indicador)
+  }
+
+  datos <- readxl::read_excel(file, skip = 7, col_names = F)
+
+  ind_pos <- match("Indicador", datos[[1]])
+
+  datos[ind_pos:nrow(datos), ] %>%
+    tidyr::drop_na(...2) %>%
+    t() %>%
+    as.data.frame() -> datos
+
+  datos[1, 1:2] <- c(1900, "I")
+
+  datos %>%
+    dplyr::mutate(
+      V2 = stringr::str_remove_all(V2, "[^A-Z]")
+    ) %>%
+    tidyr::fill(V1) %>%
+    Dmisc::vars_to_date(year = "V1", quarter = "V2") %>%
+    t() %>%
+    as.data.frame() -> datos
+
+  datos[1,1] <- "indicador"
+
+  datos %>%
+    janitor::row_to_names(1) %>%
+    dplyr::bind_cols(nvl_resumen_indicadores_mercado_laboral %>% dplyr::select(-indicador)) %>%
+    dplyr::relocate(orden, nivel) %>%
+    tidyr::pivot_longer(-c(1:3), names_to = "date", values_to = "valor") %>%
+    type.convert(as.is = TRUE)
+}
+
+
 # Precios ----
 
 
