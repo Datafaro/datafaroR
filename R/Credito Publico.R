@@ -20,7 +20,7 @@ saldo_deuda_spnf_xacre <- function(indicador = NULL, metadata = FALSE) {
         ~col, ~name, ~unit, ~dtype, ~key,
         "orden", "Orden", "", "int", 1,
         "nivel", "Nivel", "", "int", 1,
-        "date", "Fecha", "Anual", "ydate", 1,
+        "ano", "Año", "", "ydate", 1,
         "fuente", "Fuente de deuda/Acreedor", "", "text", 1,
         "valor", "Valor", "US$ millones", "f1", 0
       )
@@ -110,7 +110,6 @@ saldo_deuda_spnf_xacre <- function(indicador = NULL, metadata = FALSE) {
   names(datos)[3] <- "fuente"
 
   datos %>%
-    tidyr::pivot_longer(-c(1:3), names_to = "date", values_to = "valor") %>%
-    type.convert(as.is = TRUE) %>%
-    dplyr::relocate(c(orden, nivel, date))
+    tidyr::pivot_longer(-c(1:3), names_to = "ano", values_to = "valor") %>%
+    type.convert(as.is = TRUE)
 }
