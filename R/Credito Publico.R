@@ -29,7 +29,8 @@ saldo_deuda_spnf_xacre <- function(indicador = NULL, metadata = FALSE) {
   if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://www.creditopublico.gob.do/Content/estadisticas/2021/julio/20210817_salxacree.xlsx",
-      file_ext = "xlsx"
+      file_ext = "xlsx",
+      max_changes = 34*2
     )
   }
   year <- lubridate::year(Sys.Date())
