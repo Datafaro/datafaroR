@@ -30,7 +30,7 @@ downloader <- function(indicador) {
   } else {
     httr::GET(
       original_url,
-      httr::write_disk(tf <- tempfile(fileext = paste0(".",file_ext)))
+      httr::write_disk(tf <- tempfile(fileext = paste0(".", file_ext)))
     )
     tf
   }

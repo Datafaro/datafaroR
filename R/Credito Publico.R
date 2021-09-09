@@ -28,60 +28,42 @@ saldo_deuda_spnf_xacre <- function(indicador = NULL, metadata = FALSE) {
   }
   if (is.null(indicador)) {
     indicador <- c(
-      original_url = "https://www.creditopublico.gob.do/Content/estadisticas/2021/julio/20210817_salxacree.xlsx",
-      file_ext = "xlsx",
+      original_url = "https://www.creditopublico.gob.do/inicio/estadisticas",
+      file_ext = "html",
       max_changes = 34*2
     )
   }
-  year <- lubridate::year(Sys.Date())
-  month <- lubridate::month(Sys.Date() - months(1))
+
   file <- "/mnt/c/Users/drdsd/Downloads/20210817_salxacree.xlsx"
-  file2 <- FALSE
+  if (!file.exists(file)) {
+    html <- downloader(indicador)
 
-  meses <- c("diciembre" = 12, "noviembre" = 11, "octubre" = 10, "septiembre" = 9, "agosto" = 8, "julio" = 7, "junio" = 6, "mayo" = 5, "abril" = 4, "marzo" = 3, "febrero" = 2, "enero" = 1)
-  pos <- match(lubridate::month(Sys.Date() - months(1)), meses)
-  meses <- c(meses[pos:length(meses)], meses[1:(pos - 1)])
+    html %>%
+      rvest::html_elements("a") %>%
+      rvest::html_attr("href") %>%
+      stringr::str_split(' ') %>%
+      dplyr::bind_cols() %>%
+      tidyr::pivot_longer(dplyr::everything()) %>%
+      dplyr::filter(stringr::str_detect(value, "_salxacre")) %>%
+      dplyr::mutate(
+        value2 = value,
+        value2 = stringr::str_remove_all(value2, "[^0-9]"),
+        value2 = stringr::str_sub(value2, start = -8L),
+        value2 = as.numeric(value2)
+      ) %>%
+      dplyr::filter(value2 == max(value2)) %>%
+      dplyr::pull(value) %>%
+      .[[1]] %>%
+      paste0("https://www.creditopublico.gob.do", .) -> indicador$original_url
 
-  stop <- FALSE
+    indicador$file_ext <- "xlsx"
 
-  if (file.exists(file)) {
-    print("Local file...")
-    datos <- readxl::read_excel(file, skip = 12, col_names = FALSE)
+    file <- downloader(indicador)
   } else {
-    for (y in year:(year - 1)) {
-      for (m in names(meses)) {
-        for (y2 in year:(year - 1)) {
-          for (m2 in meses) {
-            for (d in 31:1) {
-              url <- glue::glue("https://www.creditopublico.gob.do/Content/estadisticas/{y}/{m}/{y2}{stringr::str_pad(m2, 2, pad = 0)}{stringr::str_pad(d, 2, pad = 0)}_salxacree.xlsx")
-              indicador[["original_url"]] <- url
-              res <- httr::GET(url)
-              if (!stringr::str_detect(res[["headers"]][["content-type"]], "text/html")) {
-                file2 <- downloader(indicador)
-                stop <- TRUE
-              }
-              if (stop) {
-                break
-              }
-            }
-            if (stop) {
-              break
-            }
-          }
-          if (stop) {
-            break
-          }
-        }
-        if (stop) {
-          break
-        }
-      }
-      if (stop) {
-        break
-      }
-    }
-    datos <- readxl::read_excel(file2, skip = 12, col_names = FALSE)
+    print("Local file...")
   }
+
+  datos <- readxl::read_excel(file, skip = 12, col_names = FALSE)
 
   datos <- datos[1:(match("RESUMEN", datos[[1]]) - 1), ]
 
