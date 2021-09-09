@@ -133,11 +133,11 @@ tipo_cambio_dolar_trim <- function(indicador = NULL, metadata = FALSE) {
         "max_changes" = indicador$max_changes,
         "var_info" =
           tibble::tribble(
-            ~col, ~name, ~unit, ~dtype,
-            "date", "Fecha", "Trimestral", "qdate",
-            "compra", "Precio de compra", "RD$/US$", "f2",
-            "venta", "Precio de venta", "RD$/US$", "f2",
-            "tipo", "Tipo de indicador", "", "text"
+            ~col, ~name, ~unit, ~dtype, ~key,
+            "date", "Fecha", "Trimestral", "qdate", 1,
+            "compra", "Precio de compra", "RD$/US$", "f2", 0,
+            "venta", "Precio de venta", "RD$/US$", "f2", 0,
+            "tipo", "Tipo de indicador", "", "text", 1
           )
       )
     )
@@ -326,7 +326,8 @@ poblacion_ocupada_ingresos_nivel_educativo <- function(indicador = NULL, metadat
   if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/mercado-de-trabajo/documents/3_5_Deciles_Educacion.xlsx",
-      file_ext = "xlsx"
+      file_ext = "xlsx",
+      max_changes = 15*11*2
     )
   }
   file <- "/mnt/c/Users/drdsd/Downloads/3_5_Deciles_Educacion.xlsx"
@@ -380,8 +381,9 @@ poblacion_ocupada_ingresos_nivel_educativo <- function(indicador = NULL, metadat
           !(nivel_educativo %in% c("Primario", "Secundario", "Universitario", "Ninguno"))~nivel_educativo
         ),
         indicador = dplyr::case_when(
-          indicador == "Total" ~ "Población",
-          TRUE ~ indicador
+          indicador == "Total" ~ "poblacion",
+          indicador == "Ingresos por Hora" ~ "ingresos",
+          indicador == "Horas Trabajadas" ~ "horas"
         ),
         nivel_educativo = dplyr::case_when(
           !(nivel_educativo %in% c("Primario", "Secundario", "Universitario", "Ninguno"))~"Total",
@@ -397,7 +399,24 @@ poblacion_ocupada_ingresos_nivel_educativo <- function(indicador = NULL, metadat
   dplyr::bind_rows(res) %>%
     tidyr::separate(quarter, c("quarter", "year"), " ") %>%
     Dmisc::vars_to_date(year = "year", quarter = "quarter") %>%
-    dplyr::relocate(valor, .after = "indicador")
+    dplyr::relocate(valor, .after = "indicador") -> datos
+
+  download_domar("ipc-mensual-2020") %>%
+    dplyr::select(date, indice) %>%
+    dplyr::mutate(
+      indice = indice*1.358727436,
+      year = lubridate::year(date),
+      quarter = lubridate::quarter(date)
+    ) %>%
+    dplyr::group_by(year, quarter) %>%
+    dplyr::summarise(ipc = mean(indice)) %>%
+    Dmisc::vars_to_date(year = "year", quarter = "quarter") -> ipc
+
+  datos %>%
+    tidyr::pivot_wider(names_from = "indicador", values_from = "valor") %>%
+    dplyr::left_join(ipc) %>%
+    dplyr::mutate(ingresos__real = ingresos/ipc*100) %>%
+    dplyr::select(-ipc)
 }
 
 
@@ -678,28 +697,30 @@ ipc_mensual_2010 <- function(indicador = NULL, metadata = FALSE) {
   if (metadata) {
     return(
       tibble::tribble(
-        ~col, ~name, ~unit, ~dtype,
-        "date", "Fecha", "Mensual", "mdate",
-        "indice", "IPC", "Índice", "f1",
-        "variacion_mensual", "Variación porcentual mensual", "Porcentaje (%)", "f1",
-        "variacion_con_diciembre", "Variación porcentual con diciembre", "Porcentaje (%)", "f1",
-        "variacion_anual", "Variación porcentual anual", "Porcentaje (%)", "f1",
-        "variacion_promedio_12_meses", "Variación promedio 12 meses", "Porcentaje (%)", "f1"
+        ~col, ~name, ~unit, ~dtype, ~key,
+        "date", "Fecha", "Mensual", "mdate", 1,
+        "indice", "IPC", "Índice", "f1", 0,
+        "variacion_mensual", "Variación porcentual mensual", "Porcentaje (%)", "f1", 0,
+        "variacion_con_diciembre", "Variación porcentual con diciembre", "Porcentaje (%)", "f1", 0,
+        "variacion_anual", "Variación porcentual anual", "Porcentaje (%)", "f1", 0,
+        "variacion_promedio_12_meses", "Variación promedio 12 meses", "Porcentaje (%)", "f1", 0
       )
     )
   }
   if (is.null(indicador)) {
     indicador <- c(
-      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/precios/documents/ipc_base_2019-2020.xls",
+      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/precios/documents/ipc_base_2010.xls",
       file_ext = "xls"
     )
   }
   `...2` <- NULL
   `...1` <- NULL
-  file <- "/mnt/c/Users/drdsd/Downloads/ipc_base_2019-2020.xls"
+  file <- "/mnt/c/Users/drdsd/Downloads/ipc_base_2010.xls"
   if (!file.exists(file)) {
     file <- downloader(indicador)
   }
+
+  readxl::read_excel(file, skip = 7, col_names = FALSE)
 }
 
 
