@@ -116,9 +116,9 @@ tipo_cambio_usd_dop_mensual <- function(...) tipo_cambio_dolar_mensual(...)
 #'
 #' @examples
 #' \dontrun{
-#' tipo_cambio_dolar_trim()
+#' tipo_cambio_usd_dop_trim()
 #' }
-tipo_cambio_dolar_trim <- function(indicador = NULL, metadata = FALSE) {
+tipo_cambio_usd_dop_trim <- function(indicador = NULL, metadata = FALSE) {
   if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/mercado-cambiario/documents/TASA_DOLAR_REFERENCIA_MC.xls",
@@ -162,7 +162,7 @@ tipo_cambio_dolar_trim <- function(indicador = NULL, metadata = FALSE) {
 
 #' @rdname tipo_cambio_dolar_trim
 #' @export
-tipo_cambio_usd_dop_trim <- function(...) tipo_cambio_dolar_trim(...)
+tipo_cambio_dolar_trim <- function(...) tipo_cambio_dolar_trim(...)
 
 
 #' Tipo de cambio dólar anual
@@ -417,6 +417,8 @@ poblacion_ocupada_ingresos_nivel_educativo <- function(indicador = NULL, metadat
     dplyr::left_join(ipc) %>%
     dplyr::mutate(ingresos__real = ingresos/ipc*100) %>%
     dplyr::select(-ipc)
+
+  download_domar("")
 }
 
 
