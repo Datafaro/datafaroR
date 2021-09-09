@@ -19,6 +19,6 @@ tasas_interes_activas_bm_2017(indicador = NULL, metadata = FALSE)
 }
 \examples{
 \dontrun{
-  tasas_interes_activas_bm_2017()
+tasas_interes_activas_bm_2017()
 }
 }

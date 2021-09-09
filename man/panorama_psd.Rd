@@ -19,6 +19,6 @@ panorama_psd(indicador = NULL, metadata = FALSE)
 }
 \examples{
 \dontrun{
-  panorama_psd()
+panorama_psd()
 }
 }

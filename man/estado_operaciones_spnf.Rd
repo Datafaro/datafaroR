@@ -19,6 +19,6 @@ estado_operaciones_spnf(indicador = NULL, metadata = FALSE)
 }
 \examples{
 \dontrun{
-  estado_operaciones_spnf()
+estado_operaciones_spnf()
 }
 }

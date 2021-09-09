@@ -19,6 +19,6 @@ imae_mensual(indicador = NULL, metadata = FALSE)
 }
 \examples{
 \dontrun{
-  imae_mensual(indicador)
+imae_mensual(indicador)
 }
 }

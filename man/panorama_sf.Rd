@@ -19,6 +19,6 @@ panorama_sf(indicador = NULL, metadata = FALSE)
 }
 \examples{
 \dontrun{
-  panorama_sf()
+panorama_sf()
 }
 }

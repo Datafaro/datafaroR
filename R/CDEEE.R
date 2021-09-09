@@ -135,7 +135,7 @@ informe_desempeno_sector_energetico_edes <- function(indicador = NULL, metadata 
     indicador <- c(
       original_url = "https://cdeee.gob.do/transparencia/informes-del-sector-energetico/",
       file_ext = "html",
-      max_changes = 38 * 2
+      max_changes = 168 * 2
     )
   }
 

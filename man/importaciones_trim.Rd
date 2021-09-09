@@ -19,6 +19,6 @@ importaciones_trim(indicador = NULL, metadata = FALSE)
 }
 \examples{
 \dontrun{
-  importaciones_trim()
+importaciones_trim()
 }
 }

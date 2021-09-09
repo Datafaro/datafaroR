@@ -19,6 +19,6 @@ balance_osd_resumen(indicador = NULL, metadata = FALSE)
 }
 \examples{
 \dontrun{
-  balance_osd_resumen()
+balance_osd_resumen()
 }
 }

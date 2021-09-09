@@ -22,6 +22,6 @@ tipo_cambio_usd_dop_trim(...)
 }
 \examples{
 \dontrun{
-  tipo_cambio_dolar_trim()
+tipo_cambio_dolar_trim()
 }
 }

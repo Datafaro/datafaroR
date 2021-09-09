@@ -19,6 +19,6 @@ ipc_anualizado(indicador = NULL, metadata = FALSE)
 }
 \examples{
 \dontrun{
-  ipc_anualizado()
+ipc_anualizado()
 }
 }

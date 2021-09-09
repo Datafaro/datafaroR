@@ -19,6 +19,6 @@ indicadores_osd(indicador = NULL, metadata = FALSE)
 }
 \examples{
 \dontrun{
-  indicadores_osd()
+indicadores_osd()
 }
 }

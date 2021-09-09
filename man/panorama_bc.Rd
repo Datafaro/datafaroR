@@ -19,6 +19,6 @@ panorama_bc(indicador = NULL, metadata = FALSE)
 }
 \examples{
 \dontrun{
-  panorama_bc()
+panorama_bc()
 }
 }

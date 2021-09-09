@@ -19,6 +19,6 @@ balanza_pagos_trim(indicador = NULL, metadata = FALSE)
 }
 \examples{
 \dontrun{
-  balanza_pagos_trim()
+balanza_pagos_trim()
 }
 }

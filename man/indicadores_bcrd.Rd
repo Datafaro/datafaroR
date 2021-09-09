@@ -19,6 +19,6 @@ indicadores_bcrd(indicador = NULL, metadata = FALSE)
 }
 \examples{
 \dontrun{
-  indicadores_bcrd()
+indicadores_bcrd()
 }
 }

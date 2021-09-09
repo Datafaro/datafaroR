@@ -19,6 +19,6 @@ ipc_transables_no_transables(indicador = NULL, metadata = FALSE)
 }
 \examples{
 \dontrun{
-  ipc_transables_no_transables()
+ipc_transables_no_transables()
 }
 }

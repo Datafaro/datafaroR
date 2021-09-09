@@ -19,6 +19,6 @@ pib_per_capita(indicador = NULL, metadata = FALSE)
 }
 \examples{
 \dontrun{
-  pib_per_capita()
+pib_per_capita()
 }
 }

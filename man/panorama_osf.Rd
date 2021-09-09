@@ -19,6 +19,6 @@ panorama_osf(indicador = NULL, metadata = FALSE)
 }
 \examples{
 \dontrun{
-  panorama_osf()
+panorama_osf()
 }
 }

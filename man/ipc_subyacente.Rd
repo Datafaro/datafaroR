@@ -19,6 +19,6 @@ ipc_subyacente(indicador = NULL, metadata = FALSE)
 }
 \examples{
 \dontrun{
-  ipc_subyacente()
+ipc_subyacente()
 }
 }

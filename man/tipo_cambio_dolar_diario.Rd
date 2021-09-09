@@ -22,6 +22,6 @@ tipo_cambio_usd_dop_diario(...)
 }
 \examples{
 \dontrun{
-  tipo_cambio_dolar_diario()
+tipo_cambio_dolar_diario()
 }
 }

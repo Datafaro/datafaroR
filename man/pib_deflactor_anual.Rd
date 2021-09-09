@@ -19,6 +19,6 @@ pib_deflactor_anual(indicador = NULL)
 }
 \examples{
 \dontrun{
-  pib_deflactor_anual()
+pib_deflactor_anual()
 }
 }

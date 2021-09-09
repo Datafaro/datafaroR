@@ -19,6 +19,6 @@ inflacion_promedio_12_meses(indicador = NULL, metadata = FALSE)
 }
 \examples{
 \dontrun{
-  inflacion_promedio_12_meses()
+inflacion_promedio_12_meses()
 }
 }

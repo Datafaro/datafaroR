@@ -19,6 +19,6 @@ resumen_indicadores_mercado_laboral(indicador = NULL, metadata = FALSE)
 }
 \examples{
 \dontrun{
-  resumen_indicadores_mercado_laboral()
+resumen_indicadores_mercado_laboral()
 }
 }

@@ -19,6 +19,6 @@ balanza_pagos_anual(indicador = NULL, metadata = FALSE)
 }
 \examples{
 \dontrun{
-  balanza_pagos_anual()
+balanza_pagos_anual()
 }
 }

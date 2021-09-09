@@ -14,10 +14,10 @@
 #'
 #' @examples
 #' \dontrun{
-#'   tipo_cambio_dolar_diario()
+#' tipo_cambio_dolar_diario()
 #' }
-tipo_cambio_dolar_diario <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
+tipo_cambio_dolar_diario <- function(indicador = NULL, metadata = FALSE) {
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype,
@@ -27,7 +27,7 @@ tipo_cambio_dolar_diario <- function(indicador = NULL, metadata = FALSE){
       )
     )
   }
-  if(is.null(indicador)){
+  if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/mercado-cambiario/documents/TASA_DOLAR_REFERENCIA_MC.xls",
       file_ext = "xls"
@@ -62,10 +62,10 @@ tipo_cambio_usd_dop_diario <- function(...) tipo_cambio_dolar_diario(...)
 #'
 #' @examples
 #' \dontrun{
-#'   tipo_cambio_dolar_mensual()
+#' tipo_cambio_dolar_mensual()
 #' }
-tipo_cambio_dolar_mensual <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
+tipo_cambio_dolar_mensual <- function(indicador = NULL, metadata = FALSE) {
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype, ~key,
@@ -76,7 +76,7 @@ tipo_cambio_dolar_mensual <- function(indicador = NULL, metadata = FALSE){
       )
     )
   }
-  if(is.null(indicador)){
+  if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/mercado-cambiario/documents/TASA_DOLAR_REFERENCIA_MC.xls",
       file_ext = "xls"
@@ -116,17 +116,17 @@ tipo_cambio_usd_dop_mensual <- function(...) tipo_cambio_dolar_mensual(...)
 #'
 #' @examples
 #' \dontrun{
-#'   tipo_cambio_dolar_trim()
+#' tipo_cambio_dolar_trim()
 #' }
-tipo_cambio_dolar_trim <- function(indicador = NULL, metadata = FALSE){
-  if(is.null(indicador)){
+tipo_cambio_dolar_trim <- function(indicador = NULL, metadata = FALSE) {
+  if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/mercado-cambiario/documents/TASA_DOLAR_REFERENCIA_MC.xls",
       file_ext = "xls",
       max_changes = 4
     )
   }
-  if(metadata){
+  if (metadata) {
     return(
       list(
         "kvars" = c("date", "tipo"),
@@ -178,10 +178,10 @@ tipo_cambio_usd_dop_trim <- function(...) tipo_cambio_dolar_trim(...)
 #'
 #' @examples
 #' \dontrun{
-#'   tipo_cambio_dolar_anual()
+#' tipo_cambio_dolar_anual()
 #' }
-tipo_cambio_dolar_anual <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
+tipo_cambio_dolar_anual <- function(indicador = NULL, metadata = FALSE) {
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype,
@@ -192,7 +192,7 @@ tipo_cambio_dolar_anual <- function(indicador = NULL, metadata = FALSE){
       )
     )
   }
-  if(is.null(indicador)){
+  if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/mercado-cambiario/documents/TASA_DOLAR_REFERENCIA_MC.xls",
       file_ext = "xls"
@@ -236,10 +236,10 @@ tipo_cambio_usd_dop_anual <- function(...) tipo_cambio_dolar_anual(...)
 #'
 #' @examples
 #' \dontrun{
-#'   resumen_indicadores_mercado_laboral()
+#' resumen_indicadores_mercado_laboral()
 #' }
-resumen_indicadores_mercado_laboral <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
+resumen_indicadores_mercado_laboral <- function(indicador = NULL, metadata = FALSE) {
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype, ~key,
@@ -251,7 +251,7 @@ resumen_indicadores_mercado_laboral <- function(indicador = NULL, metadata = FAL
       )
     )
   }
-  if(is.null(indicador)){
+  if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/mercado-de-trabajo/documents/00_Indicadores.xlsx",
       file_ext = "xls"
@@ -282,7 +282,7 @@ resumen_indicadores_mercado_laboral <- function(indicador = NULL, metadata = FAL
     t() %>%
     as.data.frame() -> datos
 
-  datos[1,1] <- "indicador"
+  datos[1, 1] <- "indicador"
 
   datos %>%
     janitor::row_to_names(1) %>%
@@ -290,6 +290,114 @@ resumen_indicadores_mercado_laboral <- function(indicador = NULL, metadata = FAL
     dplyr::relocate(orden, nivel) %>%
     tidyr::pivot_longer(-c(1:3), names_to = "date", values_to = "valor") %>%
     type.convert(as.is = TRUE)
+}
+
+
+
+
+#' Población ocupada perceptora de ingresos según nivel educativo
+#'
+#'  \lifecycle{experimental}
+#'
+#' @param indicador Vea \code{\link{downloader}}
+#' @param metadata indica si se retornan los datos o la metadata del indicador
+#'
+#' @return [data.frame]: los datos del indicador en forma tabular
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' poblacion_ocupada_ingresos_nivel_educativo()
+#' }
+poblacion_ocupada_ingresos_nivel_educativo <- function(indicador = NULL, metadata = FALSE) {
+  if (metadata) {
+    return(
+      tibble::tribble(
+        ~col, ~name, ~unit, ~dtype, ~key,
+        "date", "Fecha", "Trimestral", "qdate", 1,
+        "nivel_educativo", "Nivel educativo", "", "text", 0,
+        "decil", "Decil", "", "text", 1,
+        "indicador", "Indicador", "", "text", 1,
+        "valor", "Valor", "", "f1", 0
+      )
+    )
+  }
+  if (is.null(indicador)) {
+    indicador <- c(
+      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/mercado-de-trabajo/documents/3_5_Deciles_Educacion.xlsx",
+      file_ext = "xlsx"
+    )
+  }
+  file <- "/mnt/c/Users/drdsd/Downloads/3_5_Deciles_Educacion.xlsx"
+  if (!file.exists(file)) {
+    file <- downloader(indicador)
+  }else{
+    print("Local file...")
+  }
+
+  datos0 <- readxl::read_excel(file, col_names = F)
+
+  rows <- datos0[["...1"]] %>%
+    stringr::str_detect("Trimestre: ")
+
+  row_names <- rownames(datos0)[rows] %>%
+    as.numeric()
+
+  row_names <- row_names[!is.na(row_names)]
+
+  datos0[row_names, 1] %>%
+    dplyr::mutate(
+      ...1 = stringr::str_remove(...1, "Trimestre: ")
+    ) %>%
+    tidyr::separate(...1, c("m1", "m2"), " - ") %>%
+    tidyr::separate(m1, c("m1", "a1"), " ") %>%
+    tidyr::separate(m2, c("m2", "a2"), " ") %>%
+    dplyr::mutate(trim = paste0(m1, "-", m2, " ", a2)) %>%
+    dplyr::pull(trim) -> trims
+
+  res <- list()
+  for (rn in seq_along(row_names)) {
+    row0 <- datos0[(row_names[rn] + 3):(row_names[rn] + 24), ] %>%
+      tidyr::drop_na(...3)
+    row0[1,1] <- "nivel_educativo"
+
+    rowa <- row0[, 1:2] %>%
+      dplyr::slice(-1) %>%
+      setNames(c("nivel_educativo", "valor")) %>%
+      type.convert(as.is=TRUE) %>%
+      dplyr::mutate(decil = "Total")
+
+    rowb <- row0[,-2] %>%
+      janitor::row_to_names(1) %>%
+      type.convert(as.is = TRUE) %>%
+      tidyr::pivot_longer(-1, names_to = "decil", values_to = "valor") %>%
+      dplyr::mutate(decil = paste0("Decil ", decil))
+
+    row <- dplyr::bind_rows(rowa, rowb) %>%
+      dplyr::mutate(
+        indicador = dplyr::case_when(
+          !(nivel_educativo %in% c("Primario", "Secundario", "Universitario", "Ninguno"))~nivel_educativo
+        ),
+        indicador = dplyr::case_when(
+          indicador == "Total" ~ "Población",
+          TRUE ~ indicador
+        ),
+        nivel_educativo = dplyr::case_when(
+          !(nivel_educativo %in% c("Primario", "Secundario", "Universitario", "Ninguno"))~"Total",
+          TRUE ~ nivel_educativo
+        ),
+        quarter = trims[rn]
+        ) %>%
+      tidyr::fill(indicador)
+
+    res[[paste0("row", rn)]] <- row
+  }
+
+  dplyr::bind_rows(res) %>%
+    tidyr::separate(quarter, c("quarter", "year"), " ") %>%
+    Dmisc::vars_to_date(year = "year", quarter = "quarter") %>%
+    dplyr::relocate(valor, .after = "indicador")
 }
 
 
@@ -309,24 +417,24 @@ resumen_indicadores_mercado_laboral <- function(indicador = NULL, metadata = FAL
 #'
 #' @examples
 #' \dontrun{
-#'   ipc_mensual_2020()
+#' ipc_mensual_2020()
 #' }
-ipc_mensual_2020 <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
+ipc_mensual_2020 <- function(indicador = NULL, metadata = FALSE) {
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype, ~key,
-        "date", "Fecha", "Mensual", "mdate",1,
-        "indice", "IPC", "Índice", "f1",0,
-        "indice__tc", "Tasa de crecimiento mensual", "Porcentaje (%)", "f1",0,
-        "indice__tcd", "Tasa de crecimiento con diciembre", "Porcentaje (%)", "f1",0,
-        "indice__tci", "Tasa de crecimiento interanual", "Porcentaje (%)", "f1",0,
-        "indice__tc12meses", "Tasa de crecimiento promedio 12 meses", "Porcentaje (%)", "f1",0
+        "date", "Fecha", "Mensual", "mdate", 1,
+        "indice", "IPC", "Índice", "f1", 0,
+        "indice__tc", "Tasa de crecimiento mensual", "Porcentaje (%)", "f1", 0,
+        "indice__tcd", "Tasa de crecimiento con diciembre", "Porcentaje (%)", "f1", 0,
+        "indice__tci", "Tasa de crecimiento interanual", "Porcentaje (%)", "f1", 0,
+        "indice__tc12meses", "Tasa de crecimiento promedio 12 meses", "Porcentaje (%)", "f1", 0
       )
     )
   }
-  if(is.null(indicador)){
-    indicador = c(
+  if (is.null(indicador)) {
+    indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/precios/documents/ipc_base_2019-2020.xls",
       file_ext = "xls"
     )
@@ -340,14 +448,16 @@ ipc_mensual_2020 <- function(indicador = NULL, metadata = FALSE){
   datos <- readxl::read_excel(file, col_names = F)
   datos <- tidyr::drop_na(datos, ...2)
   datos <- tidyr::fill(datos, ...1)
-  datos <- datos[,1:7]
-  names(datos) <- c('ano',
-                    'mes',
-                    'indice',
-                    'indice__tc',
-                    'indice__tcd',
-                    'indice__tci',
-                    'indice__tc12meses')
+  datos <- datos[, 1:7]
+  names(datos) <- c(
+    "ano",
+    "mes",
+    "indice",
+    "indice__tc",
+    "indice__tcd",
+    "indice__tci",
+    "indice__tc12meses"
+  )
   datos <- Dmisc::vars_to_date(datos, year = 1, month = 2)
   datos %>%
     type.convert(as.is = T)
@@ -367,10 +477,10 @@ ipc_mensual_2020 <- function(indicador = NULL, metadata = FALSE){
 #'
 #' @examples
 #' \dontrun{
-#'   ipc_anualizado()
+#' ipc_anualizado()
 #' }
-ipc_anualizado <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
+ipc_anualizado <- function(indicador = NULL, metadata = FALSE) {
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype,
@@ -382,7 +492,7 @@ ipc_anualizado <- function(indicador = NULL, metadata = FALSE){
       )
     )
   }
-  if(is.null(indicador)){
+  if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/precios/documents/ipc_anual_base_2019-2020.xls",
       file_ext = "xls"
@@ -413,10 +523,10 @@ ipc_anualizado <- function(indicador = NULL, metadata = FALSE){
 #'
 #' @examples
 #' \dontrun{
-#'   inflacion_promedio_12_meses()
+#' inflacion_promedio_12_meses()
 #' }
-inflacion_promedio_12_meses <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
+inflacion_promedio_12_meses <- function(indicador = NULL, metadata = FALSE) {
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype,
@@ -427,7 +537,7 @@ inflacion_promedio_12_meses <- function(indicador = NULL, metadata = FALSE){
       )
     )
   }
-  if(is.null(indicador)){
+  if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/precios/documents/ipc_anual_1947_2020.xls",
       file_ext = "xls"
@@ -437,10 +547,11 @@ inflacion_promedio_12_meses <- function(indicador = NULL, metadata = FALSE){
   if (!file.exists(file)) {
     file <- downloader(indicador)
   }
-  readxl::read_excel(file, skip = 6, col_names = F)[,1:4] %>%
+  readxl::read_excel(file, skip = 6, col_names = F)[, 1:4] %>%
     dplyr::mutate(
       dplyr::across(
-        dplyr::everything(), .fns = as.numeric
+        dplyr::everything(),
+        .fns = as.numeric
       )
     ) %>%
     tidyr::drop_na(...1) %>%
@@ -462,10 +573,10 @@ inflacion_promedio_12_meses <- function(indicador = NULL, metadata = FALSE){
 #'
 #' @examples
 #' \dontrun{
-#'   ipc_subyacente()
+#' ipc_subyacente()
 #' }
-ipc_subyacente <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
+ipc_subyacente <- function(indicador = NULL, metadata = FALSE) {
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype,
@@ -477,7 +588,7 @@ ipc_subyacente <- function(indicador = NULL, metadata = FALSE){
       )
     )
   }
-  if(is.null(indicador)){
+  if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/precios/documents/ipc_subyacente_base_2019-2020.xlsx",
       file_ext = "xlsx"
@@ -487,7 +598,7 @@ ipc_subyacente <- function(indicador = NULL, metadata = FALSE){
   if (!file.exists(file)) {
     file <- downloader(indicador)
   }
-  readxl::read_excel(file, skip = 5, col_names = F)[,1:6] %>%
+  readxl::read_excel(file, skip = 5, col_names = F)[, 1:6] %>%
     tidyr::drop_na(...2) %>%
     tidyr::fill(...1) %>%
     setNames(c("ano", "mes", "ipc", "inflacion_mensual", "inflacion_acumulada", "inflacion_anualizada")) %>%
@@ -509,10 +620,10 @@ ipc_subyacente <- function(indicador = NULL, metadata = FALSE){
 #'
 #' @examples
 #' \dontrun{
-#'   ipc_transables_no_transables()
+#' ipc_transables_no_transables()
 #' }
-ipc_transables_no_transables <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
+ipc_transables_no_transables <- function(indicador = NULL, metadata = FALSE) {
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype,
@@ -524,7 +635,7 @@ ipc_transables_no_transables <- function(indicador = NULL, metadata = FALSE){
       )
     )
   }
-  if(is.null(indicador)){
+  if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/precios/documents/ipc_tnt_base_2019-2020.xls",
       file_ext = "xls"
@@ -538,18 +649,18 @@ ipc_transables_no_transables <- function(indicador = NULL, metadata = FALSE){
     tidyr::drop_na(...2) %>%
     dplyr::filter(!stringr::str_detect(...2, "[0-9]"))
 
-  ipc[,1:5] %>%
+  ipc[, 1:5] %>%
     dplyr::mutate(
       grupo = "IPC General"
     ) %>%
     dplyr::bind_rows(
-      ipc[,c(1,2,6:8)] %>%
+      ipc[, c(1, 2, 6:8)] %>%
         dplyr::mutate(
           grupo = "Bienes transables"
         )
     ) %>%
     dplyr::bind_rows(
-      ipc[,c(1,2,9:11)] %>%
+      ipc[, c(1, 2, 9:11)] %>%
         dplyr::mutate(
           grupo = "Bienes no transables"
         )
@@ -563,8 +674,8 @@ ipc_transables_no_transables <- function(indicador = NULL, metadata = FALSE){
 }
 
 
-ipc_mensual_2010 <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
+ipc_mensual_2010 <- function(indicador = NULL, metadata = FALSE) {
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype,
@@ -577,8 +688,8 @@ ipc_mensual_2010 <- function(indicador = NULL, metadata = FALSE){
       )
     )
   }
-  if(is.null(indicador)){
-    indicador = c(
+  if (is.null(indicador)) {
+    indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/precios/documents/ipc_base_2019-2020.xls",
       file_ext = "xls"
     )
@@ -610,10 +721,10 @@ ipc_mensual_2010 <- function(indicador = NULL, metadata = FALSE){
 #'
 #' @examples
 #' \dontrun{
-#'   balanza_pagos_anual()
+#' balanza_pagos_anual()
 #' }
-balanza_pagos_anual <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
+balanza_pagos_anual <- function(indicador = NULL, metadata = FALSE) {
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype, ~key,
@@ -626,7 +737,7 @@ balanza_pagos_anual <- function(indicador = NULL, metadata = FALSE){
       )
     )
   }
-  if(is.null(indicador)){
+  if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-externo/documents/bpagos_6.xls",
       file_ext = "xls"
@@ -646,11 +757,11 @@ balanza_pagos_anual <- function(indicador = NULL, metadata = FALSE){
     type.convert(as.is = T) %>%
     dplyr::left_join(
       download_domar("pib-gasto-anual") %>%
-    dplyr::filter(orden == 9) %>%
-    dplyr::select(ano, pib = pib__usd)
+        dplyr::filter(orden == 9) %>%
+        dplyr::select(ano, pib = pib__usd)
     ) %>%
     dplyr::mutate(
-      valor__ppib = valor/pib*100
+      valor__ppib = valor / pib * 100
     ) %>%
     dplyr::select(-pib)
 }
@@ -669,10 +780,10 @@ balanza_pagos_anual <- function(indicador = NULL, metadata = FALSE){
 #'
 #' @examples
 #' \dontrun{
-#'   balanza_pagos_trim()
+#' balanza_pagos_trim()
 #' }
-balanza_pagos_trim <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
+balanza_pagos_trim <- function(indicador = NULL, metadata = FALSE) {
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype, ~key,
@@ -690,7 +801,7 @@ balanza_pagos_trim <- function(indicador = NULL, metadata = FALSE){
       )
     )
   }
-  if(is.null(indicador)){
+  if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-externo/documents/bpagos__trim_6.xls",
       file_ext = "xls"
@@ -743,16 +854,16 @@ balanza_pagos_trim <- function(indicador = NULL, metadata = FALSE){
         dplyr::select(date, pib__usd, pib_acumulado__usd)
     ) %>%
     dplyr::mutate(
-      valor__ppib = valor/pib__usd*100,
-      valor_acumulado__ppib = valor_acumulado/pib_acumulado__usd*100
+      valor__ppib = valor / pib__usd * 100,
+      valor_acumulado__ppib = valor_acumulado / pib_acumulado__usd * 100
     ) %>%
     dplyr::select(-pib__usd, -pib_acumulado__usd) %>%
     dplyr::group_by(conceptos) %>%
     dplyr::arrange(conceptos, date) %>%
     dplyr::mutate(
-      valor__tc = (valor/dplyr::lag(valor)-1)*100,
-      valor__tci = (valor/dplyr::lag(valor, 4)-1)*100,
-      valor_acumulado__tci = (valor_acumulado/dplyr::lag(valor_acumulado, 4)-1)*100
+      valor__tc = (valor / dplyr::lag(valor) - 1) * 100,
+      valor__tci = (valor / dplyr::lag(valor, 4) - 1) * 100,
+      valor_acumulado__tci = (valor_acumulado / dplyr::lag(valor_acumulado, 4) - 1) * 100
     ) %>%
     dplyr::ungroup() %>%
     dplyr::arrange(orden, nivel)
@@ -772,10 +883,10 @@ balanza_pagos_trim <- function(indicador = NULL, metadata = FALSE){
 #'
 #' @examples
 #' \dontrun{
-#'   exportaciones_trim()
+#' exportaciones_trim()
 #' }
-exportaciones_trim <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
+exportaciones_trim <- function(indicador = NULL, metadata = FALSE) {
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype,
@@ -788,11 +899,11 @@ exportaciones_trim <- function(indicador = NULL, metadata = FALSE){
       )
     )
   }
-  if(is.null(indicador)){
+  if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-externo/documents/Exportaciones_Trimestrales_6.xls",
       file_ext = "xls",
-      max_changes = 64*4
+      max_changes = 64 * 4
     )
   }
   file <- "/mnt/c/Users/drdsd/Downloads/Exportaciones_Trimestrales_6.xls"
@@ -834,10 +945,10 @@ exportaciones_trim <- function(indicador = NULL, metadata = FALSE){
 #'
 #' @examples
 #' \dontrun{
-#'   exportaciones_anual()
+#' exportaciones_anual()
 #' }
-exportaciones_anual <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
+exportaciones_anual <- function(indicador = NULL, metadata = FALSE) {
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype,
@@ -850,7 +961,7 @@ exportaciones_anual <- function(indicador = NULL, metadata = FALSE){
       )
     )
   }
-  if(is.null(indicador)){
+  if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-externo/documents/Exportaciones_Anuales_6.xls",
       file_ext = "xls"
@@ -884,10 +995,10 @@ exportaciones_anual <- function(indicador = NULL, metadata = FALSE){
 #'
 #' @examples
 #' \dontrun{
-#'   importaciones_trim()
+#' importaciones_trim()
 #' }
-importaciones_trim <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
+importaciones_trim <- function(indicador = NULL, metadata = FALSE) {
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype,
@@ -900,11 +1011,11 @@ importaciones_trim <- function(indicador = NULL, metadata = FALSE){
       )
     )
   }
-  if(is.null(indicador)){
+  if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-externo/documents/Importaciones_Trimestrales_6.xls",
       file_ext = "xls",
-      max_changes = 54*5
+      max_changes = 54 * 5
     )
   }
   file <- "/mnt/c/Users/drdsd/Downloads/Importaciones_Trimestrales_6.xls"
@@ -947,10 +1058,10 @@ importaciones_trim <- function(indicador = NULL, metadata = FALSE){
 #'
 #' @examples
 #' \dontrun{
-#'   importaciones_anual()
+#' importaciones_anual()
 #' }
-importaciones_anual <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
+importaciones_anual <- function(indicador = NULL, metadata = FALSE) {
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype,
@@ -963,7 +1074,7 @@ importaciones_anual <- function(indicador = NULL, metadata = FALSE){
       )
     )
   }
-  if(is.null(indicador)){
+  if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-externo/documents/Importaciones_Anuales_6.xls",
       file_ext = "xls"
@@ -1002,17 +1113,17 @@ importaciones_anual <- function(indicador = NULL, metadata = FALSE){
 #'
 #' @examples
 #' \dontrun{
-#'   estado_operaciones_spnf()
+#' estado_operaciones_spnf()
 #' }
-estado_operaciones_spnf <- function(indicador = NULL, metadata = FALSE){
-  if(is.null(indicador)){
+estado_operaciones_spnf <- function(indicador = NULL, metadata = FALSE) {
+  if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/documents/Operaciones_Mensual.xlsx",
       file_ext = "xlsx",
-      max_changes = 108*55
+      max_changes = 108 * 55
     )
   }
-  if(metadata){
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype, ~key,
@@ -1040,7 +1151,7 @@ estado_operaciones_spnf <- function(indicador = NULL, metadata = FALSE){
     dplyr::select(-...1) %>%
     tidyr::drop_na(...2)
 
-  datos[1:2,1] <- c("1900", "Enero")
+  datos[1:2, 1] <- c("1900", "Enero")
   datos <- datos %>%
     t() %>%
     as.data.frame() %>%
@@ -1050,16 +1161,16 @@ estado_operaciones_spnf <- function(indicador = NULL, metadata = FALSE){
     ) %>%
     dplyr::filter(
       !stringr::str_detect(V2, "-")
-    )%>%
+    ) %>%
     Dmisc::vars_to_date(year = 1, month = 2) %>%
     t() %>%
     as.data.frame()
 
-  datos[1,1] <- "operacion"
+  datos[1, 1] <- "operacion"
 
   datos %>%
     janitor::row_to_names(1) %>%
-    dplyr::bind_cols(nvl_estado_operaciones_spnf %>% dplyr::select(-operacion))%>%
+    dplyr::bind_cols(nvl_estado_operaciones_spnf %>% dplyr::select(-operacion)) %>%
     dplyr::relocate(orden, nivel) %>%
     tidyr::pivot_longer(-c(orden, nivel, operacion), names_to = "date", values_to = "valor") %>%
     type.convert(as.is = TRUE)
@@ -1096,10 +1207,10 @@ estado_operaciones_spnf <- function(indicador = NULL, metadata = FALSE){
 #'
 #' @examples
 #' \dontrun{
-#'   balance_osd_resumen()
+#' balance_osd_resumen()
 #' }
-balance_osd_resumen <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
+balance_osd_resumen <- function(indicador = NULL, metadata = FALSE) {
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype,
@@ -1122,7 +1233,7 @@ balance_osd_resumen <- function(indicador = NULL, metadata = FALSE){
       )
     )
   }
-  if(is.null(indicador)){
+  if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/balance_osd_resumen.xls",
       file_ext = "xls",
@@ -1136,12 +1247,14 @@ balance_osd_resumen <- function(indicador = NULL, metadata = FALSE){
   readxl::read_excel(file) %>%
     tidyr::drop_na(...2) %>%
     Dmisc::vars_to_date(year = 1, month = 2) %>%
-    setNames(c("date", "activos_billetes_monedas", "activos_depositos", "activos_vda",
-               "activos_prestamos", "activos_acciones_opc",
-               "activos_otros_financieros", "activos_no_financieros", "activos_total",
-               "pyc_depositos_idsa", "pyc_depositos_edsa", "pyc_vda", "pyc_prestamos",
-               "pyc_otros_pasivos", "pyc_acciones_opc", "pyc_total")) %>%
-    type.convert(as.is=TRUE)
+    setNames(c(
+      "date", "activos_billetes_monedas", "activos_depositos", "activos_vda",
+      "activos_prestamos", "activos_acciones_opc",
+      "activos_otros_financieros", "activos_no_financieros", "activos_total",
+      "pyc_depositos_idsa", "pyc_depositos_edsa", "pyc_vda", "pyc_prestamos",
+      "pyc_otros_pasivos", "pyc_acciones_opc", "pyc_total"
+    )) %>%
+    type.convert(as.is = TRUE)
 }
 
 
@@ -1159,10 +1272,10 @@ balance_osd_resumen <- function(indicador = NULL, metadata = FALSE){
 #'
 #' @examples
 #' \dontrun{
-#'   balance_isi_activos()
+#' balance_isi_activos()
 #' }
-balance_isi_activos <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
+balance_isi_activos <- function(indicador = NULL, metadata = FALSE) {
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype,
@@ -1189,7 +1302,7 @@ balance_isi_activos <- function(indicador = NULL, metadata = FALSE){
       )
     )
   }
-  if(is.null(indicador)){
+  if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/balance_osd_activos.xls",
       file_ext = "xls",
@@ -1203,14 +1316,16 @@ balance_isi_activos <- function(indicador = NULL, metadata = FALSE){
   readxl::read_excel(file) %>%
     tidyr::drop_na(...2) %>%
     Dmisc::vars_to_date(year = 1, month = 2) %>%
-    setNames(c("date", "bmd_no_residentes", "bmd_banco_central", "bmd_osd",
-               "bmd_otros_sectores", "vda_no_residentes", "vda_banco_central",
-               "vda_gobierno_central", "vda_osnf", "vda_otros_sectores",
-               "prestamos_no_residentes", "prestamos_osd", "prestamos_osf",
-               "prestamos_gobierno_central", "prestamos_gel", "prestamos_spnf",
-               "prestamos_osnf", "prestamos_hogares_isflsh", "otros_activos",
-               "total_activos")) %>%
-    type.convert(as.is=TRUE)
+    setNames(c(
+      "date", "bmd_no_residentes", "bmd_banco_central", "bmd_osd",
+      "bmd_otros_sectores", "vda_no_residentes", "vda_banco_central",
+      "vda_gobierno_central", "vda_osnf", "vda_otros_sectores",
+      "prestamos_no_residentes", "prestamos_osd", "prestamos_osf",
+      "prestamos_gobierno_central", "prestamos_gel", "prestamos_spnf",
+      "prestamos_osnf", "prestamos_hogares_isflsh", "otros_activos",
+      "total_activos"
+    )) %>%
+    type.convert(as.is = TRUE)
 }
 
 
@@ -1228,10 +1343,10 @@ balance_isi_activos <- function(indicador = NULL, metadata = FALSE){
 #'
 #' @examples
 #' \dontrun{
-#'   balance_isi_activos_mn()
+#' balance_isi_activos_mn()
 #' }
-balance_isi_activos_mn <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
+balance_isi_activos_mn <- function(indicador = NULL, metadata = FALSE) {
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype,
@@ -1258,7 +1373,7 @@ balance_isi_activos_mn <- function(indicador = NULL, metadata = FALSE){
       )
     )
   }
-  if(is.null(indicador)){
+  if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/balance_osd_activos_mn.xls",
       file_ext = "xls",
@@ -1272,14 +1387,16 @@ balance_isi_activos_mn <- function(indicador = NULL, metadata = FALSE){
   readxl::read_excel(file) %>%
     tidyr::drop_na(...2) %>%
     Dmisc::vars_to_date(year = 1, month = 2) %>%
-    setNames(c("date", "bmd_no_residentes", "bmd_banco_central", "bmd_osd",
-               "bmd_otros_sectores", "vda_no_residentes", "vda_banco_central",
-               "vda_gobierno_central", "vda_osnf", "vda_otros_sectores",
-               "prestamos_no_residentes", "prestamos_osd", "prestamos_osf",
-               "prestamos_gobierno_central", "prestamos_gel", "prestamos_spnf",
-               "prestamos_osnf", "prestamos_hogares_isflsh", "otros_activos",
-               "total_activos")) %>%
-    type.convert(as.is=TRUE)
+    setNames(c(
+      "date", "bmd_no_residentes", "bmd_banco_central", "bmd_osd",
+      "bmd_otros_sectores", "vda_no_residentes", "vda_banco_central",
+      "vda_gobierno_central", "vda_osnf", "vda_otros_sectores",
+      "prestamos_no_residentes", "prestamos_osd", "prestamos_osf",
+      "prestamos_gobierno_central", "prestamos_gel", "prestamos_spnf",
+      "prestamos_osnf", "prestamos_hogares_isflsh", "otros_activos",
+      "total_activos"
+    )) %>%
+    type.convert(as.is = TRUE)
 }
 
 
@@ -1297,10 +1414,10 @@ balance_isi_activos_mn <- function(indicador = NULL, metadata = FALSE){
 #'
 #' @examples
 #' \dontrun{
-#'   balance_isi_activos_me()
+#' balance_isi_activos_me()
 #' }
-balance_isi_activos_me <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
+balance_isi_activos_me <- function(indicador = NULL, metadata = FALSE) {
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype,
@@ -1327,7 +1444,7 @@ balance_isi_activos_me <- function(indicador = NULL, metadata = FALSE){
       )
     )
   }
-  if(is.null(indicador)){
+  if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/balance_osd_activos_me.xls",
       file_ext = "xls",
@@ -1341,21 +1458,25 @@ balance_isi_activos_me <- function(indicador = NULL, metadata = FALSE){
   readxl::read_excel(file) %>%
     tidyr::drop_na(...2) %>%
     Dmisc::vars_to_date(year = 1, month = 2) %>%
-    setNames(c("date", "bmd_no_residentes", "bmd_banco_central", "bmd_osd",
-               "bmd_otros_sectores", "vda_no_residentes", "vda_banco_central",
-               "vda_gobierno_central", "vda_osnf", "vda_otros_sectores",
-               "prestamos_no_residentes", "prestamos_osd", "prestamos_osf",
-               "prestamos_gobierno_central", "prestamos_gel", "prestamos_spnf",
-               "prestamos_osnf", "prestamos_hogares_isflsh", "otros_activos",
-               "total_activos")) %>%
-    dplyr::select(c("date", "bmd_no_residentes", "bmd_banco_central", "bmd_osd",
-                    "bmd_otros_sectores", "vda_no_residentes", "vda_banco_central",
-                    "vda_gobierno_central", "vda_osnf", "vda_otros_sectores",
-                    "prestamos_no_residentes", "prestamos_osd", "prestamos_osf",
-                    "prestamos_gobierno_central", "prestamos_gel", "prestamos_spnf",
-                    "prestamos_osnf", "prestamos_hogares_isflsh", "otros_activos",
-                    "total_activos"))%>%
-    type.convert(as.is=TRUE)
+    setNames(c(
+      "date", "bmd_no_residentes", "bmd_banco_central", "bmd_osd",
+      "bmd_otros_sectores", "vda_no_residentes", "vda_banco_central",
+      "vda_gobierno_central", "vda_osnf", "vda_otros_sectores",
+      "prestamos_no_residentes", "prestamos_osd", "prestamos_osf",
+      "prestamos_gobierno_central", "prestamos_gel", "prestamos_spnf",
+      "prestamos_osnf", "prestamos_hogares_isflsh", "otros_activos",
+      "total_activos"
+    )) %>%
+    dplyr::select(c(
+      "date", "bmd_no_residentes", "bmd_banco_central", "bmd_osd",
+      "bmd_otros_sectores", "vda_no_residentes", "vda_banco_central",
+      "vda_gobierno_central", "vda_osnf", "vda_otros_sectores",
+      "prestamos_no_residentes", "prestamos_osd", "prestamos_osf",
+      "prestamos_gobierno_central", "prestamos_gel", "prestamos_spnf",
+      "prestamos_osnf", "prestamos_hogares_isflsh", "otros_activos",
+      "total_activos"
+    )) %>%
+    type.convert(as.is = TRUE)
 }
 
 
@@ -1373,10 +1494,10 @@ balance_isi_activos_me <- function(indicador = NULL, metadata = FALSE){
 #'
 #' @examples
 #' \dontrun{
-#'   balance_isi_pasivos()
+#' balance_isi_pasivos()
 #' }
-balance_isi_pasivos <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
+balance_isi_pasivos <- function(indicador = NULL, metadata = FALSE) {
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype,
@@ -1386,13 +1507,13 @@ balance_isi_pasivos <- function(indicador = NULL, metadata = FALSE){
         "depositos_osf", "Depósitos - Otras sociedades financieras", "", "f1",
         "depositos_gobierno_central", "Depósitos - Gobierno central", "", "f1",
         "depositos_gel", "Depósitos - Gobiernos estatales y locales", "", "f1",
-        "depositos_spnf",  "Depósitos - Sociedades públicas no financieras", "", "f1",
+        "depositos_spnf", "Depósitos - Sociedades públicas no financieras", "", "f1",
         "depositos_osnf", "Depósitos - Otras sociedades no financieras", "", "f1",
         "depositos_hogares_isflsh", "Depósitos - Hogares e ISFLSH", "", "f1",
         "prestamos_no_residentes", "Préstamos - No residentes", "", "f1",
         "prestamos_banco_central", "Préstamos - Banco Central", "", "f1",
         "prestamos_osd", "Préstamos - Otras sociedades de depósito", "", "f1",
-        "prestamos_osf",  "Préstamos - Otras sociedades financieras", "", "f1",
+        "prestamos_osf", "Préstamos - Otras sociedades financieras", "", "f1",
         "prestamos_otros_sectores", "Préstamos - Otros sectores 1/", "", "f1",
         "valores", "Valores", "", "f1",
         "otros_pasivos_capital", "Otros pasivos y capital", "", "f1",
@@ -1400,7 +1521,7 @@ balance_isi_pasivos <- function(indicador = NULL, metadata = FALSE){
       )
     )
   }
-  if(is.null(indicador)){
+  if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/balance_osd_pasivos.xls",
       file_ext = "xls",
@@ -1414,13 +1535,15 @@ balance_isi_pasivos <- function(indicador = NULL, metadata = FALSE){
   readxl::read_excel(file) %>%
     tidyr::drop_na(...2) %>%
     Dmisc::vars_to_date(year = 1, month = 2) %>%
-    setNames(c("date", "depositos_no_residentes", "depositos_osd", "depositos_osf",
-               "depositos_gobierno_central", "depositos_gel", "depositos_spnf",
-               "depositos_osnf", "depositos_hogares_isflsh", "prestamos_no_residentes",
-               "prestamos_banco_central", "prestamos_osd", "prestamos_osf",
-               "prestamos_otros_sectores", "valores", "otros_pasivos_capital",
-               "total_pasivos_capital")) %>%
-    type.convert(as.is=TRUE)
+    setNames(c(
+      "date", "depositos_no_residentes", "depositos_osd", "depositos_osf",
+      "depositos_gobierno_central", "depositos_gel", "depositos_spnf",
+      "depositos_osnf", "depositos_hogares_isflsh", "prestamos_no_residentes",
+      "prestamos_banco_central", "prestamos_osd", "prestamos_osf",
+      "prestamos_otros_sectores", "valores", "otros_pasivos_capital",
+      "total_pasivos_capital"
+    )) %>%
+    type.convert(as.is = TRUE)
 }
 
 
@@ -1438,10 +1561,10 @@ balance_isi_pasivos <- function(indicador = NULL, metadata = FALSE){
 #'
 #' @examples
 #' \dontrun{
-#'   balance_isi_pasivos_mn()
+#' balance_isi_pasivos_mn()
 #' }
-balance_isi_pasivos_mn <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
+balance_isi_pasivos_mn <- function(indicador = NULL, metadata = FALSE) {
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype,
@@ -1451,13 +1574,13 @@ balance_isi_pasivos_mn <- function(indicador = NULL, metadata = FALSE){
         "depositos_osf", "Depósitos - Otras sociedades financieras", "", "f1",
         "depositos_gobierno_central", "Depósitos - Gobierno central", "", "f1",
         "depositos_gel", "Depósitos - Gobiernos estatales y locales", "", "f1",
-        "depositos_spnf",  "Depósitos - Sociedades públicas no financieras", "", "f1",
+        "depositos_spnf", "Depósitos - Sociedades públicas no financieras", "", "f1",
         "depositos_osnf", "Depósitos - Otras sociedades no financieras", "", "f1",
         "depositos_hogares_isflsh", "Depósitos - Hogares e ISFLSH", "", "f1",
         "prestamos_no_residentes", "Préstamos - No residentes", "", "f1",
         "prestamos_banco_central", "Préstamos - Banco Central", "", "f1",
         "prestamos_osd", "Préstamos - Otras sociedades de depósito", "", "f1",
-        "prestamos_osf",  "Préstamos - Otras sociedades financieras", "", "f1",
+        "prestamos_osf", "Préstamos - Otras sociedades financieras", "", "f1",
         "prestamos_otros_sectores", "Préstamos - Otros sectores 1/", "", "f1",
         "valores", "Valores", "", "f1",
         "otros_pasivos", "Otros pasivos", "", "f1",
@@ -1465,7 +1588,7 @@ balance_isi_pasivos_mn <- function(indicador = NULL, metadata = FALSE){
       )
     )
   }
-  if(is.null(indicador)){
+  if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/balance_osd_pasivos_mn.xls",
       file_ext = "xls",
@@ -1479,13 +1602,15 @@ balance_isi_pasivos_mn <- function(indicador = NULL, metadata = FALSE){
   readxl::read_excel(file) %>%
     tidyr::drop_na(...2) %>%
     Dmisc::vars_to_date(year = 1, month = 2) %>%
-    setNames(c("date", "depositos_no_residentes", "depositos_osd", "depositos_osf",
-               "depositos_gobierno_central", "depositos_gel", "depositos_spnf",
-               "depositos_osnf", "depositos_hogares_isflsh", "prestamos_no_residentes",
-               "prestamos_banco_central", "prestamos_osd", "prestamos_osf",
-               "prestamos_otros_sectores", "valores", "otros_pasivos",
-               "total_pasivos")) %>%
-    type.convert(as.is=TRUE)
+    setNames(c(
+      "date", "depositos_no_residentes", "depositos_osd", "depositos_osf",
+      "depositos_gobierno_central", "depositos_gel", "depositos_spnf",
+      "depositos_osnf", "depositos_hogares_isflsh", "prestamos_no_residentes",
+      "prestamos_banco_central", "prestamos_osd", "prestamos_osf",
+      "prestamos_otros_sectores", "valores", "otros_pasivos",
+      "total_pasivos"
+    )) %>%
+    type.convert(as.is = TRUE)
 }
 
 
@@ -1503,10 +1628,10 @@ balance_isi_pasivos_mn <- function(indicador = NULL, metadata = FALSE){
 #'
 #' @examples
 #' \dontrun{
-#'   balance_isi_pasivos_me()
+#' balance_isi_pasivos_me()
 #' }
-balance_isi_pasivos_me<- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
+balance_isi_pasivos_me <- function(indicador = NULL, metadata = FALSE) {
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype,
@@ -1516,13 +1641,13 @@ balance_isi_pasivos_me<- function(indicador = NULL, metadata = FALSE){
         "depositos_osf", "Depósitos - Otras sociedades financieras", "", "f1",
         "depositos_gobierno_central", "Depósitos - Gobierno central", "", "f1",
         "depositos_gel", "Depósitos - Gobiernos estatales y locales", "", "f1",
-        "depositos_spnf",  "Depósitos - Sociedades públicas no financieras", "", "f1",
+        "depositos_spnf", "Depósitos - Sociedades públicas no financieras", "", "f1",
         "depositos_osnf", "Depósitos - Otras sociedades no financieras", "", "f1",
         "depositos_hogares_isflsh", "Depósitos - Hogares e ISFLSH", "", "f1",
         "prestamos_no_residentes", "Préstamos - No residentes", "", "f1",
         "prestamos_banco_central", "Préstamos - Banco Central", "", "f1",
         "prestamos_osd", "Préstamos - Otras sociedades de depósito", "", "f1",
-        "prestamos_osf",  "Préstamos - Otras sociedades financieras", "", "f1",
+        "prestamos_osf", "Préstamos - Otras sociedades financieras", "", "f1",
         "prestamos_otros_sectores", "Préstamos - Otros sectores 1/", "", "f1",
         "valores", "Valores", "", "f1",
         "otros_pasivos", "Otros pasivos", "", "f1",
@@ -1530,7 +1655,7 @@ balance_isi_pasivos_me<- function(indicador = NULL, metadata = FALSE){
       )
     )
   }
-  if(is.null(indicador)){
+  if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/balance_osd_pasivos_me.xls",
       file_ext = "xls",
@@ -1544,13 +1669,15 @@ balance_isi_pasivos_me<- function(indicador = NULL, metadata = FALSE){
   readxl::read_excel(file) %>%
     tidyr::drop_na(...2) %>%
     Dmisc::vars_to_date(year = 1, month = 2) %>%
-    setNames(c("date", "depositos_no_residentes", "depositos_osd", "depositos_osf",
-               "depositos_gobierno_central", "depositos_gel", "depositos_spnf",
-               "depositos_osnf", "depositos_hogares_isflsh", "prestamos_no_residentes",
-               "prestamos_banco_central", "prestamos_osd", "prestamos_osf",
-               "prestamos_otros_sectores", "valores", "otros_pasivos",
-               "total_pasivos")) %>%
-    type.convert(as.is=TRUE)
+    setNames(c(
+      "date", "depositos_no_residentes", "depositos_osd", "depositos_osf",
+      "depositos_gobierno_central", "depositos_gel", "depositos_spnf",
+      "depositos_osnf", "depositos_hogares_isflsh", "prestamos_no_residentes",
+      "prestamos_banco_central", "prestamos_osd", "prestamos_osf",
+      "prestamos_otros_sectores", "valores", "otros_pasivos",
+      "total_pasivos"
+    )) %>%
+    type.convert(as.is = TRUE)
 }
 
 
@@ -1571,17 +1698,17 @@ balance_isi_pasivos_me<- function(indicador = NULL, metadata = FALSE){
 #'
 #' @examples
 #' \dontrun{
-#'   indicadores_bcrd()
+#' indicadores_bcrd()
 #' }
-indicadores_bcrd <- function(indicador = NULL, metadata = FALSE){
-  if(is.null(indicador)){
+indicadores_bcrd <- function(indicador = NULL, metadata = FALSE) {
+  if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/serie_indicadores_bcrd.xlsx",
       file_ext = "xlsx",
-      max_changes = 108*55
+      max_changes = 108 * 55
     )
   }
-  if(metadata){
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype, ~key,
@@ -1603,14 +1730,14 @@ indicadores_bcrd <- function(indicador = NULL, metadata = FALSE){
   datos <- readxl::read_excel(file, skip = 4, col_names = F)
   datos <- datos %>%
     tidyr::drop_na(...1)
-  datos <- datos[1:(match("En millones RD$", datos$...1)-1),]
-  datos[1,1] <- "0"
+  datos <- datos[1:(match("En millones RD$", datos$...1) - 1), ]
+  datos[1, 1] <- "0"
   t(datos) %>%
     as.data.frame() %>%
     Dmisc::vars_to_date(date = "V1") %>%
     t() %>%
     as.data.frame() -> datos
-  datos[1,1] <- "indicador"
+  datos[1, 1] <- "indicador"
   datos %>%
     janitor::row_to_names(1) %>%
     dplyr::bind_cols(nvl_indicadores_bcrd %>% dplyr::select(-indicador)) %>%
@@ -1619,7 +1746,7 @@ indicadores_bcrd <- function(indicador = NULL, metadata = FALSE){
     type.convert(as.is = TRUE) %>%
     dplyr::group_by(indicador) %>%
     dplyr::mutate(
-      valor__tci = (valor/dplyr::lag(valor, 12)-1)*100,
+      valor__tci = (valor / dplyr::lag(valor, 12) - 1) * 100,
       valor__tci = dplyr::case_when(orden < 40 ~ valor__tci)
     ) %>%
     dplyr::ungroup()
@@ -1644,17 +1771,17 @@ indicadores_bcrd <- function(indicador = NULL, metadata = FALSE){
 #'
 #' @examples
 #' \dontrun{
-#'   indicadores_osd()
+#' indicadores_osd()
 #' }
-indicadores_osd <- function(indicador = NULL, metadata = FALSE){
-  if(is.null(indicador)){
+indicadores_osd <- function(indicador = NULL, metadata = FALSE) {
+  if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/serie_indicadores_osd.xlsx",
       file_ext = "xlsx",
-      max_changes = 68*3
+      max_changes = 68 * 3
     )
   }
-  if(metadata){
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype, ~key,
@@ -1679,13 +1806,13 @@ indicadores_osd <- function(indicador = NULL, metadata = FALSE){
     t() %>%
     as.data.frame() -> datos
 
-  datos[1,1] <- 0
+  datos[1, 1] <- 0
   datos %>%
     Dmisc::vars_to_date(date = 1) %>%
     t() %>%
     as.data.frame() -> datos
 
-  datos[1,1] <- "indicador"
+  datos[1, 1] <- "indicador"
 
   datos %>%
     janitor::row_to_names(1) %>%
@@ -1714,10 +1841,10 @@ indicadores_osd <- function(indicador = NULL, metadata = FALSE){
 #'
 #' @examples
 #' \dontrun{
-#'   panorama_bc()
+#' panorama_bc()
 #' }
-panorama_bc <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
+panorama_bc <- function(indicador = NULL, metadata = FALSE) {
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype,
@@ -1741,7 +1868,7 @@ panorama_bc <- function(indicador = NULL, metadata = FALSE){
       )
     )
   }
-  if(is.null(indicador)){
+  if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/panorama_pbc.xls",
       file_ext = "xls"
@@ -1755,17 +1882,19 @@ panorama_bc <- function(indicador = NULL, metadata = FALSE){
     tidyr::drop_na(...6) %>%
     Dmisc::vars_to_date(year = 1, month = 2) %>%
     t()
-  rsms <- rowSums(type.convert(pan[-1,], as.is = T), na.rm = T) != 0
-  pan[c(TRUE, rsms),] %>%
+  rsms <- rowSums(type.convert(pan[-1, ], as.is = T), na.rm = T) != 0
+  pan[c(TRUE, rsms), ] %>%
     t() %>%
     as.data.frame() %>%
-    setNames(c("date", "aen_afnr_aro", "aen_afnr_otros", "aen_pfnr_cp", "aen_afnr_lp",
-               "aen_rin", "aen_total", "activos_internos_gc", "activos_internos_spf",
-               "activos_internos_osd", "activos_internos_os", "activos_internos_op",
-               "activos_internos_totales", "base_monetaria", "bm_ampliada_bmc",
-               "bm_ampliada_dvop", "tipo_de_cambio_me")) %>%
+    setNames(c(
+      "date", "aen_afnr_aro", "aen_afnr_otros", "aen_pfnr_cp", "aen_afnr_lp",
+      "aen_rin", "aen_total", "activos_internos_gc", "activos_internos_spf",
+      "activos_internos_osd", "activos_internos_os", "activos_internos_op",
+      "activos_internos_totales", "base_monetaria", "bm_ampliada_bmc",
+      "bm_ampliada_dvop", "tipo_de_cambio_me"
+    )) %>%
     dplyr::select(1:17) %>%
-    type.convert(as.is=TRUE)
+    type.convert(as.is = TRUE)
 }
 
 
@@ -1782,10 +1911,10 @@ panorama_bc <- function(indicador = NULL, metadata = FALSE){
 #'
 #' @examples
 #' \dontrun{
-#'   panorama_posd()
+#' panorama_posd()
 #' }
-panorama_posd <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
+panorama_posd <- function(indicador = NULL, metadata = FALSE) {
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype,
@@ -1810,7 +1939,7 @@ panorama_posd <- function(indicador = NULL, metadata = FALSE){
       )
     )
   }
-  if(is.null(indicador)){
+  if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/panorama_posd.xls",
       file_ext = "xls"
@@ -1823,13 +1952,15 @@ panorama_posd <- function(indicador = NULL, metadata = FALSE){
   readxl::read_excel(file, skip = 12, col_names = F) %>%
     tidyr::drop_na(...6) %>%
     Dmisc::vars_to_date(year = 1, month = 2) %>%
-    setNames(c("date", "aen_afnr", "aen_pfnr", "aen_total", "activos_internos_gc",
-               "activos_internos_gel", "activos_internos_spnf", "activos_internos_bc_bym",
-               "activos_internos_bc_dep", "activos_internos_bc_valores",
-               "activos_internos_osf", "activos_internos_osnf", "activos_internos_hogares_isflsh",
-               "activos_internos_op", "activos_internos_total", "pdsa_total",
-               "pdsa_depositos_transferibles", "pdsa_odv")) %>%
-    type.convert(as.is=T)
+    setNames(c(
+      "date", "aen_afnr", "aen_pfnr", "aen_total", "activos_internos_gc",
+      "activos_internos_gel", "activos_internos_spnf", "activos_internos_bc_bym",
+      "activos_internos_bc_dep", "activos_internos_bc_valores",
+      "activos_internos_osf", "activos_internos_osnf", "activos_internos_hogares_isflsh",
+      "activos_internos_op", "activos_internos_total", "pdsa_total",
+      "pdsa_depositos_transferibles", "pdsa_odv"
+    )) %>%
+    type.convert(as.is = T)
 }
 
 
@@ -1846,10 +1977,10 @@ panorama_posd <- function(indicador = NULL, metadata = FALSE){
 #'
 #' @examples
 #' \dontrun{
-#'   panorama_bm()
+#' panorama_bm()
 #' }
-panorama_bm <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
+panorama_bm <- function(indicador = NULL, metadata = FALSE) {
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype,
@@ -1874,7 +2005,7 @@ panorama_bm <- function(indicador = NULL, metadata = FALSE){
       )
     )
   }
-  if(is.null(indicador)){
+  if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/panorama_pbm.xls",
       file_ext = "xls"
@@ -1887,13 +2018,15 @@ panorama_bm <- function(indicador = NULL, metadata = FALSE){
   readxl::read_excel(file, skip = 12, col_names = F) %>%
     tidyr::drop_na(...6) %>%
     Dmisc::vars_to_date(year = 1, month = 2) %>%
-    setNames(c("date", "aen_afnr", "aen_pfnr", "aen_total", "activos_internos_gc",
-               "activos_internos_gel", "activos_internos_spnf", "activos_internos_bc_bym",
-               "activos_internos_bc_dep", "activos_internos_bc_valores",
-               "activos_internos_osf", "activos_internos_osnf", "activos_internos_hogares_isflsh",
-               "activos_internos_op", "activos_internos_total", "pdsa_total",
-               "pdsa_depositos_transferibles", "pdsa_odv")) %>%
-    type.convert(as.is=T)
+    setNames(c(
+      "date", "aen_afnr", "aen_pfnr", "aen_total", "activos_internos_gc",
+      "activos_internos_gel", "activos_internos_spnf", "activos_internos_bc_bym",
+      "activos_internos_bc_dep", "activos_internos_bc_valores",
+      "activos_internos_osf", "activos_internos_osnf", "activos_internos_hogares_isflsh",
+      "activos_internos_op", "activos_internos_total", "pdsa_total",
+      "pdsa_depositos_transferibles", "pdsa_odv"
+    )) %>%
+    type.convert(as.is = T)
 }
 
 
@@ -1910,10 +2043,10 @@ panorama_bm <- function(indicador = NULL, metadata = FALSE){
 #'
 #' @examples
 #' \dontrun{
-#'   panorama_psd()
+#' panorama_psd()
 #' }
-panorama_psd <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
+panorama_psd <- function(indicador = NULL, metadata = FALSE) {
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype,
@@ -1940,7 +2073,7 @@ panorama_psd <- function(indicador = NULL, metadata = FALSE){
       )
     )
   }
-  if(is.null(indicador)){
+  if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/panorama_psd.xls",
       file_ext = "xls"
@@ -1953,13 +2086,15 @@ panorama_psd <- function(indicador = NULL, metadata = FALSE){
   readxl::read_excel(file, skip = 12, col_names = F) %>%
     tidyr::drop_na(...6) %>%
     Dmisc::vars_to_date(year = 1, month = 2) %>%
-    setNames(c("date", "aen_afnr", "aen_pfnr", "aen_total", "activos_internos_gc",
-               "activos_internos_spnf", "activos_internos_gel", "activos_internos_osf",
-               "activos_internos_osnf", "activos_internos_hogares_isflsh",
-               "activos_internos_op", "activos_internos_total", "dsa_total",
-               "dsa_bmpp", "dsa_dt_mn", "dsa_dt_me", "dsa_od_mn", "dsa_od_me",
-               "dsa_valores_mn", "dsa_valores_me")) %>%
-    type.convert(as.is=TRUE)
+    setNames(c(
+      "date", "aen_afnr", "aen_pfnr", "aen_total", "activos_internos_gc",
+      "activos_internos_spnf", "activos_internos_gel", "activos_internos_osf",
+      "activos_internos_osnf", "activos_internos_hogares_isflsh",
+      "activos_internos_op", "activos_internos_total", "dsa_total",
+      "dsa_bmpp", "dsa_dt_mn", "dsa_dt_me", "dsa_od_mn", "dsa_od_me",
+      "dsa_valores_mn", "dsa_valores_me"
+    )) %>%
+    type.convert(as.is = TRUE)
 }
 
 
@@ -1976,10 +2111,10 @@ panorama_psd <- function(indicador = NULL, metadata = FALSE){
 #'
 #' @examples
 #' \dontrun{
-#'   panorama_osf()
+#' panorama_osf()
 #' }
-panorama_osf <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
+panorama_osf <- function(indicador = NULL, metadata = FALSE) {
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype,
@@ -2004,7 +2139,7 @@ panorama_osf <- function(indicador = NULL, metadata = FALSE){
       )
     )
   }
-  if(is.null(indicador)){
+  if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/panorama_osf.xls",
       file_ext = "xls"
@@ -2017,13 +2152,15 @@ panorama_osf <- function(indicador = NULL, metadata = FALSE){
   readxl::read_excel(file, skip = 12, col_names = F) %>%
     tidyr::drop_na(...6) %>%
     Dmisc::vars_to_date(year = 1, month = 2) %>%
-    setNames(c("date", "aen_afnr", "aen_pfnr", "aen_total", "activos_internos_gc",
-               "activos_internos_gel", "activos_internos_spnf", "activos_internos_bc_bym",
-               "activos_internos_bc_dep", "activos_internos_bc_otros",
-               "activos_internos_osd", "activos_internos_snf", "activos_internos_hogares_isflsh",
-               "activos_internos_op", "activos_internos_total", "pasivos_total",
-               "pasivos_rts", "pasivos_oopr")) %>%
-    type.convert(as.is=T)
+    setNames(c(
+      "date", "aen_afnr", "aen_pfnr", "aen_total", "activos_internos_gc",
+      "activos_internos_gel", "activos_internos_spnf", "activos_internos_bc_bym",
+      "activos_internos_bc_dep", "activos_internos_bc_otros",
+      "activos_internos_osd", "activos_internos_snf", "activos_internos_hogares_isflsh",
+      "activos_internos_op", "activos_internos_total", "pasivos_total",
+      "pasivos_rts", "pasivos_oopr"
+    )) %>%
+    type.convert(as.is = T)
 }
 
 
@@ -2040,10 +2177,10 @@ panorama_osf <- function(indicador = NULL, metadata = FALSE){
 #'
 #' @examples
 #' \dontrun{
-#'   panorama_sf()
+#' panorama_sf()
 #' }
-panorama_sf <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
+panorama_sf <- function(indicador = NULL, metadata = FALSE) {
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype,
@@ -2069,7 +2206,7 @@ panorama_sf <- function(indicador = NULL, metadata = FALSE){
       )
     )
   }
-  if(is.null(indicador)){
+  if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/panorama_sf.xls",
       file_ext = "xls"
@@ -2082,13 +2219,15 @@ panorama_sf <- function(indicador = NULL, metadata = FALSE){
   readxl::read_excel(file, skip = 12, col_names = F) %>%
     tidyr::drop_na(...6) %>%
     Dmisc::vars_to_date(year = 1, month = 2) %>%
-    setNames(c("date", "aen_afnr", "aen_pfnr", "aen_total", "activos_internos_gc",
-               "activos_internos_spnf", "activos_internos_gel", "activos_internos_snf",
-               "activos_internos_hogares_isflsh", "activos_internos_op",
-               "activos_internos_total", "pasivos_total", "pasivos_bmpp",
-               "pasivos_dep_mn", "pasivos_dep_me", "pasivos_valores_mn",
-               "pasivos_valores_me", "pasivos_rts", "pasivos_otros")) %>%
-    type.convert(as.is=TRUE)
+    setNames(c(
+      "date", "aen_afnr", "aen_pfnr", "aen_total", "activos_internos_gc",
+      "activos_internos_spnf", "activos_internos_gel", "activos_internos_snf",
+      "activos_internos_hogares_isflsh", "activos_internos_op",
+      "activos_internos_total", "pasivos_total", "pasivos_bmpp",
+      "pasivos_dep_mn", "pasivos_dep_me", "pasivos_valores_mn",
+      "pasivos_valores_me", "pasivos_rts", "pasivos_otros"
+    )) %>%
+    type.convert(as.is = TRUE)
 }
 
 
@@ -2110,17 +2249,17 @@ panorama_sf <- function(indicador = NULL, metadata = FALSE){
 #'
 #' @examples
 #' \dontrun{
-#'   tasas_interes_activas_bm_2017()
+#' tasas_interes_activas_bm_2017()
 #' }
-tasas_interes_activas_bm_2017 <- function(indicador = NULL, metadata = FALSE){
-  if(is.null(indicador)){
+tasas_interes_activas_bm_2017 <- function(indicador = NULL, metadata = FALSE) {
+  if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/tbm_activad.xlsx",
       file_ext = "xlsx",
       max_changes = 15
     )
   }
-  if(metadata){
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype, ~key,
@@ -2160,7 +2299,7 @@ tasas_interes_activas_bm_2017 <- function(indicador = NULL, metadata = FALSE){
 
   datos <- datos %>%
     Dmisc::vars_to_date(year = 1, month = 2) %>%
-    t %>%
+    t() %>%
     as.data.frame()
 
   datos[1, 1:2] <- c("grupo", "categoria")
@@ -2187,17 +2326,17 @@ tasas_interes_activas_bm_2017 <- function(indicador = NULL, metadata = FALSE){
 #'
 #' @examples
 #' \dontrun{
-#'   tasas_interes_activas_bm_2013()
+#' tasas_interes_activas_bm_2013()
 #' }
-tasas_interes_activas_bm_2013 <- function(indicador = NULL, metadata = FALSE){
-  if(is.null(indicador)){
+tasas_interes_activas_bm_2013 <- function(indicador = NULL, metadata = FALSE) {
+  if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/tbm_activad-2013-2016.xlsx",
       file_ext = "xlsx",
       max_changes = 12
     )
   }
-  if(metadata){
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype, ~key,
@@ -2225,7 +2364,7 @@ tasas_interes_activas_bm_2013 <- function(indicador = NULL, metadata = FALSE){
     dplyr::mutate(
       ...1 = stringr::str_remove_all(...1, "[0-9]")
     ) -> datos
-  datos[1:2,1] <- 1900
+  datos[1:2, 1] <- 1900
   datos[1:2, 2] <- "Enero"
   datos %>%
     dplyr::filter(...1 != "") %>%
@@ -2262,17 +2401,17 @@ tasas_interes_activas_bm_2013 <- function(indicador = NULL, metadata = FALSE){
 #'
 #' @examples
 #' \dontrun{
-#'   tasas_interes_activas_bm_2008()
+#' tasas_interes_activas_bm_2008()
 #' }
-tasas_interes_activas_bm_2008 <- function(indicador = NULL, metadata = FALSE){
-  if(is.null(indicador)){
+tasas_interes_activas_bm_2008 <- function(indicador = NULL, metadata = FALSE) {
+  if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/tbm_activad-2008-2012.xls",
       file_ext = "xls",
       max_changes = 12
     )
   }
-  if(metadata){
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype, ~key,
@@ -2343,17 +2482,17 @@ tasas_interes_activas_bm_2008 <- function(indicador = NULL, metadata = FALSE){
 #'
 #' @examples
 #' \dontrun{
-#'   tasas_interes_activas_bm_1991()
+#' tasas_interes_activas_bm_1991()
 #' }
-tasas_interes_activas_bm_1991 <- function(indicador = NULL, metadata = FALSE){
-  if(is.null(indicador)){
+tasas_interes_activas_bm_1991 <- function(indicador = NULL, metadata = FALSE) {
+  if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/tbm_activad-1991-2007.xls",
       file_ext = "xls",
       max_changes = 12
     )
   }
-  if(metadata){
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype, ~key,
@@ -2436,34 +2575,34 @@ tasas_interes_activas_bm_1991 <- function(indicador = NULL, metadata = FALSE){
 #' \dontrun{
 #' pib_gasto_trim()
 #' }
-pib_gasto_trim <- function(indicador = NULL, metadata = FALSE){
-  if(is.null(indicador)){
+pib_gasto_trim <- function(indicador = NULL, metadata = FALSE) {
+  if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-real/documents/pib_gasto_2007.xls",
       file_ext = "xls",
       max_changes = 18
     )
   }
-  if(metadata){
+  if (metadata) {
     return(
-          tibble::tribble(
-            ~col, ~name, ~unit, ~dtype, ~key,
-            "orden", "Orden de los componentes", "", "int", 1,
-            "nivel", "Nivel de los componentes", "", "int", 1,
-            "componente", "Componente", "", "text", 1,
-            "date", "Fecha", "Trimestres", "qdate", 1,
-            "pib", "PIB", "Millones de RD$", "f1", 0,
-            "pib__ponderacion", "Ponderación por componente", "Porcentaje (%)", "f2", 0,
-            "pib_acumulado", "PIB acumulado", "Millones de RD$", "f1", 0,
-            "pib_acumulado__ponderacion", "Ponderación por componente (PIB acumulado)", "Porcentaje (%)", "f2", 0,
-            "pib__ive", "Índice de Valores Encadenados (IVE) del PIB", "Índice (2007=100)", "f1", 0,
-            "pib__tci", "Tasa de crecimiento PIB", "Porcentaje (%)", "f1", 0,
-            "pib__incidencia", "Incidencia por componente del PIB", "", "f1", 0,
-            "pib_acumulado__ive", "Índice de Valores Encadenados (IVE) - PIB Acumulado", "Índice (2007=100)", "f1", 0,
-            "pib_acumulado__tci", "Tasa de crecimiento - PIB Acumulado", "Porcentaje (%)", "f1", 0,
-            "pib_acumulado__incidencia", "Incidencia por componente del PIB Acumulado", "", "f1", 0
-          )
+      tibble::tribble(
+        ~col, ~name, ~unit, ~dtype, ~key,
+        "orden", "Orden de los componentes", "", "int", 1,
+        "nivel", "Nivel de los componentes", "", "int", 1,
+        "componente", "Componente", "", "text", 1,
+        "date", "Fecha", "Trimestres", "qdate", 1,
+        "pib", "PIB", "Millones de RD$", "f1", 0,
+        "pib__ponderacion", "Ponderación por componente", "Porcentaje (%)", "f2", 0,
+        "pib_acumulado", "PIB acumulado", "Millones de RD$", "f1", 0,
+        "pib_acumulado__ponderacion", "Ponderación por componente (PIB acumulado)", "Porcentaje (%)", "f2", 0,
+        "pib__ive", "Índice de Valores Encadenados (IVE) del PIB", "Índice (2007=100)", "f1", 0,
+        "pib__tci", "Tasa de crecimiento PIB", "Porcentaje (%)", "f1", 0,
+        "pib__incidencia", "Incidencia por componente del PIB", "", "f1", 0,
+        "pib_acumulado__ive", "Índice de Valores Encadenados (IVE) - PIB Acumulado", "Índice (2007=100)", "f1", 0,
+        "pib_acumulado__tci", "Tasa de crecimiento - PIB Acumulado", "Porcentaje (%)", "f1", 0,
+        "pib_acumulado__incidencia", "Incidencia por componente del PIB Acumulado", "", "f1", 0
       )
+    )
   }
   `...2` <- NULL
   V1 <- NULL
@@ -2472,193 +2611,200 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE){
   if (!file.exists(pibFile)) {
     pibFile <- downloader(indicador)
   }
-  pib <- readxl::read_excel(pibFile, sheet = 'PIB$_Trim', skip = 5, col_names = F)
+  pib <- readxl::read_excel(pibFile, sheet = "PIB$_Trim", skip = 5, col_names = F)
   pib <- tidyr::drop_na(pib, ...2)
-  pib <- pib[1:11,]
+  pib <- pib[1:11, ]
   pib <- t(pib)
-  pib[,1] <- stringr::str_remove_all(pib[,1], "[^0-9]")
+  pib[, 1] <- stringr::str_remove_all(pib[, 1], "[^0-9]")
   pib <- as.data.frame(pib)
   pib <- tidyr::fill(pib, V1)
   pib <- dplyr::mutate(pib,
-                       V2 = dplyr::case_when(
-                         V2 == 'E-M' ~ 'Q1',
-                         V2 == 'A-J' ~ 'Q2',
-                         V2 == 'J-S' ~ 'Q3',
-                         V2 == 'O-D' ~ 'Q4'
-                       ),
-                       V1 = paste(trimws(V1), trimws(V2)),
-                       V2 = NULL)
+    V2 = dplyr::case_when(
+      V2 == "E-M" ~ "Q1",
+      V2 == "A-J" ~ "Q2",
+      V2 == "J-S" ~ "Q3",
+      V2 == "O-D" ~ "Q4"
+    ),
+    V1 = paste(trimws(V1), trimws(V2)),
+    V2 = NULL
+  )
   pib <- t(pib)
-  pib[1,1] <- 'componente'
+  pib[1, 1] <- "componente"
   pib <- as.data.frame(pib)
-  names(pib) <- pib[1,]
-  pib <- pib[-1,]
+  names(pib) <- pib[1, ]
+  pib <- pib[-1, ]
   pib <- tidyr::pivot_longer(pib, -componente, names_to = "date", values_to = "pib")
 
   # Ponderacion por componente
-  pib2 <- readxl::read_excel(pibFile, sheet = 'PIB$_Trim', skip = 25, col_names = F)
+  pib2 <- readxl::read_excel(pibFile, sheet = "PIB$_Trim", skip = 25, col_names = F)
   pib2 <- tidyr::drop_na(pib2, ...2)
-  pib2 <- pib2[1:11,]
+  pib2 <- pib2[1:11, ]
   pib2 <- t(pib2)
-  pib2[,1] <- stringr::str_remove_all(pib2[,1], '[^0-9]')
-  pib2[1,1] <- NA
+  pib2[, 1] <- stringr::str_remove_all(pib2[, 1], "[^0-9]")
+  pib2[1, 1] <- NA
   pib2 <- as.data.frame(pib2)
   pib2 <- tidyr::fill(pib2, V1)
   pib2 <- dplyr::mutate(pib2,
-                        V2 = dplyr::case_when(
-                          V2 == 'E-M' ~ 'Q1',
-                          V2 == 'A-J' ~ 'Q2',
-                          V2 == 'J-S' ~ 'Q3',
-                          V2 == 'O-D' ~ 'Q4'
-                        ),
-                        V1 = paste(trimws(V1), trimws(V2)),
-                        V2 = NULL)
+    V2 = dplyr::case_when(
+      V2 == "E-M" ~ "Q1",
+      V2 == "A-J" ~ "Q2",
+      V2 == "J-S" ~ "Q3",
+      V2 == "O-D" ~ "Q4"
+    ),
+    V1 = paste(trimws(V1), trimws(V2)),
+    V2 = NULL
+  )
   pib2 <- t(pib2)
-  pib2[1,1] <- 'componente'
+  pib2[1, 1] <- "componente"
   pib2 <- as.data.frame(pib2)
-  names(pib2) <- pib2[1,]
-  pib2 <- pib2[-1,]
+  names(pib2) <- pib2[1, ]
+  pib2 <- pib2[-1, ]
   pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "pib__ponderacion")
 
   pib <- dplyr::left_join(pib, pib2)
 
 
   # PIB Acumulado
-  pib2 <- readxl::read_excel(pibFile, sheet = 'PIB$_Trim_Acum', skip = 6, col_names = F)
+  pib2 <- readxl::read_excel(pibFile, sheet = "PIB$_Trim_Acum", skip = 6, col_names = F)
   pib2 <- tidyr::drop_na(pib2, ...2)
-  pib2 <- pib2[1:11,]
+  pib2 <- pib2[1:11, ]
   pib2 <- t(pib2)
-  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(p\\)')
-  pib2[1,1] <- NA
+  pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(p\\)")
+  pib2[1, 1] <- NA
   pib2 <- as.data.frame(pib2)
   pib2 <- tidyr::fill(pib2, V1)
   pib2 <- dplyr::mutate(pib2,
-                        V2 = dplyr::case_when(
-                          V2 == 'E-M' ~ 'Q1',
-                          V2 == 'E-J' ~ 'Q2',
-                          V2 == 'E-S' ~ 'Q3',
-                          V2 == 'E-D' ~ 'Q4'
-                        ),
-                        V1 = paste(trimws(V1), trimws(V2)),
-                        V2 = NULL)
+    V2 = dplyr::case_when(
+      V2 == "E-M" ~ "Q1",
+      V2 == "E-J" ~ "Q2",
+      V2 == "E-S" ~ "Q3",
+      V2 == "E-D" ~ "Q4"
+    ),
+    V1 = paste(trimws(V1), trimws(V2)),
+    V2 = NULL
+  )
   pib2 <- t(pib2)
-  pib2[1,1] <- 'componente'
+  pib2[1, 1] <- "componente"
   pib2 <- as.data.frame(pib2)
-  names(pib2) <- pib2[1,]
-  pib2 <- pib2[-1,]
+  names(pib2) <- pib2[1, ]
+  pib2 <- pib2[-1, ]
   pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "pib_acumulado")
 
   pib <- dplyr::left_join(pib, pib2)
 
   # Ponderación por componente PIB acumulado
-  pib2 <- readxl::read_excel(pibFile, sheet = 'PIB$_Trim_Acum', skip = 25, col_names = F)
+  pib2 <- readxl::read_excel(pibFile, sheet = "PIB$_Trim_Acum", skip = 25, col_names = F)
   pib2 <- tidyr::drop_na(pib2, ...2)
-  pib2 <- pib2[1:11,]
+  pib2 <- pib2[1:11, ]
   pib2 <- t(pib2)
-  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(p\\)')
-  pib2[1,1] <- NA
+  pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(p\\)")
+  pib2[1, 1] <- NA
   pib2 <- as.data.frame(pib2)
   pib2 <- tidyr::fill(pib2, V1)
   pib2 <- dplyr::mutate(pib2,
-                        V2 = dplyr::case_when(
-                          V2 == 'E-M' ~ 'Q1',
-                          V2 == 'E-J' ~ 'Q2',
-                          V2 == 'E-S' ~ 'Q3',
-                          V2 == 'E-D' ~ 'Q4'
-                        ),
-                        V1 = paste(trimws(V1), trimws(V2)),
-                        V2 = NULL)
+    V2 = dplyr::case_when(
+      V2 == "E-M" ~ "Q1",
+      V2 == "E-J" ~ "Q2",
+      V2 == "E-S" ~ "Q3",
+      V2 == "E-D" ~ "Q4"
+    ),
+    V1 = paste(trimws(V1), trimws(V2)),
+    V2 = NULL
+  )
   pib2 <- t(pib2)
-  pib2[1,1] <- 'componente'
+  pib2[1, 1] <- "componente"
   pib2 <- as.data.frame(pib2)
-  names(pib2) <- pib2[1,]
-  pib2 <- pib2[-1,]
+  names(pib2) <- pib2[1, ]
+  pib2 <- pib2[-1, ]
   pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "pib_acumulado__ponderacion")
 
   pib <- dplyr::left_join(pib, pib2)
 
   ## INDICE PIB
 
-  pib2 <- readxl::read_excel(pibFile, sheet = 'PIBK_Trim', skip = 6, col_names = F)
-  pib2 <- pib2[!is.na(pib2$...1) | !is.na(pib2$...2),]
-  pib2 <- pib2[1:11,]
+  pib2 <- readxl::read_excel(pibFile, sheet = "PIBK_Trim", skip = 6, col_names = F)
+  pib2 <- pib2[!is.na(pib2$...1) | !is.na(pib2$...2), ]
+  pib2 <- pib2[1:11, ]
   pib2 <- t(pib2)
-  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(p\\)')
-  pib2[1,1] <- NA
+  pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(p\\)")
+  pib2[1, 1] <- NA
   pib2 <- as.data.frame(pib2)
   pib2 <- tidyr::fill(pib2, V1)
   pib2 <- dplyr::mutate(pib2,
-                        V2 = dplyr::case_when(
-                          V2 == 'E-M' ~ 'Q1',
-                          V2 == 'A-J' ~ 'Q2',
-                          V2 == 'J-S' ~ 'Q3',
-                          V2 == 'O-D' ~ 'Q4'
-                        ),
-                        V1 = paste(trimws(V1), trimws(V2)),
-                        V2 = NULL)
+    V2 = dplyr::case_when(
+      V2 == "E-M" ~ "Q1",
+      V2 == "A-J" ~ "Q2",
+      V2 == "J-S" ~ "Q3",
+      V2 == "O-D" ~ "Q4"
+    ),
+    V1 = paste(trimws(V1), trimws(V2)),
+    V2 = NULL
+  )
   pib2 <- t(pib2)
-  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(1\\)')
-  pib2[1,1] <- 'componente'
+  pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(1\\)")
+  pib2[1, 1] <- "componente"
   pib2 <- as.data.frame(pib2)
-  names(pib2) <- pib2[1,]
-  pib2 <- pib2[-1,]
+  names(pib2) <- pib2[1, ]
+  pib2 <- pib2[-1, ]
   pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "pib__ive")
 
   pib <- dplyr::left_join(pib, pib2)
 
   # Tasa de crecimiento
 
-  pib2 <- readxl::read_excel(pibFile, sheet = 'PIBK_Trim', skip = 25, col_names = F)
-  pib2 <- pib2[!is.na(pib2$...1) | !is.na(pib2$...2),]
-  pib2 <- pib2[1:11,]
+  pib2 <- readxl::read_excel(pibFile, sheet = "PIBK_Trim", skip = 25, col_names = F)
+  pib2 <- pib2[!is.na(pib2$...1) | !is.na(pib2$...2), ]
+  pib2 <- pib2[1:11, ]
   pib2 <- t(pib2)
-  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(p\\)')
-  pib2[1,1] <- NA
+  pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(p\\)")
+  pib2[1, 1] <- NA
   pib2 <- as.data.frame(pib2)
   pib2 <- tidyr::fill(pib2, V1)
   pib2 <- dplyr::mutate(pib2,
-                        V2 = dplyr::case_when(
-                          V2 == 'E-M' ~ 'Q1',
-                          V2 == 'A-J' ~ 'Q2',
-                          V2 == 'J-S' ~ 'Q3',
-                          V2 == 'O-D' ~ 'Q4'
-                        ),
-                        V1 = paste(trimws(V1), trimws(V2)),
-                        V2 = NULL)
+    V2 = dplyr::case_when(
+      V2 == "E-M" ~ "Q1",
+      V2 == "A-J" ~ "Q2",
+      V2 == "J-S" ~ "Q3",
+      V2 == "O-D" ~ "Q4"
+    ),
+    V1 = paste(trimws(V1), trimws(V2)),
+    V2 = NULL
+  )
   pib2 <- t(pib2)
-  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(1\\)')
-  pib2[1,1] <- 'componente'
+  pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(1\\)")
+  pib2[1, 1] <- "componente"
   pib2 <- as.data.frame(pib2)
-  names(pib2) <- pib2[1,]
-  pib2 <- pib2[-1,]
+  names(pib2) <- pib2[1, ]
+  pib2 <- pib2[-1, ]
   pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "pib__tci")
 
   pib <- dplyr::left_join(pib, pib2)
 
   # Incidencia por componente
-  pib2 <- readxl::read_excel(pibFile, sheet = 'PIBK_Trim', skip = 44, col_names = F)
-  pib2 <- pib2[!is.na(pib2$...1) | !is.na(pib2$...2),]
-  pib2 <- pib2[1:11,]
+  pib2 <- readxl::read_excel(pibFile, sheet = "PIBK_Trim", skip = 44, col_names = F)
+  pib2 <- pib2[!is.na(pib2$...1) | !is.na(pib2$...2), ]
+  pib2 <- pib2[1:11, ]
   pib2 <- t(pib2)
-  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(p\\)')
-  pib2[1,1] <- NA
+  pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(p\\)")
+  pib2[1, 1] <- NA
   pib2 <- as.data.frame(pib2)
   pib2 <- tidyr::fill(pib2, V1)
   pib2 <- dplyr::mutate(pib2,
-                        V2 = dplyr::case_when(
-                          V2 == 'E-M' ~ 'Q1',
-                          V2 == 'A-J' ~ 'Q2',
-                          V2 == 'J-S' ~ 'Q3',
-                          V2 == 'O-D' ~ 'Q4'
-                        ),
-                        V1 = paste(trimws(V1), trimws(V2)),
-                        V2 = NULL)
+    V2 = dplyr::case_when(
+      V2 == "E-M" ~ "Q1",
+      V2 == "A-J" ~ "Q2",
+      V2 == "J-S" ~ "Q3",
+      V2 == "O-D" ~ "Q4"
+    ),
+    V1 = paste(trimws(V1), trimws(V2)),
+    V2 = NULL
+  )
   pib2 <- t(pib2)
-  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(1\\)')
-  pib2[1,1] <- 'componente'
+  pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(1\\)")
+  pib2[1, 1] <- "componente"
   pib2 <- as.data.frame(pib2)
-  names(pib2) <- pib2[1,]
-  pib2 <- pib2[-1,]
+  names(pib2) <- pib2[1, ]
+  pib2 <- pib2[-1, ]
   pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "pib__incidencia")
 
   pib <- dplyr::left_join(pib, pib2)
@@ -2666,86 +2812,89 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE){
 
   ## INDICE PIB ACUMULADO
 
-  pib2 <- readxl::read_excel(pibFile, sheet = 'PIBK_Trim_Acum', skip = 6, col_names = F)
-  pib2 <- pib2[!is.na(pib2$...1) | !is.na(pib2$...2),]
-  pib2 <- pib2[1:11,]
+  pib2 <- readxl::read_excel(pibFile, sheet = "PIBK_Trim_Acum", skip = 6, col_names = F)
+  pib2 <- pib2[!is.na(pib2$...1) | !is.na(pib2$...2), ]
+  pib2 <- pib2[1:11, ]
   pib2 <- t(pib2)
-  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(p\\)')
-  pib2[1,1] <- NA
+  pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(p\\)")
+  pib2[1, 1] <- NA
   pib2 <- as.data.frame(pib2)
   pib2 <- tidyr::fill(pib2, V1)
   pib2 <- dplyr::mutate(pib2,
-                        V2 = dplyr::case_when(
-                          V2 == 'E-M' ~ 'Q1',
-                          V2 == 'E-J' ~ 'Q2',
-                          V2 == 'E-S' ~ 'Q3',
-                          V2 == 'E-D' ~ 'Q4'
-                        ),
-                        V1 = paste(trimws(V1), trimws(V2)),
-                        V2 = NULL)
+    V2 = dplyr::case_when(
+      V2 == "E-M" ~ "Q1",
+      V2 == "E-J" ~ "Q2",
+      V2 == "E-S" ~ "Q3",
+      V2 == "E-D" ~ "Q4"
+    ),
+    V1 = paste(trimws(V1), trimws(V2)),
+    V2 = NULL
+  )
   pib2 <- t(pib2)
-  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(1\\)')
-  pib2[1,1] <- 'componente'
+  pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(1\\)")
+  pib2[1, 1] <- "componente"
   pib2 <- as.data.frame(pib2)
-  names(pib2) <- pib2[1,]
-  pib2 <- pib2[-1,]
+  names(pib2) <- pib2[1, ]
+  pib2 <- pib2[-1, ]
   pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "pib_acumulado__ive")
 
   pib <- dplyr::left_join(pib, pib2)
 
   # Tasa de crecimiento
 
-  pib2 <- readxl::read_excel(pibFile, sheet = 'PIBK_Trim_Acum', skip = 25, col_names = F)
-  pib2 <- pib2[!is.na(pib2$...1) | !is.na(pib2$...2),]
-  pib2 <- pib2[1:11,]
+  pib2 <- readxl::read_excel(pibFile, sheet = "PIBK_Trim_Acum", skip = 25, col_names = F)
+  pib2 <- pib2[!is.na(pib2$...1) | !is.na(pib2$...2), ]
+  pib2 <- pib2[1:11, ]
   pib2 <- t(pib2)
-  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(p\\)')
-  pib2[1,1] <- NA
+  pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(p\\)")
+  pib2[1, 1] <- NA
   pib2 <- as.data.frame(pib2)
   pib2 <- tidyr::fill(pib2, V1)
   pib2 <- dplyr::mutate(pib2,
-                        V2 = dplyr::case_when(
-                          V2 == 'E-M' ~ 'Q1',
-                          V2 == 'E-J' ~ 'Q2',
-                          V2 == 'E-S' ~ 'Q3',
-                          V2 == 'E-D' ~ 'Q4'
-                        ),
-                        V1 = paste(trimws(V1), trimws(V2)),
-                        V2 = NULL)
+    V2 = dplyr::case_when(
+      V2 == "E-M" ~ "Q1",
+      V2 == "E-J" ~ "Q2",
+      V2 == "E-S" ~ "Q3",
+      V2 == "E-D" ~ "Q4"
+    ),
+    V1 = paste(trimws(V1), trimws(V2)),
+    V2 = NULL
+  )
   pib2 <- t(pib2)
-  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(1\\)')
-  pib2[1,1] <- 'componente'
+  pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(1\\)")
+  pib2[1, 1] <- "componente"
   pib2 <- as.data.frame(pib2)
-  names(pib2) <- pib2[1,]
-  pib2 <- pib2[-1,]
+  names(pib2) <- pib2[1, ]
+  pib2 <- pib2[-1, ]
   pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "pib_acumulado__tci")
 
   pib <- dplyr::left_join(pib, pib2)
 
   # Incidencia por componente
-  pib2 <- readxl::read_excel(pibFile, sheet = 'PIBK_Trim_Acum', skip = 44, col_names = F)
-  pib2 <- pib2[!is.na(pib2$...1) | !is.na(pib2$...2),]
-  pib2 <- pib2[1:11,]
+  pib2 <- readxl::read_excel(pibFile, sheet = "PIBK_Trim_Acum", skip = 44, col_names = F)
+  pib2 <- pib2[!is.na(pib2$...1) | !is.na(pib2$...2), ]
+  pib2 <- pib2[1:11, ]
   pib2 <- t(pib2)
-  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(p\\)')
-  pib2[1,1] <- NA
+  pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(p\\)")
+  pib2[1, 1] <- NA
   pib2 <- as.data.frame(pib2)
   pib2 <- tidyr::fill(pib2, V1)
   pib2 <- dplyr::mutate(pib2,
-                        V2 = dplyr::case_when(
-                          V2 == 'E-M' ~ 'Q1',
-                          V2 == 'E-J' ~ 'Q2',
-                          V2 == 'E-S' ~ 'Q3',
-                          V2 == 'E-D' ~ 'Q4'
-                        ),
-                        V1 = paste(trimws(V1), trimws(V2)),
-                        V2 = NULL)
+    V2 = dplyr::case_when(
+      V2 == "E-M" ~ "Q1",
+      V2 == "E-J" ~ "Q2",
+      V2 == "E-S" ~ "Q3",
+      V2 == "E-D" ~ "Q4"
+    ),
+    V1 = paste(trimws(V1), trimws(V2)),
+    V2 = NULL
+  )
   pib2 <- t(pib2)
-  pib2[,1] <- stringr::str_remove(pib2[,1], '\\(1\\)')
-  pib2[1,1] <- 'componente'
+  pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(1\\)")
+  pib2[1, 1] <- "componente"
   pib2 <- as.data.frame(pib2)
-  names(pib2) <- pib2[1,]
-  pib2 <- pib2[-1,]
+  names(pib2) <- pib2[1, ]
+  pib2 <- pib2[-1, ]
   pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "pib_acumulado__incidencia")
 
   pib <- dplyr::left_join(pib, pib2)
@@ -2764,13 +2913,13 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE){
         dplyr::select(date, tipo_cambio = compra)
     ) %>%
     dplyr::mutate(
-      pib__usd = pib/tipo_cambio,
+      pib__usd = pib / tipo_cambio,
       year = lubridate::year(date)
     ) %>%
     dplyr::group_by(year) %>%
     dplyr::mutate(
       tipo_cambio_acum = dplyr::cummean(tipo_cambio),
-      pib_acumulado__usd = pib_acumulado/tipo_cambio_acum
+      pib_acumulado__usd = pib_acumulado / tipo_cambio_acum
     ) %>%
     dplyr::ungroup() %>%
     dplyr::select(-c(year, dplyr::starts_with("tipo_camb")))
@@ -2794,8 +2943,8 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE){
 #' \dontrun{
 #' pib_gasto_anual()
 #' }
-pib_gasto_anual <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
+pib_gasto_anual <- function(indicador = NULL, metadata = FALSE) {
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype, ~key,
@@ -2818,7 +2967,7 @@ pib_gasto_anual <- function(indicador = NULL, metadata = FALSE){
     dplyr::filter(lubridate::month(date) == 12) %>%
     dplyr::mutate(date = lubridate::year(date)) %>%
     dplyr::rename("ano" = "date") %>%
-    dplyr::rename_with(~stringr::str_replace(., "_acumulado", ""), dplyr::everything()) %>%
+    dplyr::rename_with(~ stringr::str_replace(., "_acumulado", ""), dplyr::everything()) %>%
     type.convert(as.is = T)
 }
 
@@ -2840,8 +2989,8 @@ pib_gasto_anual <- function(indicador = NULL, metadata = FALSE){
 #' \dontrun{
 #' pib_origen_trim()
 #' }
-pib_origen_trim <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
+pib_origen_trim <- function(indicador = NULL, metadata = FALSE) {
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype, ~key,
@@ -2862,7 +3011,7 @@ pib_origen_trim <- function(indicador = NULL, metadata = FALSE){
       )
     )
   }
-  if(is.null(indicador)){
+  if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-real/documents/pib_origen_2007.xlsx",
       file_ext = "xlsx",
@@ -2877,7 +3026,7 @@ pib_origen_trim <- function(indicador = NULL, metadata = FALSE){
   # Valor agregado
   va <- readxl::read_excel(file, sheet = "PIB$_Trim", skip = 6, col_names = F) %>%
     tidyr::drop_na(...2) %>%
-    .[1:33,] %>%
+    .[1:33, ] %>%
     t() %>%
     as.data.frame() %>%
     dplyr::mutate(
@@ -2888,14 +3037,14 @@ pib_origen_trim <- function(indicador = NULL, metadata = FALSE){
 
   names(va)[1:2] <- c("year", "quarter")
 
-  va <- va%>%
+  va <- va %>%
     Dmisc::vars_to_date(year = 1, quarter = 2) %>%
     tidyr::pivot_longer(-date, names_to = "rae", values_to = "pib")
 
   # Ponderacion
   pva <- readxl::read_excel(file, sheet = "PIB$_Trim", skip = 42, col_names = F) %>%
     tidyr::drop_na(...2) %>%
-    .[1:33,] %>%
+    .[1:33, ] %>%
     t() %>%
     as.data.frame() %>%
     dplyr::mutate(
@@ -2913,7 +3062,7 @@ pib_origen_trim <- function(indicador = NULL, metadata = FALSE){
   # Valor agregado acumulado
   vaa <- readxl::read_excel(file, sheet = "PIB$_Trim_Acum", skip = 6, col_names = F) %>%
     tidyr::drop_na(...2) %>%
-    .[1:33,] %>%
+    .[1:33, ] %>%
     t() %>%
     as.data.frame() %>%
     dplyr::mutate(
@@ -2924,14 +3073,14 @@ pib_origen_trim <- function(indicador = NULL, metadata = FALSE){
 
   names(vaa)[1:2] <- c("year", "quarter")
 
-  vaa <- vaa  %>%
+  vaa <- vaa %>%
     Dmisc::vars_to_date(year = 1, quarter = 2) %>%
     tidyr::pivot_longer(-date, names_to = "rae", values_to = "pib_acumulado")
 
   # Valor agregado acumulado
   pvaa <- readxl::read_excel(file, sheet = "PIB$_Trim_Acum", skip = 42, col_names = F) %>%
     tidyr::drop_na(...2) %>%
-    .[1:33,] %>%
+    .[1:33, ] %>%
     t() %>%
     as.data.frame() %>%
     dplyr::mutate(
@@ -2942,14 +3091,14 @@ pib_origen_trim <- function(indicador = NULL, metadata = FALSE){
 
   names(pvaa)[1:2] <- c("year", "quarter")
 
-  pvaa <- pvaa   %>%
+  pvaa <- pvaa %>%
     Dmisc::vars_to_date(year = 1, quarter = 2) %>%
     tidyr::pivot_longer(-date, names_to = "rae", values_to = "pib_acumulado__ponderacion")
 
   # Indice de valores encadenados (IVE)
   ive <- readxl::read_excel(file, sheet = "PIBK_Trim", skip = 6, col_names = F) %>%
     tidyr::drop_na(...2) %>%
-    .[1:33,] %>%
+    .[1:33, ] %>%
     t() %>%
     as.data.frame() %>%
     dplyr::mutate(
@@ -2960,14 +3109,14 @@ pib_origen_trim <- function(indicador = NULL, metadata = FALSE){
 
   names(ive)[1:2] <- c("year", "quarter")
 
-  ive <- ive   %>%
+  ive <- ive %>%
     Dmisc::vars_to_date(year = 1, quarter = 2) %>%
     tidyr::pivot_longer(-date, names_to = "rae", values_to = "pib__ive")
 
   # Tasa de crecimiento
   tc <- readxl::read_excel(file, sheet = "PIBK_Trim", skip = 42, col_names = F) %>%
     tidyr::drop_na(...6) %>%
-    .[1:33,] %>%
+    .[1:33, ] %>%
     t() %>%
     as.data.frame() %>%
     dplyr::mutate(
@@ -2978,14 +3127,14 @@ pib_origen_trim <- function(indicador = NULL, metadata = FALSE){
 
   names(tc)[1:2] <- c("year", "quarter")
 
-  tc <- tc   %>%
+  tc <- tc %>%
     Dmisc::vars_to_date(year = 1, quarter = 2) %>%
     tidyr::pivot_longer(-date, names_to = "rae", values_to = "pib__tci")
 
   # Incidencia
   iva <- readxl::read_excel(file, sheet = "PIBK_Trim", skip = 78, col_names = F) %>%
     tidyr::drop_na(...6) %>%
-    .[1:33,] %>%
+    .[1:33, ] %>%
     t() %>%
     as.data.frame() %>%
     dplyr::mutate(
@@ -2996,14 +3145,14 @@ pib_origen_trim <- function(indicador = NULL, metadata = FALSE){
 
   names(iva)[1:2] <- c("year", "quarter")
 
-  iva <- iva   %>%
+  iva <- iva %>%
     Dmisc::vars_to_date(year = 1, quarter = 2) %>%
     tidyr::pivot_longer(-date, names_to = "rae", values_to = "pib__incidencia")
 
   # Indice de valores encadenados (IVE) acumulado
   ivea <- readxl::read_excel(file, sheet = "PIBK_Trim_Acum", skip = 6, col_names = F) %>%
     tidyr::drop_na(...2) %>%
-    .[1:33,] %>%
+    .[1:33, ] %>%
     t() %>%
     as.data.frame() %>%
     dplyr::mutate(
@@ -3014,14 +3163,14 @@ pib_origen_trim <- function(indicador = NULL, metadata = FALSE){
 
   names(ivea)[1:2] <- c("year", "quarter")
 
-  ivea <- ivea   %>%
+  ivea <- ivea %>%
     Dmisc::vars_to_date(year = 1, quarter = 2) %>%
     tidyr::pivot_longer(-date, names_to = "rae", values_to = "pib_acumulado__ive")
 
   # Tasa de crecimiento
   tca <- readxl::read_excel(file, sheet = "PIBK_Trim_Acum", skip = 42, col_names = F) %>%
     tidyr::drop_na(...6) %>%
-    .[1:33,] %>%
+    .[1:33, ] %>%
     t() %>%
     as.data.frame() %>%
     dplyr::mutate(
@@ -3032,14 +3181,14 @@ pib_origen_trim <- function(indicador = NULL, metadata = FALSE){
 
   names(tca)[1:2] <- c("year", "quarter")
 
-  tca <- tca   %>%
+  tca <- tca %>%
     Dmisc::vars_to_date(year = 1, quarter = 2) %>%
     tidyr::pivot_longer(-date, names_to = "rae", values_to = "pib_acumulado__tci")
 
   # Incidencia
   ivaa <- readxl::read_excel(file, sheet = "PIBK_Trim_Acum", skip = 78, col_names = F) %>%
     tidyr::drop_na(...6) %>%
-    .[1:33,] %>%
+    .[1:33, ] %>%
     t() %>%
     as.data.frame() %>%
     dplyr::mutate(
@@ -3050,11 +3199,11 @@ pib_origen_trim <- function(indicador = NULL, metadata = FALSE){
 
   names(ivaa)[1:2] <- c("year", "quarter")
 
-  ivaa <- ivaa   %>%
+  ivaa <- ivaa %>%
     Dmisc::vars_to_date(year = 1, quarter = 2) %>%
     tidyr::pivot_longer(-date, names_to = "rae", values_to = "pib_acumulado__incidencia")
 
-  #unlink(file)
+  # unlink(file)
 
   va %>%
     dplyr::left_join(pva) %>%
@@ -3088,8 +3237,8 @@ pib_origen_trim <- function(indicador = NULL, metadata = FALSE){
 #' \dontrun{
 #' pib_origen_anual()
 #' }
-pib_origen_anual <- function(data = NULL, metadata = FALSE){
-  if(metadata){
+pib_origen_anual <- function(data = NULL, metadata = FALSE) {
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype,
@@ -3104,7 +3253,7 @@ pib_origen_anual <- function(data = NULL, metadata = FALSE){
         "pib__incidencia", "Incidencia", "", "f1",
       )
     )
-  } else if(is.null(data)){
+  } else if (is.null(data)) {
     datos <- pib_origen_trim()
   } else {
     datos <- data
@@ -3126,8 +3275,8 @@ pib_origen_anual <- function(data = NULL, metadata = FALSE){
 #'
 #' @param indicador Vea \code{\link{downloader}}
 #'
-pib_ive <- function(indicador = NULL){
-  if(is.null(indicador)){
+pib_ive <- function(indicador = NULL) {
+  if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-real/documents/pib_2007.xlsx",
       file_ext = "xlsx",
@@ -3177,8 +3326,8 @@ pib_ive <- function(indicador = NULL){
 #' \dontrun{
 #' pib_ive_trim()
 #' }
-pib_ive_trim <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
+pib_ive_trim <- function(indicador = NULL, metadata = FALSE) {
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype,
@@ -3211,8 +3360,8 @@ pib_ive_trim <- function(indicador = NULL, metadata = FALSE){
 #' \dontrun{
 #' pib_ive_anual()
 #' }
-pib_ive_anual <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
+pib_ive_anual <- function(indicador = NULL, metadata = FALSE) {
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype,
@@ -3238,8 +3387,8 @@ pib_ive_anual <- function(indicador = NULL, metadata = FALSE){
 #' @param indicador Vea \code{\link{downloader}}
 #'
 pib_deflactor <- function(indicador = NULL) {
-  if(is.null(indicador)){
-    indicador = c(
+  if (is.null(indicador)) {
+    indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-real/documents/pib_deflactor_2007.xls",
       file_ext = "xls"
     )
@@ -3275,9 +3424,9 @@ pib_deflactor <- function(indicador = NULL) {
 #'
 #' @examples
 #' \dontrun{
-#'   pib_deflactor_trimestral()
+#' pib_deflactor_trimestral()
 #' }
-pib_deflactor_trim <- function(indicador = NULL){
+pib_deflactor_trim <- function(indicador = NULL) {
   `...1` <- NULL
   ano <- NULL
   serie <- NULL
@@ -3300,12 +3449,12 @@ pib_deflactor_trim <- function(indicador = NULL){
     ) %>%
     dplyr::select(
       -c(ano, ...1)
-    )%>%
+    ) %>%
     dplyr::relocate(fecha) %>%
     t() %>%
     as.data.frame()
-  def[1,1] <- "serie"
-  def[1,2] <- "indicador"
+  def[1, 1] <- "serie"
+  def[1, 2] <- "indicador"
   def <- def %>%
     janitor::row_to_names(1) %>%
     tidyr::fill(serie) %>%
@@ -3327,9 +3476,9 @@ pib_deflactor_trim <- function(indicador = NULL){
 #'
 #' @examples
 #' \dontrun{
-#'   pib_deflactor_anual()
+#' pib_deflactor_anual()
 #' }
-pib_deflactor_anual <- function(indicador = NULL){
+pib_deflactor_anual <- function(indicador = NULL) {
   `...1` <- NULL
   ano <- NULL
   serie <- NULL
@@ -3340,8 +3489,8 @@ pib_deflactor_anual <- function(indicador = NULL){
     dplyr::relocate(ano) %>%
     t() %>%
     as.data.frame()
-  def[1,1] <- "serie"
-  def[1,2] <- "indicador"
+  def[1, 1] <- "serie"
+  def[1, 2] <- "indicador"
   def %>%
     janitor::row_to_names(1) %>%
     tidyr::fill(serie) %>%
@@ -3364,17 +3513,17 @@ pib_deflactor_anual <- function(indicador = NULL){
 #'
 #' @examples
 #' \dontrun{
-#'   imae_mensual(indicador)
+#' imae_mensual(indicador)
 #' }
 imae_mensual <- function(indicador = NULL, metadata = FALSE) {
-  if(is.null(indicador)){
-    indicador = c(
+  if (is.null(indicador)) {
+    indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-real/documents/imae.xlsx",
       file_ext = "xlsx",
       max_changes = 9
     )
   }
-  if(metadata){
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype, ~key,
@@ -3395,67 +3544,69 @@ imae_mensual <- function(indicador = NULL, metadata = FALSE) {
     file <- downloader(indicador)
   }
   imae <- readxl::read_excel(file, skip = 5)
-  #unlink(file_path)
+  # unlink(file_path)
   # Serie original
-  imaeso <- imae[,1:6]
-  imaeso <- imaeso[-1,]
-  imaeso[1,1] <- 'ano'
-  imaeso[1,2] <- 'mes'
-  imaeso[1,3] <- 'indice'
-  names(imaeso) <- imaeso[1,]
-  imaeso <- imaeso[-1,]
-  names(imaeso)[names(imaeso) == 'Interanual'] <- 'variacion_interanual'
-  names(imaeso)[names(imaeso) == 'Acumulada'] <- 'variacion_acumulada'
-  names(imaeso)[names(imaeso) == 'Promedio 12 meses'] <- 'variacion_promedio_12_meses'
-  imaeso <- imaeso[!is.na(imaeso$indice),]
-  imaeso$ano <- stringr::str_remove_all(imaeso$ano, '[^0-9]')
-  imaeso <- tidyr::fill(imaeso, ano, .direction = 'up')
+  imaeso <- imae[, 1:6]
+  imaeso <- imaeso[-1, ]
+  imaeso[1, 1] <- "ano"
+  imaeso[1, 2] <- "mes"
+  imaeso[1, 3] <- "indice"
+  names(imaeso) <- imaeso[1, ]
+  imaeso <- imaeso[-1, ]
+  names(imaeso)[names(imaeso) == "Interanual"] <- "variacion_interanual"
+  names(imaeso)[names(imaeso) == "Acumulada"] <- "variacion_acumulada"
+  names(imaeso)[names(imaeso) == "Promedio 12 meses"] <- "variacion_promedio_12_meses"
+  imaeso <- imaeso[!is.na(imaeso$indice), ]
+  imaeso$ano <- stringr::str_remove_all(imaeso$ano, "[^0-9]")
+  imaeso <- tidyr::fill(imaeso, ano, .direction = "up")
   imaeso <- tidyr::fill(imaeso, ano)
   imaeso <- dplyr::filter(imaeso, !is.na(mes))
   imaeso <- Dmisc::vars_to_date(imaeso, year = 1, month = 2)
-  imaeso$serie <- 'Serie original'
+  imaeso$serie <- "Serie original"
 
   # Serie desestacionalizada
-  imaesd <- imae[,c(1:2, 7:11)]
-  imaesd <- imaesd[-1,]
-  imaesd[1,1] <- 'ano'
-  imaesd[1,2] <- 'mes'
-  imaesd[1,3] <- 'indice'
-  names(imaesd) <- imaesd[1,]
-  imaesd <- imaesd[-1,]
-  names(imaesd)[names(imaesd) == 'Respecto al per\u00EDodo anterior'] <- 'variacion_periodo_anterior'
-  names(imaesd)[names(imaesd) == 'Interanual'] <- 'variacion_interanual'
-  names(imaesd)[names(imaesd) == 'Acumulada'] <- 'variacion_acumulada'
-  names(imaesd)[names(imaesd) == 'Promedio 12 meses'] <- 'variacion_promedio_12_meses'
+  imaesd <- imae[, c(1:2, 7:11)]
+  imaesd <- imaesd[-1, ]
+  imaesd[1, 1] <- "ano"
+  imaesd[1, 2] <- "mes"
+  imaesd[1, 3] <- "indice"
+  names(imaesd) <- imaesd[1, ]
+  imaesd <- imaesd[-1, ]
+  names(imaesd)[names(imaesd) == "Respecto al per\u00EDodo anterior"] <- "variacion_periodo_anterior"
+  names(imaesd)[names(imaesd) == "Interanual"] <- "variacion_interanual"
+  names(imaesd)[names(imaesd) == "Acumulada"] <- "variacion_acumulada"
+  names(imaesd)[names(imaesd) == "Promedio 12 meses"] <- "variacion_promedio_12_meses"
   imaesd <- dplyr::mutate(imaesd,
-                          ano = stringr::str_remove_all(ano, '[^0-9]'))
-  imaesd <- imaesd[!is.na(imaesd$indice),]
-  imaesd <- tidyr::fill(imaesd, ano, .direction = 'up')
+    ano = stringr::str_remove_all(ano, "[^0-9]")
+  )
+  imaesd <- imaesd[!is.na(imaesd$indice), ]
+  imaesd <- tidyr::fill(imaesd, ano, .direction = "up")
   imaesd <- tidyr::fill(imaesd, ano)
-  imaesd <- imaesd[!is.na(imaesd$mes),]
+  imaesd <- imaesd[!is.na(imaesd$mes), ]
   imaesd <- Dmisc::vars_to_date(imaesd, year = 1, month = 2)
-  imaesd$serie <- 'Serie desestacionalizada'
+  imaesd$serie <- "Serie desestacionalizada"
 
   # Serie tendencia-ciclo
-  imaest <- imae[,c(1:2, 12:16)]
-  imaest <- imaest[-1,]
-  imaest[1,1] <- 'ano'
-  imaest[1,2] <- 'mes'
-  imaest[1,3] <- 'indice'
-  names(imaest) <- imaest[1,]
-  imaest <- imaest[-1,]
-  names(imaest)[names(imaest) == 'Respecto al per\u00EDodo anterior'] <- 'variacion_periodo_anterior'
-  names(imaest)[names(imaest) == 'Interanual'] <- 'variacion_interanual'
-  names(imaest)[names(imaest) == 'Acumulada'] <- 'variacion_acumulada'
-  names(imaest)[names(imaest) == 'Promedio 12 meses'] <- 'variacion_promedio_12_meses'
-  imaest <- imaest[!is.na(imaest$indice),]
+  imaest <- imae[, c(1:2, 12:16)]
+  imaest <- imaest[-1, ]
+  imaest[1, 1] <- "ano"
+  imaest[1, 2] <- "mes"
+  imaest[1, 3] <- "indice"
+  names(imaest) <- imaest[1, ]
+  imaest <- imaest[-1, ]
+  names(imaest)[names(imaest) == "Respecto al per\u00EDodo anterior"] <- "variacion_periodo_anterior"
+  names(imaest)[names(imaest) == "Interanual"] <- "variacion_interanual"
+  names(imaest)[names(imaest) == "Acumulada"] <- "variacion_acumulada"
+  names(imaest)[names(imaest) == "Promedio 12 meses"] <- "variacion_promedio_12_meses"
+  imaest <- imaest[!is.na(imaest$indice), ]
   imaest <- dplyr::mutate(imaest,
-                          ano = stringr::str_remove_all(ano, '[^0-9]'))
-  imaest <- tidyr::fill(imaest, ano, .direction = 'up')
+    ano = stringr::str_remove_all(ano, "[^0-9]")
+  )
+  imaest <- tidyr::fill(imaest, ano, .direction = "up")
   imaest <- tidyr::fill(imaest, ano)
-  imaest <- imaest[!is.na(imaest$mes),]
+  imaest <- imaest[!is.na(imaest$mes), ]
   imaest <- Dmisc::vars_to_date(imaest, year = 1, month = 2)
-  imaest$serie <- 'Serie Tendencia-Ciclo'
+  imaest$serie <- "Serie Tendencia-Ciclo"
 
   #
   dplyr::bind_rows(imaeso, imaesd, imaest) %>%
@@ -3476,10 +3627,10 @@ imae_mensual <- function(indicador = NULL, metadata = FALSE) {
 #'
 #' @examples
 #' \dontrun{
-#'   pib_per_capita()
+#' pib_per_capita()
 #' }
-pib_per_capita <- function(indicador = NULL, metadata = FALSE){
-  if(metadata){
+pib_per_capita <- function(indicador = NULL, metadata = FALSE) {
+  if (metadata) {
     return(
       tibble::tribble(
         ~col, ~name, ~unit, ~dtype,
@@ -3493,8 +3644,8 @@ pib_per_capita <- function(indicador = NULL, metadata = FALSE){
       )
     )
   }
-  if(is.null(indicador)){
-    indicador = c(
+  if (is.null(indicador)) {
+    indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-real/documents/pib_dolares.xls",
       file_ext = "xls"
     )
@@ -3507,7 +3658,7 @@ pib_per_capita <- function(indicador = NULL, metadata = FALSE){
     dplyr::mutate(
       ...1 = stringr::str_remove_all(...1, "[^0-9]"),
       ...1 = as.numeric(...1)
-    )%>%
+    ) %>%
     tidyr::drop_na(...1) %>%
     dplyr::filter(!duplicated(...1)) %>%
     setNames(c("ano", "poblacion", "pib", "pib_pc", "pib_usd", "pib_pc_usd", "ive")) %>%

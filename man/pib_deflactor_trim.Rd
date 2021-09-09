@@ -19,6 +19,6 @@ pib_deflactor_trim(indicador = NULL)
 }
 \examples{
 \dontrun{
-  pib_deflactor_trimestral()
+pib_deflactor_trimestral()
 }
 }

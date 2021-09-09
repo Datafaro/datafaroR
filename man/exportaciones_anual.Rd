@@ -19,6 +19,6 @@ exportaciones_anual(indicador = NULL, metadata = FALSE)
 }
 \examples{
 \dontrun{
-  exportaciones_anual()
+exportaciones_anual()
 }
 }

@@ -19,6 +19,6 @@ balance_isi_pasivos_mn(indicador = NULL, metadata = FALSE)
 }
 \examples{
 \dontrun{
-  balance_isi_pasivos_mn()
+balance_isi_pasivos_mn()
 }
 }

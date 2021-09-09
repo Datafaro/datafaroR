@@ -19,6 +19,6 @@ ipc_mensual_2020(indicador = NULL, metadata = FALSE)
 }
 \examples{
 \dontrun{
-  ipc_mensual_2020()
+ipc_mensual_2020()
 }
 }
