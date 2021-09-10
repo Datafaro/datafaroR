@@ -407,13 +407,19 @@ poblacion_ocupada_ingresos_nivel_educativo <- function(indicador = NULL, metadat
     dplyr::summarise(ipc = mean(indice)) %>%
     Dmisc::vars_to_date(year = "year", quarter = "quarter") -> ipc
 
+  download_domar("tipo-cambio-usd-dop-trim") %>%
+    dplyr::filter(tipo == "Promedio trimestral") %>%
+    dplyr::select(date, compra) %>%
+    dplyr::mutate(date = as.Date(date)) -> tc
+
   datos %>%
     tidyr::pivot_wider(names_from = "indicador", values_from = "valor") %>%
     dplyr::left_join(ipc) %>%
     dplyr::mutate(ingresos__real = ingresos/ipc*100) %>%
-    dplyr::select(-ipc)
-
-  download_domar("")
+    dplyr::select(-ipc) %>%
+    dplyr::left_join(tc) %>%
+    dplyr::mutate(ingresos__usd = ingresos/compra) %>%
+    dplyr::select(-compra)
 }
 
 
