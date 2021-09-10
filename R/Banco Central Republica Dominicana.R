@@ -128,17 +128,12 @@ tipo_cambio_usd_dop_trim <- function(indicador = NULL, metadata = FALSE) {
   }
   if (metadata) {
     return(
-      list(
-        "kvars" = c("date", "tipo"),
-        "max_changes" = indicador$max_changes,
-        "var_info" =
-          tibble::tribble(
-            ~col, ~name, ~unit, ~dtype, ~key,
-            "date", "Fecha", "Trimestral", "qdate", 1,
-            "compra", "Precio de compra", "RD$/US$", "f2", 0,
-            "venta", "Precio de venta", "RD$/US$", "f2", 0,
-            "tipo", "Tipo de indicador", "", "text", 1
-          )
+      tibble::tribble(
+        ~col, ~name, ~unit, ~dtype, ~key,
+        "date", "Fecha", "Trimestral", "qdate", 1,
+        "compra", "Precio de compra", "RD$/US$", "f2", 0,
+        "venta", "Precio de venta", "RD$/US$", "f2", 0,
+        "tipo", "Tipo de indicador", "", "text", 1
       )
     )
   }
