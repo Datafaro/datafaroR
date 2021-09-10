@@ -313,8 +313,11 @@ poblacion_ocupada_ingresos_nivel_educativo <- function(indicador = NULL, metadat
         "date", "Fecha", "Trimestral", "qdate", 1,
         "nivel_educativo", "Nivel educativo", "", "text", 0,
         "decil", "Decil", "", "text", 1,
-        "indicador", "Indicador", "", "text", 1,
-        "valor", "Valor", "", "f1", 0
+        "poblacion", "Población ocupada", "Personas", "int", 0,
+        "ingresos", "Ingresos por hora", "RD$ (nominal)", "f1", 0,
+        "ingresos__real", "Ingresos por hora", "RD$ (real, Dic 2010 = 100)", "f1", 0,
+        "ingresos__usd", "Ingresos por hora", "US$ (nominal)", "f1", 0,
+        "horas", "Horas promedio semanales", "", "f1", 0
       )
     )
   }
