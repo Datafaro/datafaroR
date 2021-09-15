@@ -25,7 +25,8 @@ tipo_cambio_gbp_eur_mensual <- function(indicador = NULL, metadata = FALSE){
   if(is.null(indicador)){
     indicador = c(
       original_url = "https://sdw.ecb.europa.eu/quickview.do?SERIES_KEY=120.EXR.M.GBP.EUR.SP00.A",
-      file_ext = "html"
+      file_ext = "html",
+      max_changes = 2
     )
   }
   Period <- NULL
@@ -69,7 +70,8 @@ tipo_cambio_usd_eur_mensual <- function(indicador = NULL, metadata = FALSE){
   if(is.null(indicador)){
     indicador = c(
       original_url = "https://sdw.ecb.europa.eu/quickview.do?SERIES_KEY=120.EXR.M.USD.EUR.SP00.A",
-       file_ext = "html"
+       file_ext = "html",
+      max_changes = 2
     )
   }
   Period <- NULL
@@ -113,7 +115,8 @@ tipo_cambio_jpy_eur_mensual <- function(indicador = NULL, metadata = FALSE){
   if(is.null(indicador)){
     indicador = c(
       original_url = "https://sdw.ecb.europa.eu/quickview.do?SERIES_KEY=120.EXR.M.JPY.EUR.SP00.A",
-       file_ext = "html"
+       file_ext = "html",
+      max_changes = 2
     )
   }
   Period <- NULL

@@ -79,7 +79,8 @@ tipo_cambio_dolar_mensual <- function(indicador = NULL, metadata = FALSE) {
   if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/mercado-cambiario/documents/TASA_DOLAR_REFERENCIA_MC.xls",
-      file_ext = "xls"
+      file_ext = "xls",
+      max_changes = 2
     )
   }
   file <- "/mnt/c/Users/drdsd/Downloads/TASA_DOLAR_REFERENCIA_MC.xls"
@@ -249,7 +250,8 @@ resumen_indicadores_mercado_laboral <- function(indicador = NULL, metadata = FAL
   if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/mercado-de-trabajo/documents/00_Indicadores.xlsx",
-      file_ext = "xls"
+      file_ext = "xlsx",
+      max_changes = 2
     )
   }
   file <- "/mnt/c/Users/drdsd/Downloads/00_Indicadores.xlsx"
@@ -461,7 +463,8 @@ ipc_mensual_2020 <- function(indicador = NULL, metadata = FALSE) {
   if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/precios/documents/ipc_base_2019-2020.xls",
-      file_ext = "xls"
+      file_ext = "xls",
+      max_changes = 2
     )
   }
   `...2` <- NULL
@@ -767,7 +770,8 @@ balanza_pagos_anual <- function(indicador = NULL, metadata = FALSE) {
   if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-externo/documents/bpagos_6.xls",
-      file_ext = "xls"
+      file_ext = "xls",
+      max_changes = 2
     )
   }
   file <- "/mnt/c/Users/drdsd/Downloads/bpagos_6.xls"
@@ -831,7 +835,8 @@ balanza_pagos_trim <- function(indicador = NULL, metadata = FALSE) {
   if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-externo/documents/bpagos__trim_6.xls",
-      file_ext = "xls"
+      file_ext = "xls",
+      max_changes = 2
     )
   }
   file <- "/mnt/c/Users/drdsd/Downloads/bpagos__trim_6.xls"
@@ -1776,7 +1781,9 @@ indicadores_bcrd <- function(indicador = NULL, metadata = FALSE) {
       valor__tci = (valor / dplyr::lag(valor, 12) - 1) * 100,
       valor__tci = dplyr::case_when(orden < 40 ~ valor__tci)
     ) %>%
-    dplyr::ungroup()
+    dplyr::ungroup() %>% 
+    dplyr::mutate(date = as.Date(date)) %>% 
+    tidyr::drop_na(date)
 }
 
 
@@ -2514,7 +2521,7 @@ tasas_interes_activas_bm_2008 <- function(indicador = NULL, metadata = FALSE) {
 tasas_interes_activas_bm_1991 <- function(indicador = NULL, metadata = FALSE) {
   if (is.null(indicador)) {
     indicador <- c(
-      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/tbm_activad-1991-2007.xls",
+      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-monetario-y-financiero/documents/tbm_activa-1991-2007.xls",
       file_ext = "xls",
       max_changes = 12
     )
