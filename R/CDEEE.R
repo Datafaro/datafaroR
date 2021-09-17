@@ -39,6 +39,7 @@ informe_desempeno_sector_energetico_variables_relevantes <- function(indicador =
 
   file <- "/mnt/c/Users/drdsd/Downloads/Informe-de-Desempeno-Junio-2021-Anexos._.xlsx"
   if (!file.exists(file)) {
+    docker_start()
     remDr <- RSelenium::remoteDriver(
       remoteServerAddr = "localhost",
       port = 4445L,
@@ -71,6 +72,10 @@ informe_desempeno_sector_energetico_variables_relevantes <- function(indicador =
       dplyr::pull(V2) %>%
       .[[1]] -> indicador$original_url
     indicador$file_ext <- "xlsx"
+
+    remDr$close()
+
+    docker_stop()
 
     file <- downloader(indicador)
   } else {
@@ -139,8 +144,9 @@ informe_desempeno_sector_energetico_edes <- function(indicador = NULL, metadata 
     )
   }
 
-  file <- "/mnt/c/Users/drdsd/Downloads/Informe-de-Desempeno-Junio-2021-Anexos._.xlsx"
+  file <- "/mnt/c/Users/drdsd/Downloads/Informe-de-Desempeno-Junio-2021-Anexos._.xlsx0"
   if (!file.exists(file)) {
+    docker_start()
     remDr <- RSelenium::remoteDriver(
       remoteServerAddr = "localhost",
       port = 4445L,
@@ -173,6 +179,10 @@ informe_desempeno_sector_energetico_edes <- function(indicador = NULL, metadata 
       dplyr::pull(V2) %>%
       .[[1]] -> indicador$original_url
     indicador$file_ext <- "xlsx"
+
+    remDr$close()
+
+    docker_stop()
 
     file <- downloader(indicador)
   } else {

@@ -107,3 +107,15 @@ download_domar <- function(id){
   readr::read_csv(url(glue::glue("{info$domar_url}/app/datos/{id}/d?out=csv&t={info$token}"))) %>%
     type.convert(as.is = T)
 }
+
+
+docker_start <- function(){
+  assign("docker_id", system("docker run -d -p 4445:4444 selenium/standalone-firefox:2.53.0", intern = TRUE)[[1]])
+  Sys.sleep(5)
+  print(paste0("docker server started (", docker_id, ")"))
+}
+
+docker_stop <- function(){
+  system(paste0("docker stop ", docker_id))
+  print(paste0("docker server stoped (", docker_id, ")"))
+}
