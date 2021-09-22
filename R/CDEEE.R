@@ -22,52 +22,89 @@ informe_desempeno_sector_energetico <- function(indicador = NULL) {
       max_changes = 38 * 2
     )
   }
-  
-  file <- "/mnt/c/Users/drdsd/Downloads/Informe-de-Desempeno-Junio-2021-Anexos._.xlsx"
+
+  file <- "/mnt/c/Users/drdsd/Downloads/Informe-de-Desempeno-Junio-2021-Anexos0._.xlsx"
   if (!file.exists(file)) {
-    docker_start()
+
+    did <- docker_start()
+
     remDr <- RSelenium::remoteDriver(
       remoteServerAddr = "localhost",
       port = 4445L,
       browserName = "firefox"
     )
-    
+
     remDr$open()
-    
+
     remDr$navigate("https://cdeee.gob.do/transparencia/informes-del-sector-energetico/")
-    
-    year <- remDr$findElement("xpath", '//*[@id="wpfb-cat-1740"]/span/a')
-    
+
+    page <- remDr$getPageSource()
+
+    page[[1]] %>%
+      rvest::read_html() %>%
+      rvest::html_element(xpath = '//*[@id="collapseOne"]') %>%
+      xml2::xml_child(., 1) %>%
+      xml2::xml_child(., 1) %>%
+      xml2::xml_child(., 1) %>%
+      xml2::xml_attrs(.) %>%
+      .[["id"]] -> year_id
+
+    year <- remDr$findElement(using = "xpath", glue::glue('//*[@id="{year_id}"]/span/a'))
+
     year$clickElement()
-    
-    
-    month <- remDr$findElement("xpath", '//*[@id="wpfb-cat-1869"]/span/a')
-    
+
+    Sys.sleep(5)
+
+    page <- remDr$getPageSource()
+
+    page[[1]] %>%
+      rvest::read_html() %>%
+      rvest::html_element(xpath = '//*[@id="collapseOne"]') %>%
+      xml2::xml_child(., 1) %>%
+      xml2::xml_child(., 1) %>%
+      xml2::xml_child(., 1) %>%
+      xml2::xml_child(., 3) %>%
+      xml2::xml_child(., 1) %>%
+      xml2::xml_child(., 2) %>%
+      xml2::xml_child(., 2) %>%
+      xml2::xml_attrs(.) %>%
+      .[["href"]] %>%
+      stringr::str_split("#") %>%
+      .[[1]] %>%
+      .[[2]] -> month_id
+
+    month <- remDr$findElement(using = "xpath", glue::glue('//*[@id="{month_id}"]/span/a'))
+
     month$clickElement()
-    
-    remDr$getPageSource() %>%
-      .[[1]] %>%
-      stringr::str_split("\n") %>%
-      dplyr::bind_cols() %>%
-      dplyr::filter(stringr::str_detect(...1, ".xlsx")) %>%
-      .[[1]] %>%
-      stringr::str_split(" ") %>%
-      dplyr::bind_cols() %>%
-      dplyr::filter(stringr::str_detect(...1, ".xlsx")) %>%
-      tidyr::separate(...1, c("V1", "V2", "V3"), "\"") %>%
-      dplyr::pull(V2) %>%
-      .[[1]] -> indicador$original_url
-    indicador$file_ext <- "xlsx"
-    
+
+    Sys.sleep(5)
+
+    page <- remDr$getPageSource()
+
+    page[[1]] %>%
+      rvest::read_html() %>%
+      rvest::html_elements("a") %>%
+      rvest::html_attr("href") %>%
+      as.data.frame() %>%
+      dplyr::filter(stringr::str_detect(`.`, "xls")) %>%
+      .[[1]] -> indicador[["original_url"]]
+
+    if(stringr::str_detect(indicador[["original_url"]], "xlsx")){
+      indicador[["file_ext"]] <- "xlsx"
+    } else if(stringr::str_detect(indicador[["original_url"]], "xls")){
+      indicador[["file_ext"]] <- "xls"
+    }
+
     remDr$close()
-    
-    docker_stop()
-    
+
+    docker_stop(did)
+
     file <- downloader(indicador)
+
   } else {
     print("Local file...")
   }
-  
+
   file
 }
 
@@ -100,11 +137,11 @@ informe_desempeno_sector_energetico_variables_relevantes <- function(indicador =
       )
     )
   }
-  
+
   datos <- readxl::read_excel(informe_desempeno_sector_energetico(indicador), skip = 6, col_names = FALSE)
-  
+
   datos[1, 2] <- "9999"
-  
+
   datos %>%
     tidyr::drop_na(...2) %>%
     t() %>%
@@ -115,9 +152,9 @@ informe_desempeno_sector_energetico_variables_relevantes <- function(indicador =
     dplyr::mutate(V1 = as.Date(V1, origin="1900-01-01")) %>%
     t() %>%
     as.data.frame() -> datos
-  
+
   datos[1,1] <- "variable"
-  
+
   datos %>%
     janitor::row_to_names(1) %>%
     dplyr::bind_cols(nvl_idsevr %>% dplyr::select(-variable)) %>%
