@@ -1,6 +1,6 @@
 Package: domar
 Title: Dominican Admnistrative Registries
-Version: 0.32.0
+Version: 0.33.0
 Authors@R: c( 
     person(given = "Daniel E.",
            family = "de la Rosa",
@@ -41,7 +41,8 @@ Imports:
     magrittr,
     Dmisc (>= 0.2.2.9001),
     tibble,
-    RSelenium
+    RSelenium,
+    jsonlite
 Suggests: 
     knitr,
     rmarkdown

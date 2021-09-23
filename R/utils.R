@@ -120,3 +120,26 @@ docker_stop <- function(docker_id){
   system(paste0("docker stop ", docker_id))
   print(paste0("docker server stoped (", docker_id, ")"))
 }
+
+
+writer_notes <- function(indicador, notes){
+
+  id = NA_character_
+  tryCatch({
+    id <- indicador[["id"]]
+  }, error = function(e){
+    id = NA_character_
+  })
+
+  if(!is.na(id)){
+    json_body <- jsonlite::toJSON(list(token = info$token, n = append(notes, "")), auto_unbox = TRUE)
+    tryCatch({
+    httr::POST(glue::glue("{info$domar_url}/app/datos/notes/{id}"), body = json_body, encode = "raw")
+    }, error = function(e){
+      print(e)
+      print("Error writting notes...")
+    })
+  } else {
+    print("No ID")
+  }
+}

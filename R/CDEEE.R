@@ -23,7 +23,7 @@ informe_desempeno_sector_energetico <- function(indicador = NULL) {
     )
   }
 
-  file <- "/mnt/c/Users/drdsd/Downloads/Informe-de-Desempeno-Junio-2021-Anexos0._.xlsx"
+  file <- "/mnt/c/Users/drdsd/Downloads/Informe-de-Desempeno-Junio-2021-Anexos._.xlsx"
   if (!file.exists(file)) {
 
     did <- docker_start()

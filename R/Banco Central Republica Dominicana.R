@@ -1781,8 +1781,8 @@ indicadores_bcrd <- function(indicador = NULL, metadata = FALSE) {
       valor__tci = (valor / dplyr::lag(valor, 12) - 1) * 100,
       valor__tci = dplyr::case_when(orden < 40 ~ valor__tci)
     ) %>%
-    dplyr::ungroup() %>% 
-    dplyr::mutate(date = as.Date(date)) %>% 
+    dplyr::ungroup() %>%
+    dplyr::mutate(date = as.Date(date)) %>%
     tidyr::drop_na(date)
 }
 
@@ -3549,9 +3549,10 @@ pib_deflactor_anual <- function(indicador = NULL) {
 #' \dontrun{
 #' imae_mensual(indicador)
 #' }
-imae_mensual <- function(indicador = NULL, metadata = FALSE) {
+imae_mensual <- function(indicador = NULL, metadata = FALSE, notes = FALSE) {
   if (is.null(indicador)) {
     indicador <- c(
+      id="imae-mensual",
       original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-real/documents/imae.xlsx",
       file_ext = "xlsx",
       max_changes = 9
@@ -3578,6 +3579,13 @@ imae_mensual <- function(indicador = NULL, metadata = FALSE) {
     file <- downloader(indicador)
   }
   imae <- readxl::read_excel(file, skip = 5)
+
+  imae %>%
+    dplyr::filter(is.na(...2)) %>%
+    setNames(janitor::make_clean_names(names(.))) %>%
+    dplyr::filter(!stringr::str_detect(periodo, "Promedio")) %>%
+    dplyr::pull(periodo) -> Notes
+
   # unlink(file_path)
   # Serie original
   imaeso <- imae[, 1:6]
@@ -3643,6 +3651,10 @@ imae_mensual <- function(indicador = NULL, metadata = FALSE) {
   imaest$serie <- "Serie Tendencia-Ciclo"
 
   #
+  if(notes){
+    return(Notes)
+  }
+  writer_notes(indicador, Notes)
   dplyr::bind_rows(imaeso, imaesd, imaest) %>%
     type.convert(as.is = T)
 }
