@@ -2827,7 +2827,6 @@ tasas_interes_activas_bm_1991 <- function(indicador = NULL, metadata = FALSE) {
 # Sector real----
 
 
-
 #' PIB por enfoque del gasto trimestral
 #'
 #'   \lifecycle{experimental}
@@ -2897,14 +2896,14 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE) {
   pib <- as.data.frame(pib)
   pib <- tidyr::fill(pib, V1)
   pib <- dplyr::mutate(pib,
-    V2 = dplyr::case_when(
-      V2 == "E-M" ~ "Q1",
-      V2 == "A-J" ~ "Q2",
-      V2 == "J-S" ~ "Q3",
-      V2 == "O-D" ~ "Q4"
-    ),
-    V1 = paste(trimws(V1), trimws(V2)),
-    V2 = NULL
+                       V2 = dplyr::case_when(
+                         V2 == "E-M" ~ "Q1",
+                         V2 == "A-J" ~ "Q2",
+                         V2 == "J-S" ~ "Q3",
+                         V2 == "O-D" ~ "Q4"
+                       ),
+                       V1 = paste(trimws(V1), trimws(V2)),
+                       V2 = NULL
   )
   pib <- t(pib)
   pib[1, 1] <- "componente"
@@ -2923,14 +2922,14 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE) {
   pib2 <- as.data.frame(pib2)
   pib2 <- tidyr::fill(pib2, V1)
   pib2 <- dplyr::mutate(pib2,
-    V2 = dplyr::case_when(
-      V2 == "E-M" ~ "Q1",
-      V2 == "A-J" ~ "Q2",
-      V2 == "J-S" ~ "Q3",
-      V2 == "O-D" ~ "Q4"
-    ),
-    V1 = paste(trimws(V1), trimws(V2)),
-    V2 = NULL
+                        V2 = dplyr::case_when(
+                          V2 == "E-M" ~ "Q1",
+                          V2 == "A-J" ~ "Q2",
+                          V2 == "J-S" ~ "Q3",
+                          V2 == "O-D" ~ "Q4"
+                        ),
+                        V1 = paste(trimws(V1), trimws(V2)),
+                        V2 = NULL
   )
   pib2 <- t(pib2)
   pib2[1, 1] <- "componente"
@@ -2952,14 +2951,14 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE) {
   pib2 <- as.data.frame(pib2)
   pib2 <- tidyr::fill(pib2, V1)
   pib2 <- dplyr::mutate(pib2,
-    V2 = dplyr::case_when(
-      V2 == "E-M" ~ "Q1",
-      V2 == "E-J" ~ "Q2",
-      V2 == "E-S" ~ "Q3",
-      V2 == "E-D" ~ "Q4"
-    ),
-    V1 = paste(trimws(V1), trimws(V2)),
-    V2 = NULL
+                        V2 = dplyr::case_when(
+                          V2 == "E-M" ~ "Q1",
+                          V2 == "E-J" ~ "Q2",
+                          V2 == "E-S" ~ "Q3",
+                          V2 == "E-D" ~ "Q4"
+                        ),
+                        V1 = paste(trimws(V1), trimws(V2)),
+                        V2 = NULL
   )
   pib2 <- t(pib2)
   pib2[1, 1] <- "componente"
@@ -2980,14 +2979,14 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE) {
   pib2 <- as.data.frame(pib2)
   pib2 <- tidyr::fill(pib2, V1)
   pib2 <- dplyr::mutate(pib2,
-    V2 = dplyr::case_when(
-      V2 == "E-M" ~ "Q1",
-      V2 == "E-J" ~ "Q2",
-      V2 == "E-S" ~ "Q3",
-      V2 == "E-D" ~ "Q4"
-    ),
-    V1 = paste(trimws(V1), trimws(V2)),
-    V2 = NULL
+                        V2 = dplyr::case_when(
+                          V2 == "E-M" ~ "Q1",
+                          V2 == "E-J" ~ "Q2",
+                          V2 == "E-S" ~ "Q3",
+                          V2 == "E-D" ~ "Q4"
+                        ),
+                        V1 = paste(trimws(V1), trimws(V2)),
+                        V2 = NULL
   )
   pib2 <- t(pib2)
   pib2[1, 1] <- "componente"
@@ -3009,14 +3008,14 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE) {
   pib2 <- as.data.frame(pib2)
   pib2 <- tidyr::fill(pib2, V1)
   pib2 <- dplyr::mutate(pib2,
-    V2 = dplyr::case_when(
-      V2 == "E-M" ~ "Q1",
-      V2 == "A-J" ~ "Q2",
-      V2 == "J-S" ~ "Q3",
-      V2 == "O-D" ~ "Q4"
-    ),
-    V1 = paste(trimws(V1), trimws(V2)),
-    V2 = NULL
+                        V2 = dplyr::case_when(
+                          V2 == "E-M" ~ "Q1",
+                          V2 == "A-J" ~ "Q2",
+                          V2 == "J-S" ~ "Q3",
+                          V2 == "O-D" ~ "Q4"
+                        ),
+                        V1 = paste(trimws(V1), trimws(V2)),
+                        V2 = NULL
   )
   pib2 <- t(pib2)
   pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(1\\)")
@@ -3039,14 +3038,14 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE) {
   pib2 <- as.data.frame(pib2)
   pib2 <- tidyr::fill(pib2, V1)
   pib2 <- dplyr::mutate(pib2,
-    V2 = dplyr::case_when(
-      V2 == "E-M" ~ "Q1",
-      V2 == "A-J" ~ "Q2",
-      V2 == "J-S" ~ "Q3",
-      V2 == "O-D" ~ "Q4"
-    ),
-    V1 = paste(trimws(V1), trimws(V2)),
-    V2 = NULL
+                        V2 = dplyr::case_when(
+                          V2 == "E-M" ~ "Q1",
+                          V2 == "A-J" ~ "Q2",
+                          V2 == "J-S" ~ "Q3",
+                          V2 == "O-D" ~ "Q4"
+                        ),
+                        V1 = paste(trimws(V1), trimws(V2)),
+                        V2 = NULL
   )
   pib2 <- t(pib2)
   pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(1\\)")
@@ -3068,14 +3067,14 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE) {
   pib2 <- as.data.frame(pib2)
   pib2 <- tidyr::fill(pib2, V1)
   pib2 <- dplyr::mutate(pib2,
-    V2 = dplyr::case_when(
-      V2 == "E-M" ~ "Q1",
-      V2 == "A-J" ~ "Q2",
-      V2 == "J-S" ~ "Q3",
-      V2 == "O-D" ~ "Q4"
-    ),
-    V1 = paste(trimws(V1), trimws(V2)),
-    V2 = NULL
+                        V2 = dplyr::case_when(
+                          V2 == "E-M" ~ "Q1",
+                          V2 == "A-J" ~ "Q2",
+                          V2 == "J-S" ~ "Q3",
+                          V2 == "O-D" ~ "Q4"
+                        ),
+                        V1 = paste(trimws(V1), trimws(V2)),
+                        V2 = NULL
   )
   pib2 <- t(pib2)
   pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(1\\)")
@@ -3099,14 +3098,14 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE) {
   pib2 <- as.data.frame(pib2)
   pib2 <- tidyr::fill(pib2, V1)
   pib2 <- dplyr::mutate(pib2,
-    V2 = dplyr::case_when(
-      V2 == "E-M" ~ "Q1",
-      V2 == "E-J" ~ "Q2",
-      V2 == "E-S" ~ "Q3",
-      V2 == "E-D" ~ "Q4"
-    ),
-    V1 = paste(trimws(V1), trimws(V2)),
-    V2 = NULL
+                        V2 = dplyr::case_when(
+                          V2 == "E-M" ~ "Q1",
+                          V2 == "E-J" ~ "Q2",
+                          V2 == "E-S" ~ "Q3",
+                          V2 == "E-D" ~ "Q4"
+                        ),
+                        V1 = paste(trimws(V1), trimws(V2)),
+                        V2 = NULL
   )
   pib2 <- t(pib2)
   pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(1\\)")
@@ -3129,14 +3128,14 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE) {
   pib2 <- as.data.frame(pib2)
   pib2 <- tidyr::fill(pib2, V1)
   pib2 <- dplyr::mutate(pib2,
-    V2 = dplyr::case_when(
-      V2 == "E-M" ~ "Q1",
-      V2 == "E-J" ~ "Q2",
-      V2 == "E-S" ~ "Q3",
-      V2 == "E-D" ~ "Q4"
-    ),
-    V1 = paste(trimws(V1), trimws(V2)),
-    V2 = NULL
+                        V2 = dplyr::case_when(
+                          V2 == "E-M" ~ "Q1",
+                          V2 == "E-J" ~ "Q2",
+                          V2 == "E-S" ~ "Q3",
+                          V2 == "E-D" ~ "Q4"
+                        ),
+                        V1 = paste(trimws(V1), trimws(V2)),
+                        V2 = NULL
   )
   pib2 <- t(pib2)
   pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(1\\)")
@@ -3158,14 +3157,14 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE) {
   pib2 <- as.data.frame(pib2)
   pib2 <- tidyr::fill(pib2, V1)
   pib2 <- dplyr::mutate(pib2,
-    V2 = dplyr::case_when(
-      V2 == "E-M" ~ "Q1",
-      V2 == "E-J" ~ "Q2",
-      V2 == "E-S" ~ "Q3",
-      V2 == "E-D" ~ "Q4"
-    ),
-    V1 = paste(trimws(V1), trimws(V2)),
-    V2 = NULL
+                        V2 = dplyr::case_when(
+                          V2 == "E-M" ~ "Q1",
+                          V2 == "E-J" ~ "Q2",
+                          V2 == "E-S" ~ "Q3",
+                          V2 == "E-D" ~ "Q4"
+                        ),
+                        V1 = paste(trimws(V1), trimws(V2)),
+                        V2 = NULL
   )
   pib2 <- t(pib2)
   pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(1\\)")
@@ -3186,8 +3185,384 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE) {
     dplyr::relocate(c(orden, nivel)) %>%
     utils::type.convert(as.is = T) %>%
     dplyr::left_join(
-      download_domar("tipo-cambio-usd-dop-trim") |>
-        dplyr::filter(stringr::str_detect(tipo, "Promedio")) |>
+      download_domar("tipo-cambio-usd-dop-trim") %>%
+        dplyr::filter(stringr::str_detect(tipo, "Promedio")) %>%
+        dplyr::select(date, tipo_cambio = compra)
+    ) %>%
+    dplyr::mutate(
+      pib__usd = pib / tipo_cambio,
+      year = lubridate::year(date)
+    ) %>%
+    dplyr::group_by(year) %>%
+    dplyr::mutate(
+      tipo_cambio_acum = dplyr::cummean(tipo_cambio),
+      pib_acumulado__usd = pib_acumulado / tipo_cambio_acum
+    ) %>%
+    dplyr::ungroup() %>%
+    dplyr::select(-c(year, dplyr::starts_with("tipo_camb")))
+}
+
+
+#' PIB por enfoque del gasto retro trimestral
+#'
+#'   \lifecycle{experimental}
+#'
+#'
+#' @param indicador Vea \code{\link{downloader}}
+#' @param metadata indica si se retornan los datos o la metadata del indicador
+#'
+#' @return [data.frame]: los datos del indicador en forma tabular
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' pib_gasto_retro()
+#' }
+pib_gasto_retro <- function(indicador = NULL, metadata = FALSE) {
+  componente <- NULL
+  orden <- NULL
+  nivel <- NULL
+  tipo <- NULL
+  compra <- NULL
+  tipo_cambio <- NULL
+  year <- NULL
+  pib_acumulado <- NULL
+  tipo_cambio_acum <- NULL
+  if (is.null(indicador)) {
+    indicador <- c(
+      original_url = "https://cdn.bancentral.gov.do/documents/estadisticas/sector-real/documents/pib_gasto_retro.xlsx",
+      file_ext = "xlsx",
+      max_changes = 18
+    )
+  }
+  if (metadata) {
+    return(
+      tibble::tribble(
+        ~col, ~name, ~unit, ~dtype, ~key,
+        "orden", "Orden de los componentes", "", "int", 1,
+        "nivel", "Nivel de los componentes", "", "int", 1,
+        "componente", "Componente", "", "text", 1,
+        "date", "Fecha", "Trimestres", "qdate", 1,
+        "pib", "PIB", "Millones de RD$", "f1", 0,
+        "pib__ponderacion", "Ponderaci\\u00F3n por componente", "Porcentaje (%)", "f2", 0,
+        "pib_acumulado", "PIB acumulado", "Millones de RD$", "f1", 0,
+        "pib_acumulado__ponderacion", "Ponderaci\\u00F3n por componente (PIB acumulado)", "Porcentaje (%)", "f2", 0,
+        "pib__ive", "\\u00EDndice de Valores Encadenados (IVE) del PIB", "\\u00EDndice (2007=100)", "f1", 0,
+        "pib__tci", "Tasa de crecimiento PIB", "Porcentaje (%)", "f1", 0,
+        "pib__incidencia", "Incidencia por componente del PIB", "", "f1", 0,
+        "pib_acumulado__ive", "\\u00EDndice de Valores Encadenados (IVE) - PIB Acumulado", "\\u00EDndice (2007=100)", "f1", 0,
+        "pib_acumulado__tci", "Tasa de crecimiento - PIB Acumulado", "Porcentaje (%)", "f1", 0,
+        "pib_acumulado__incidencia", "Incidencia por componente del PIB Acumulado", "", "f1", 0
+      )
+    )
+  }
+  `...2` <- NULL
+  V1 <- NULL
+  V2 <- NULL
+  pibFile <- "/mnt/c/Users/drdsd/Downloads/pib_gasto_retro.xlsx"
+  if (!file.exists(pibFile)) {
+    pibFile <- downloader(indicador)
+  }
+  pib <- readxl::read_excel(pibFile, sheet = "PIB$_Trim", skip = 5, col_names = F)
+  pib <- tidyr::drop_na(pib, ...2)
+  pib <- pib[1:11, ]
+  pib <- t(pib)
+  pib[, 1] <- stringr::str_remove_all(pib[, 1], "[^0-9]")
+  pib <- as.data.frame(pib)
+  pib <- tidyr::fill(pib, V1)
+  pib <- dplyr::mutate(pib,
+                       V2 = dplyr::case_when(
+                         V2 == "E-M" ~ "Q1",
+                         V2 == "A-J" ~ "Q2",
+                         V2 == "J-S" ~ "Q3",
+                         V2 == "O-D" ~ "Q4"
+                       ),
+                       V1 = paste(trimws(V1), trimws(V2)),
+                       V2 = NULL
+  )
+  pib <- t(pib)
+  pib[1, 1] <- "componente"
+  pib <- as.data.frame(pib)
+  names(pib) <- pib[1, ]
+  pib <- pib[-1, ]
+  pib <- tidyr::pivot_longer(pib, -componente, names_to = "date", values_to = "pib")
+
+  # Ponderacion por componente
+  pib2 <- readxl::read_excel(pibFile, sheet = "PIB$_Trim", skip = 25, col_names = F)
+  pib2 <- tidyr::drop_na(pib2, ...2)
+  pib2 <- pib2[1:11, ]
+  pib2 <- t(pib2)
+  pib2[, 1] <- stringr::str_remove_all(pib2[, 1], "[^0-9]")
+  pib2[1, 1] <- NA
+  pib2 <- as.data.frame(pib2)
+  pib2 <- tidyr::fill(pib2, V1)
+  pib2 <- dplyr::mutate(pib2,
+                        V2 = dplyr::case_when(
+                          V2 == "E-M" ~ "Q1",
+                          V2 == "A-J" ~ "Q2",
+                          V2 == "J-S" ~ "Q3",
+                          V2 == "O-D" ~ "Q4"
+                        ),
+                        V1 = paste(trimws(V1), trimws(V2)),
+                        V2 = NULL
+  )
+  pib2 <- t(pib2)
+  pib2[1, 1] <- "componente"
+  pib2 <- as.data.frame(pib2)
+  names(pib2) <- pib2[1, ]
+  pib2 <- pib2[-1, ]
+  pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "pib__ponderacion")
+
+  pib <- dplyr::left_join(pib, pib2)
+
+
+  # PIB Acumulado
+  pib2 <- readxl::read_excel(pibFile, sheet = "PIB$_Trim_Acum", skip = 6, col_names = F)
+  pib2 <- tidyr::drop_na(pib2, ...2)
+  pib2 <- pib2[1:11, ]
+  pib2 <- t(pib2)
+  pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(p\\)")
+  pib2[1, 1] <- NA
+  pib2 <- as.data.frame(pib2)
+  pib2 <- tidyr::fill(pib2, V1)
+  pib2 <- dplyr::mutate(pib2,
+                        V2 = dplyr::case_when(
+                          V2 == "E-M" ~ "Q1",
+                          V2 == "E-J" ~ "Q2",
+                          V2 == "E-S" ~ "Q3",
+                          V2 == "E-D" ~ "Q4"
+                        ),
+                        V1 = paste(trimws(V1), trimws(V2)),
+                        V2 = NULL
+  )
+  pib2 <- t(pib2)
+  pib2[1, 1] <- "componente"
+  pib2 <- as.data.frame(pib2)
+  names(pib2) <- pib2[1, ]
+  pib2 <- pib2[-1, ]
+  pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "pib_acumulado")
+
+  pib <- dplyr::left_join(pib, pib2)
+
+  # Ponderaci\\u00F3n por componente PIB acumulado
+  pib2 <- readxl::read_excel(pibFile, sheet = "PIB$_Trim_Acum", skip = 25, col_names = F)
+  pib2 <- tidyr::drop_na(pib2, ...2)
+  pib2 <- pib2[1:11, ]
+  pib2 <- t(pib2)
+  pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(p\\)")
+  pib2[1, 1] <- NA
+  pib2 <- as.data.frame(pib2)
+  pib2 <- tidyr::fill(pib2, V1)
+  pib2 <- dplyr::mutate(pib2,
+                        V2 = dplyr::case_when(
+                          V2 == "E-M" ~ "Q1",
+                          V2 == "E-J" ~ "Q2",
+                          V2 == "E-S" ~ "Q3",
+                          V2 == "E-D" ~ "Q4"
+                        ),
+                        V1 = paste(trimws(V1), trimws(V2)),
+                        V2 = NULL
+  )
+  pib2 <- t(pib2)
+  pib2[1, 1] <- "componente"
+  pib2 <- as.data.frame(pib2)
+  names(pib2) <- pib2[1, ]
+  pib2 <- pib2[-1, ]
+  pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "pib_acumulado__ponderacion")
+
+  pib <- dplyr::left_join(pib, pib2)
+
+  ## INDICE PIB
+
+  pib2 <- readxl::read_excel(pibFile, sheet = "PIBK_Trim", skip = 6, col_names = F)
+  pib2 <- pib2[!is.na(pib2$...1) | !is.na(pib2$...2), ]
+  pib2 <- pib2[1:11, ]
+  pib2 <- t(pib2)
+  pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(p\\)")
+  pib2[1, 1] <- NA
+  pib2 <- as.data.frame(pib2)
+  pib2 <- tidyr::fill(pib2, V1)
+  pib2 <- dplyr::mutate(pib2,
+                        V2 = dplyr::case_when(
+                          V2 == "E-M" ~ "Q1",
+                          V2 == "A-J" ~ "Q2",
+                          V2 == "J-S" ~ "Q3",
+                          V2 == "O-D" ~ "Q4"
+                        ),
+                        V1 = paste(trimws(V1), trimws(V2)),
+                        V2 = NULL
+  )
+  pib2 <- t(pib2)
+  pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(1\\)")
+  pib2[1, 1] <- "componente"
+  pib2 <- as.data.frame(pib2)
+  names(pib2) <- pib2[1, ]
+  pib2 <- pib2[-1, ]
+  pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "pib__ive")
+
+  pib <- dplyr::left_join(pib, pib2)
+
+  # Tasa de crecimiento
+
+  pib2 <- readxl::read_excel(pibFile, sheet = "PIBK_Trim", skip = 25, col_names = F)
+  pib2 <- pib2[!is.na(pib2$...1) | !is.na(pib2$...2), ]
+  pib2 <- pib2[1:11, ]
+  pib2 <- t(pib2)
+  pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(p\\)")
+  pib2[1, 1] <- NA
+  pib2 <- as.data.frame(pib2)
+  pib2 <- tidyr::fill(pib2, V1)
+  pib2 <- dplyr::mutate(pib2,
+                        V2 = dplyr::case_when(
+                          V2 == "E-M" ~ "Q1",
+                          V2 == "A-J" ~ "Q2",
+                          V2 == "J-S" ~ "Q3",
+                          V2 == "O-D" ~ "Q4"
+                        ),
+                        V1 = paste(trimws(V1), trimws(V2)),
+                        V2 = NULL
+  )
+  pib2 <- t(pib2)
+  pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(1\\)")
+  pib2[1, 1] <- "componente"
+  pib2 <- as.data.frame(pib2)
+  names(pib2) <- pib2[1, ]
+  pib2 <- pib2[-1, ]
+  pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "pib__tci")
+
+  pib <- dplyr::left_join(pib, pib2)
+
+  # Incidencia por componente
+  pib2 <- readxl::read_excel(pibFile, sheet = "PIBK_Trim", skip = 44, col_names = F)
+  pib2 <- pib2[!is.na(pib2$...1) | !is.na(pib2$...2), ]
+  pib2 <- pib2[1:11, ]
+  pib2 <- t(pib2)
+  pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(p\\)")
+  pib2[1, 1] <- NA
+  pib2 <- as.data.frame(pib2)
+  pib2 <- tidyr::fill(pib2, V1)
+  pib2 <- dplyr::mutate(pib2,
+                        V2 = dplyr::case_when(
+                          V2 == "E-M" ~ "Q1",
+                          V2 == "A-J" ~ "Q2",
+                          V2 == "J-S" ~ "Q3",
+                          V2 == "O-D" ~ "Q4"
+                        ),
+                        V1 = paste(trimws(V1), trimws(V2)),
+                        V2 = NULL
+  )
+  pib2 <- t(pib2)
+  pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(1\\)")
+  pib2[1, 1] <- "componente"
+  pib2 <- as.data.frame(pib2)
+  names(pib2) <- pib2[1, ]
+  pib2 <- pib2[-1, ]
+  pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "pib__incidencia")
+
+  pib <- dplyr::left_join(pib, pib2)
+
+
+  ## INDICE PIB ACUMULADO
+
+  pib2 <- readxl::read_excel(pibFile, sheet = "PIBK_Trim_Acum", skip = 6, col_names = F)
+  pib2 <- pib2[!is.na(pib2$...1) | !is.na(pib2$...2), ]
+  pib2 <- pib2[1:11, ]
+  pib2 <- t(pib2)
+  pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(p\\)")
+  pib2[1, 1] <- NA
+  pib2 <- as.data.frame(pib2)
+  pib2 <- tidyr::fill(pib2, V1)
+  pib2 <- dplyr::mutate(pib2,
+                        V2 = dplyr::case_when(
+                          V2 == "E-M" ~ "Q1",
+                          V2 == "E-J" ~ "Q2",
+                          V2 == "E-S" ~ "Q3",
+                          V2 == "E-D" ~ "Q4"
+                        ),
+                        V1 = paste(trimws(V1), trimws(V2)),
+                        V2 = NULL
+  )
+  pib2 <- t(pib2)
+  pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(1\\)")
+  pib2[1, 1] <- "componente"
+  pib2 <- as.data.frame(pib2)
+  names(pib2) <- pib2[1, ]
+  pib2 <- pib2[-1, ]
+  pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "pib_acumulado__ive")
+
+  pib <- dplyr::left_join(pib, pib2)
+
+  # Tasa de crecimiento
+
+  pib2 <- readxl::read_excel(pibFile, sheet = "PIBK_Trim_Acum", skip = 25, col_names = F)
+  pib2 <- pib2[!is.na(pib2$...1) | !is.na(pib2$...2), ]
+  pib2 <- pib2[1:11, ]
+  pib2 <- t(pib2)
+  pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(p\\)")
+  pib2[1, 1] <- NA
+  pib2 <- as.data.frame(pib2)
+  pib2 <- tidyr::fill(pib2, V1)
+  pib2 <- dplyr::mutate(pib2,
+                        V2 = dplyr::case_when(
+                          V2 == "E-M" ~ "Q1",
+                          V2 == "E-J" ~ "Q2",
+                          V2 == "E-S" ~ "Q3",
+                          V2 == "E-D" ~ "Q4"
+                        ),
+                        V1 = paste(trimws(V1), trimws(V2)),
+                        V2 = NULL
+  )
+  pib2 <- t(pib2)
+  pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(1\\)")
+  pib2[1, 1] <- "componente"
+  pib2 <- as.data.frame(pib2)
+  names(pib2) <- pib2[1, ]
+  pib2 <- pib2[-1, ]
+  pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "pib_acumulado__tci")
+
+  pib <- dplyr::left_join(pib, pib2)
+
+  # Incidencia por componente
+  pib2 <- readxl::read_excel(pibFile, sheet = "PIBK_Trim_Acum", skip = 44, col_names = F)
+  pib2 <- pib2[!is.na(pib2$...1) | !is.na(pib2$...2), ]
+  pib2 <- pib2[1:11, ]
+  pib2 <- t(pib2)
+  pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(p\\)")
+  pib2[1, 1] <- NA
+  pib2 <- as.data.frame(pib2)
+  pib2 <- tidyr::fill(pib2, V1)
+  pib2 <- dplyr::mutate(pib2,
+                        V2 = dplyr::case_when(
+                          V2 == "E-M" ~ "Q1",
+                          V2 == "E-J" ~ "Q2",
+                          V2 == "E-S" ~ "Q3",
+                          V2 == "E-D" ~ "Q4"
+                        ),
+                        V1 = paste(trimws(V1), trimws(V2)),
+                        V2 = NULL
+  )
+  pib2 <- t(pib2)
+  pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(1\\)")
+  pib2[1, 1] <- "componente"
+  pib2 <- as.data.frame(pib2)
+  names(pib2) <- pib2[1, ]
+  pib2 <- pib2[-1, ]
+  pib2 <- tidyr::pivot_longer(pib2, -componente, names_to = "date", values_to = "pib_acumulado__incidencia")
+
+  pib <- dplyr::left_join(pib, pib2)
+
+  pib$date <- lubridate::ceiling_date(as.Date(tsibble::yearquarter(pib$date)), unit = "quarter")
+  pib$date <- lubridate::add_with_rollback(pib$date, lubridate::days(-1))
+
+
+  pib %>%
+    dplyr::left_join(domar::nvl_pib_gasto) %>%
+    dplyr::relocate(c(orden, nivel)) %>%
+    utils::type.convert(as.is = T) %>%
+    dplyr::left_join(
+      download_domar("tipo-cambio-usd-dop-trim") %>%
+        dplyr::filter(stringr::str_detect(tipo, "Promedio")) %>%
         dplyr::select(date, tipo_cambio = compra)
     ) %>%
     dplyr::mutate(
