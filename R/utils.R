@@ -209,7 +209,7 @@ download_domar <- function(id) {
         utils::type.convert(as.is = T)
     },
     error = function(e) {
-      get(id)()
+      get(paste0("domar::", id))()
     }
   )
 }
