@@ -2,7 +2,7 @@
 % Please edit documentation in R/CDEEE.R
 \name{informe_desempeno_sector_energetico_edes}
 \alias{informe_desempeno_sector_energetico_edes}
-\title{Informe de desempeño del sector energético: EDE's}
+\title{Informe de desempe\\u00F1o del sector energ\\u00E9tico: EDE's}
 \usage{
 informe_desempeno_sector_energetico_edes(indicador = NULL, metadata = FALSE)
 }

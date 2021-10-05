@@ -4,7 +4,7 @@
 \alias{from_python}
 \title{Ejecutar funciones desde Python}
 \usage{
-from_python(keys, values, data = NULL, metadata = FALSE)
+from_python(keys, values)
 }
 \arguments{
 \item{keys}{\link{character}: keys del diccionario python que se utilizan como nombres del vector.}
@@ -12,9 +12,9 @@ from_python(keys, values, data = NULL, metadata = FALSE)
 \item{values}{values del diccionario python que se utilizan como el contenido del vector.}
 }
 \value{
-Un vector con nombres que se pasa a la función del indicador.
+Un vector con nombres que se pasa a la funci\\u00F3n del indicador.
 }
 \description{
 Recibe los keys y valores de un diccionario python y lo convierte en un
-vector con nombres en R, que luego pasa a la función del indicador.
+vector con nombres en R, que luego pasa a la funci\\u00F3n del indicador.
 }

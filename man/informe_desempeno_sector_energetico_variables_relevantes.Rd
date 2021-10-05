@@ -2,7 +2,7 @@
 % Please edit documentation in R/CDEEE.R
 \name{informe_desempeno_sector_energetico_variables_relevantes}
 \alias{informe_desempeno_sector_energetico_variables_relevantes}
-\title{Informe de desempeño del sector energético: variables relevantes}
+\title{Informe de desempe\\u00F1o del sector energ\\u00E9tico: variables relevantes}
 \usage{
 informe_desempeno_sector_energetico_variables_relevantes(
   indicador = NULL,

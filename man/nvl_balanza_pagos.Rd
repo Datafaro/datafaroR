@@ -6,11 +6,17 @@
 \title{Ordenes y niveles de los indicadores}
 \format{
 \link{data.frame}
+
+\link{data.frame}
 }
 \usage{
 nvl_balanza_pagos
+
+nvl_balanza_pagos
 }
 \description{
+Ordenes y niveles de los indicadores
+
 Ordenes y niveles de los indicadores
 }
 \keyword{datasets}

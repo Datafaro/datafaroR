@@ -3,6 +3,7 @@
 #'  \lifecycle{experimental}
 #'
 #' @param indicador Vea \code{\link{downloader}}
+#' @param metadata indica si se retornan los datos o la metadata del indicador
 #'
 #' @return [data.frame]: los datos del indicador en forma tabular
 #'
@@ -48,6 +49,7 @@ tipo_cambio_gbp_eur_mensual <- function(indicador = NULL, metadata = FALSE){
 #' Tipo de cambio USD/Euro Mensual
 #'
 #' @param indicador Vea \code{\link{downloader}}
+#' @param metadata indica si se retornan los datos o la metadata del indicador
 #'
 #' @return [data.frame]: los datos del indicador en forma tabular
 #'
@@ -90,9 +92,10 @@ tipo_cambio_usd_eur_mensual <- function(indicador = NULL, metadata = FALSE){
 
 ####################################################################################################################
 
-#' Tipo de cambio Yen Japonés /Euro Mensual
+#' Tipo de cambio Yen Japon\\u00E9s /Euro Mensual
 #'
 #' @param indicador Vea \code{\link{downloader}}
+#' @param metadata indica si se retornan los datos o la metadata del indicador
 #'
 #' @return [data.frame]: los datos del indicador en forma tabular
 #'

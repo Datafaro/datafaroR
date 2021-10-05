@@ -30,12 +30,12 @@ cache auth googlesheets4 with account with access to dmr_list file.
 https://medium.com/@JosiahParry/googlesheets4-authentication-for-deployment-9e994b4c81d6
 
 domar_run.R
-usar rutas absolutas: Esto así porque en mi caso particular el cron está corriendo en el usuario root, y los archivos están en el usuario particular
+usar rutas absolutas: Esto as\\u00ED porque en mi caso particular el cron est\\u00E1 corriendo en el usuario root, y los archivos est\\u00E1n en el usuario particular
 print(Sys.time()) # Para el log del cron.
 library(domar)
 library(googlesheets4)
 myEmail <- 'drdsdaniel@gmail.com'
-# Esto es porque tengo users distintos en la máquina de prueba y el servidor.
+# Esto es porque tengo users distintos en la m\\u00E1quina de prueba y el servidor.
 user <- if(file.exists('/home/drdsdaniel/domar/domar_run.R')){
   'drdsdaniel'
 }else{

@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 ```
 
 
-Una vez que has instalado el paquete y puedes ver estas viñetas, tu sistema cumple con los requisitos para contribuir con el desarrollo del paquete.
+Una vez que has instalado el paquete y puedes ver estas vi\\u00F1etas, tu sistema cumple con los requisitos para contribuir con el desarrollo del paquete.
 
 ## Requisitos extras
 
@@ -29,9 +29,9 @@ Existe un API donde se encuentras un listado de todos los indicadores disponible
 
 Para crear un indicador nuevo es importante que te tomes el tiempo de llenar todos los campos que te sean posibles en la tabla.
 
-## Metodología
+## Metodolog\\u00EDa
 
-A pesar de que no es obligatorio, es altamente recomendado seguir la metología presentada en [R Packages](https://r-pkgs.org/) de Hadley Wickham, para le desarrollo del paquete.
+A pesar de que no es obligatorio, es altamente recomendado seguir la metolog\\u00EDa presentada en [R Packages](https://r-pkgs.org/) de Hadley Wickham, para le desarrollo del paquete.
 
 ## Flujo de trabajo
 
@@ -39,35 +39,35 @@ A pesar de que no es obligatorio, es altamente recomendado seguir la metología 
 
 #### downloader()
 
-Utilizaras esta función en la definición de las funciones de los indicadores. Vea la documentación de la función `downloader` para conocer como funciona.
+Utilizaras esta funci\\u00F3n en la definici\\u00F3n de las funciones de los indicadores. Vea la documentaci\\u00F3n de la funci\\u00F3n `downloader` para conocer como funciona.
 
-Si la función `downloader` no cumple con sus requerimiento proponga una versión modificada de dicha función al equipo de manera que se garantice que sigue funcionando para todas las demás funciones.
+Si la funci\\u00F3n `downloader` no cumple con sus requerimiento proponga una versi\\u00F3n modificada de dicha funci\\u00F3n al equipo de manera que se garantice que sigue funcionando para todas las dem\\u00E1s funciones.
 
 #### to_date()
 
-Esta función combina varias columnas relativas a fecha en una única columna.
+Esta funci\\u00F3n combina varias columnas relativas a fecha en una \\u00FAnica columna.
 
-Es altamente recomendado que verifiques que la función `to_date` cumple con los requisitos necesarios para el indicador en el que estás trabajando. De lo contrario, inicia una discusión con el equipo de desarrolladores acerca de una alternativa para la función.
+Es altamente recomendado que verifiques que la funci\\u00F3n `to_date` cumple con los requisitos necesarios para el indicador en el que est\\u00E1s trabajando. De lo contrario, inicia una discusi\\u00F3n con el equipo de desarrolladores acerca de una alternativa para la funci\\u00F3n.
 
-Vea la documentación de la función `to_date` para ver como funciona.
+Vea la documentaci\\u00F3n de la funci\\u00F3n `to_date` para ver como funciona.
 
 #### domar_list()
 
-Esta función obtiene la lista de indicadores en el sistema, donde se dispone de todos los párametros relativos al indicador, necesarios para el desarrollo y funcionamiento del mismo.
+Esta funci\\u00F3n obtiene la lista de indicadores en el sistema, donde se dispone de todos los p\\u00E1rametros relativos al indicador, necesarios para el desarrollo y funcionamiento del mismo.
 
-Vea la documentación de la función `domar_list`.
+Vea la documentaci\\u00F3n de la funci\\u00F3n `domar_list`.
 
 #### gsheet_storage()
 
-La función `gsheet_storage`  almacena los datos devueltos por las funciones de los indicadores en el Google Sheet indicado en la lista de indicadores.
+La funci\\u00F3n `gsheet_storage`  almacena los datos devueltos por las funciones de los indicadores en el Google Sheet indicado en la lista de indicadores.
 
-Vea la documentación de la función `gsheet_storage` para detalles adicionales.
+Vea la documentaci\\u00F3n de la funci\\u00F3n `gsheet_storage` para detalles adicionales.
 
 #### secure_gss()
 
-Esta función es un `tryCatch` para la función `gsheet_storage`. Si ocurriese algún error entonces un email es enviado al correo del desarrollador responsable de dicho indicador.
+Esta funci\\u00F3n es un `tryCatch` para la funci\\u00F3n `gsheet_storage`. Si ocurriese alg\\u00FAn error entonces un email es enviado al correo del desarrollador responsable de dicho indicador.
 
-Vea la documentación de `secure_gss`.
+Vea la documentaci\\u00F3n de `secure_gss`.
 
 ### Nuevos indicadores
 
@@ -75,13 +75,13 @@ Para agregar un nuevo indicador:
 
 - Completa el registro del indicador en la lista de indicadores del API.
   - Selecciona el ID cuidadosamente, the ID del indicador va a jugar un papel estelar en todo el proceso de desarrollo y     despliegue del indicador.
-- El nombre de la función del indicador debe ser exactamente igual que el ID del indicador.
-- Especifica las `kvars` de cada indicador, en la sección `details` de la documentación de dicho indicador.
+- El nombre de la funci\\u00F3n del indicador debe ser exactamente igual que el ID del indicador.
+- Especifica las `kvars` de cada indicador, en la secci\\u00F3n `details` de la documentaci\\u00F3n de dicho indicador.
   - Las `kvars` son variables que las funciones `*_storage` utilizan para validar los datos.
-  - Las primeras `n-1` kvars se utilizan como variables clave de los datos que identifican de manera única a cada registro.
-  - La última kvar es una variable numérica que se utiliza para comparar los valores actuales con los nuevos en busca de consistencia.
+  - Las primeras `n-1` kvars se utilizan como variables clave de los datos que identifican de manera \\u00FAnica a cada registro.
+  - La \\u00FAltima kvar es una variable num\\u00E9rica que se utiliza para comparar los valores actuales con los nuevos en busca de consistencia.
   
-Si estás trabajando en un indicador es importante que lo indiques en el campo correspondiente de la lista de indicadores, a fin de evitar la duplicación de esfuerzos.
+Si est\\u00E1s trabajando en un indicador es importante que lo indiques en el campo correspondiente de la lista de indicadores, a fin de evitar la duplicaci\\u00F3n de esfuerzos.
 
 #### Destination file
 

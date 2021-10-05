@@ -1,12 +1,11 @@
-# Informe de desempeño ----
+# Informe de desempe\\u00F1o ----
 
 
-#'  Informe de desempeño del sector energético
+#'  Informe de desempe\\u00F1o del sector energ\\u00E9tico
 #'
 #'  \lifecycle{experimental}
 #'
 #' @param indicador Vea \code{\link{downloader}}
-#' @param metadata indica si se retornan los datos o la metadata del indicador
 #'
 #' @return [data.frame]: los datos del indicador en forma tabular
 #'
@@ -15,6 +14,7 @@
 #'   informe_desempeno_sector_energetico()
 #' }
 informe_desempeno_sector_energetico <- function(indicador = NULL) {
+  . <- NULL
   if (is.null(indicador)) {
     indicador <- c(
       original_url = "https://cdeee.gob.do/transparencia/informes-del-sector-energetico/",
@@ -109,7 +109,7 @@ informe_desempeno_sector_energetico <- function(indicador = NULL) {
 }
 
 
-#'  Informe de desempeño del sector energético: variables relevantes
+#'  Informe de desempe\\u00F1o del sector energ\\u00E9tico: variables relevantes
 #'
 #'  \lifecycle{experimental}
 #'
@@ -125,6 +125,11 @@ informe_desempeno_sector_energetico <- function(indicador = NULL) {
 #'   informe_desempeno_sector_energetico_variables_relevantes()
 #' }
 informe_desempeno_sector_energetico_variables_relevantes <- function(indicador = NULL, metadata = FALSE) {
+  ...2 <- NULL
+  V1 <- NULL
+  variable <- NULL
+  orden <- NULL
+  nivel <- NULL
   if (metadata) {
     return(
       tibble::tribble(
@@ -157,15 +162,15 @@ informe_desempeno_sector_energetico_variables_relevantes <- function(indicador =
 
   datos %>%
     janitor::row_to_names(1) %>%
-    dplyr::bind_cols(nvl_idsevr %>% dplyr::select(-variable)) %>%
+    dplyr::bind_cols(domar::nvl_idsevr %>% dplyr::select(-variable)) %>%
     dplyr::relocate(orden, nivel) %>%
     tidyr::pivot_longer(-c(1:3), names_to = "date", values_to = "valor") %>%
-    type.convert(as.is = TRUE)
+    utils::type.convert(as.is = TRUE)
 }
 
 
 
-#'  Informe de desempeño del sector energético: EDE's
+#'  Informe de desempe\\u00F1o del sector energ\\u00E9tico: EDE's
 #'
 #'  \lifecycle{experimental}
 #'
@@ -181,6 +186,8 @@ informe_desempeno_sector_energetico_variables_relevantes <- function(indicador =
 #'   informe_desempeno_sector_energetico_edes()
 #' }
 informe_desempeno_sector_energetico_edes <- function(indicador = NULL, metadata = FALSE) {
+  ...1 <- NULL
+  V1 <- NULL
   if (metadata) {
     return(
       tibble::tribble(
@@ -221,5 +228,5 @@ informe_desempeno_sector_energetico_edes <- function(indicador = NULL, metadata 
     ) %>%
     tidyr::fill(indicador) %>%
     tidyr::pivot_longer(-c(1:2), names_to = "date", values_to = "valor") %>%
-    type.convert(as.is = TRUE)
+    utils::type.convert(as.is = TRUE)
 }

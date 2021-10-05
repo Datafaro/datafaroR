@@ -2,14 +2,12 @@
 % Please edit documentation in R/CDEEE.R
 \name{informe_desempeno_sector_energetico}
 \alias{informe_desempeno_sector_energetico}
-\title{Informe de desempeño del sector energético}
+\title{Informe de desempe\\u00F1o del sector energ\\u00E9tico}
 \usage{
 informe_desempeno_sector_energetico(indicador = NULL)
 }
 \arguments{
 \item{indicador}{Vea \code{\link{downloader}}}
-
-\item{metadata}{indica si se retornan los datos o la metadata del indicador}
 }
 \value{
 \link{data.frame}: los datos del indicador en forma tabular
