@@ -205,11 +205,12 @@ download_domar <- function(id) {
   tryCatch(
     {
       id2 <- stringr::str_replace_all(id, "_", "-")
-      readr::read_csv(url(glue::glue("{info$domar_url}/app/datos/{id2}/d?out=csv&t={info$token}"))) %>%
+      readr::read_csv(url(glue::glue("{info$domar_url}/appA/datos/{id2}/d?out=csv&t={info$token}"))) %>%
         utils::type.convert(as.is = T)
     },
     error = function(e) {
-      match.fun(id)()
+      id2 <- stringr::str_replace_all(id, "-", "_")
+      do.call(what = `::`, args = list("domar", id2))()
     }
   )
 }
