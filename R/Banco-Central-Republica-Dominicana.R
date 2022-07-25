@@ -219,7 +219,7 @@ tipo_cambio_usd_dop_anual <- function(...) tipo_cambio_dolar_anual(...)
 
 
 
-tipo_cambio_otras_monedas_diario <- function(indicador = NULL, metadata = FALSE){
+tipo_cambio_otras_monedas_diario <- function(indicador = NULL, metadata = FALSE) {
   Mes <- NULL
   moneda <- NULL
   monedas_3d_codes <- NULL
@@ -250,7 +250,7 @@ tipo_cambio_otras_monedas_diario <- function(indicador = NULL, metadata = FALSE)
 
 
 
-tipo_cambio_otras_monedas_mensual <- function(indicador = NULL, metadata = FALSE){
+tipo_cambio_otras_monedas_mensual <- function(indicador = NULL, metadata = FALSE) {
   Mes <- NULL
   moneda <- NULL
   monedas_3d_codes <- NULL
@@ -281,7 +281,7 @@ tipo_cambio_otras_monedas_mensual <- function(indicador = NULL, metadata = FALSE
 
 
 
-tipo_cambio_otras_monedas_trim <- function(indicador = NULL, metadata = FALSE){
+tipo_cambio_otras_monedas_trim <- function(indicador = NULL, metadata = FALSE) {
   Trimestre <- NULL
   moneda <- NULL
   monedas_3d_codes <- NULL
@@ -312,7 +312,7 @@ tipo_cambio_otras_monedas_trim <- function(indicador = NULL, metadata = FALSE){
 
 
 
-tipo_cambio_otras_monedas_anual <- function(indicador = NULL, metadata = FALSE){
+tipo_cambio_otras_monedas_anual <- function(indicador = NULL, metadata = FALSE) {
   EURO <- NULL
   ano <- NULL
   moneda <- NULL
@@ -2896,14 +2896,14 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE) {
   pib <- as.data.frame(pib)
   pib <- tidyr::fill(pib, V1)
   pib <- dplyr::mutate(pib,
-                       V2 = dplyr::case_when(
-                         V2 == "E-M" ~ "Q1",
-                         V2 == "A-J" ~ "Q2",
-                         V2 == "J-S" ~ "Q3",
-                         V2 == "O-D" ~ "Q4"
-                       ),
-                       V1 = paste(trimws(V1), trimws(V2)),
-                       V2 = NULL
+    V2 = dplyr::case_when(
+      V2 == "E-M" ~ "Q1",
+      V2 == "A-J" ~ "Q2",
+      V2 == "J-S" ~ "Q3",
+      V2 == "O-D" ~ "Q4"
+    ),
+    V1 = paste(trimws(V1), trimws(V2)),
+    V2 = NULL
   )
   pib <- t(pib)
   pib[1, 1] <- "componente"
@@ -2922,14 +2922,14 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE) {
   pib2 <- as.data.frame(pib2)
   pib2 <- tidyr::fill(pib2, V1)
   pib2 <- dplyr::mutate(pib2,
-                        V2 = dplyr::case_when(
-                          V2 == "E-M" ~ "Q1",
-                          V2 == "A-J" ~ "Q2",
-                          V2 == "J-S" ~ "Q3",
-                          V2 == "O-D" ~ "Q4"
-                        ),
-                        V1 = paste(trimws(V1), trimws(V2)),
-                        V2 = NULL
+    V2 = dplyr::case_when(
+      V2 == "E-M" ~ "Q1",
+      V2 == "A-J" ~ "Q2",
+      V2 == "J-S" ~ "Q3",
+      V2 == "O-D" ~ "Q4"
+    ),
+    V1 = paste(trimws(V1), trimws(V2)),
+    V2 = NULL
   )
   pib2 <- t(pib2)
   pib2[1, 1] <- "componente"
@@ -2951,14 +2951,14 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE) {
   pib2 <- as.data.frame(pib2)
   pib2 <- tidyr::fill(pib2, V1)
   pib2 <- dplyr::mutate(pib2,
-                        V2 = dplyr::case_when(
-                          V2 == "E-M" ~ "Q1",
-                          V2 == "E-J" ~ "Q2",
-                          V2 == "E-S" ~ "Q3",
-                          V2 == "E-D" ~ "Q4"
-                        ),
-                        V1 = paste(trimws(V1), trimws(V2)),
-                        V2 = NULL
+    V2 = dplyr::case_when(
+      V2 == "E-M" ~ "Q1",
+      V2 == "E-J" ~ "Q2",
+      V2 == "E-S" ~ "Q3",
+      V2 == "E-D" ~ "Q4"
+    ),
+    V1 = paste(trimws(V1), trimws(V2)),
+    V2 = NULL
   )
   pib2 <- t(pib2)
   pib2[1, 1] <- "componente"
@@ -2979,14 +2979,14 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE) {
   pib2 <- as.data.frame(pib2)
   pib2 <- tidyr::fill(pib2, V1)
   pib2 <- dplyr::mutate(pib2,
-                        V2 = dplyr::case_when(
-                          V2 == "E-M" ~ "Q1",
-                          V2 == "E-J" ~ "Q2",
-                          V2 == "E-S" ~ "Q3",
-                          V2 == "E-D" ~ "Q4"
-                        ),
-                        V1 = paste(trimws(V1), trimws(V2)),
-                        V2 = NULL
+    V2 = dplyr::case_when(
+      V2 == "E-M" ~ "Q1",
+      V2 == "E-J" ~ "Q2",
+      V2 == "E-S" ~ "Q3",
+      V2 == "E-D" ~ "Q4"
+    ),
+    V1 = paste(trimws(V1), trimws(V2)),
+    V2 = NULL
   )
   pib2 <- t(pib2)
   pib2[1, 1] <- "componente"
@@ -3008,14 +3008,14 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE) {
   pib2 <- as.data.frame(pib2)
   pib2 <- tidyr::fill(pib2, V1)
   pib2 <- dplyr::mutate(pib2,
-                        V2 = dplyr::case_when(
-                          V2 == "E-M" ~ "Q1",
-                          V2 == "A-J" ~ "Q2",
-                          V2 == "J-S" ~ "Q3",
-                          V2 == "O-D" ~ "Q4"
-                        ),
-                        V1 = paste(trimws(V1), trimws(V2)),
-                        V2 = NULL
+    V2 = dplyr::case_when(
+      V2 == "E-M" ~ "Q1",
+      V2 == "A-J" ~ "Q2",
+      V2 == "J-S" ~ "Q3",
+      V2 == "O-D" ~ "Q4"
+    ),
+    V1 = paste(trimws(V1), trimws(V2)),
+    V2 = NULL
   )
   pib2 <- t(pib2)
   pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(1\\)")
@@ -3038,14 +3038,14 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE) {
   pib2 <- as.data.frame(pib2)
   pib2 <- tidyr::fill(pib2, V1)
   pib2 <- dplyr::mutate(pib2,
-                        V2 = dplyr::case_when(
-                          V2 == "E-M" ~ "Q1",
-                          V2 == "A-J" ~ "Q2",
-                          V2 == "J-S" ~ "Q3",
-                          V2 == "O-D" ~ "Q4"
-                        ),
-                        V1 = paste(trimws(V1), trimws(V2)),
-                        V2 = NULL
+    V2 = dplyr::case_when(
+      V2 == "E-M" ~ "Q1",
+      V2 == "A-J" ~ "Q2",
+      V2 == "J-S" ~ "Q3",
+      V2 == "O-D" ~ "Q4"
+    ),
+    V1 = paste(trimws(V1), trimws(V2)),
+    V2 = NULL
   )
   pib2 <- t(pib2)
   pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(1\\)")
@@ -3067,14 +3067,14 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE) {
   pib2 <- as.data.frame(pib2)
   pib2 <- tidyr::fill(pib2, V1)
   pib2 <- dplyr::mutate(pib2,
-                        V2 = dplyr::case_when(
-                          V2 == "E-M" ~ "Q1",
-                          V2 == "A-J" ~ "Q2",
-                          V2 == "J-S" ~ "Q3",
-                          V2 == "O-D" ~ "Q4"
-                        ),
-                        V1 = paste(trimws(V1), trimws(V2)),
-                        V2 = NULL
+    V2 = dplyr::case_when(
+      V2 == "E-M" ~ "Q1",
+      V2 == "A-J" ~ "Q2",
+      V2 == "J-S" ~ "Q3",
+      V2 == "O-D" ~ "Q4"
+    ),
+    V1 = paste(trimws(V1), trimws(V2)),
+    V2 = NULL
   )
   pib2 <- t(pib2)
   pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(1\\)")
@@ -3098,14 +3098,14 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE) {
   pib2 <- as.data.frame(pib2)
   pib2 <- tidyr::fill(pib2, V1)
   pib2 <- dplyr::mutate(pib2,
-                        V2 = dplyr::case_when(
-                          V2 == "E-M" ~ "Q1",
-                          V2 == "E-J" ~ "Q2",
-                          V2 == "E-S" ~ "Q3",
-                          V2 == "E-D" ~ "Q4"
-                        ),
-                        V1 = paste(trimws(V1), trimws(V2)),
-                        V2 = NULL
+    V2 = dplyr::case_when(
+      V2 == "E-M" ~ "Q1",
+      V2 == "E-J" ~ "Q2",
+      V2 == "E-S" ~ "Q3",
+      V2 == "E-D" ~ "Q4"
+    ),
+    V1 = paste(trimws(V1), trimws(V2)),
+    V2 = NULL
   )
   pib2 <- t(pib2)
   pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(1\\)")
@@ -3128,14 +3128,14 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE) {
   pib2 <- as.data.frame(pib2)
   pib2 <- tidyr::fill(pib2, V1)
   pib2 <- dplyr::mutate(pib2,
-                        V2 = dplyr::case_when(
-                          V2 == "E-M" ~ "Q1",
-                          V2 == "E-J" ~ "Q2",
-                          V2 == "E-S" ~ "Q3",
-                          V2 == "E-D" ~ "Q4"
-                        ),
-                        V1 = paste(trimws(V1), trimws(V2)),
-                        V2 = NULL
+    V2 = dplyr::case_when(
+      V2 == "E-M" ~ "Q1",
+      V2 == "E-J" ~ "Q2",
+      V2 == "E-S" ~ "Q3",
+      V2 == "E-D" ~ "Q4"
+    ),
+    V1 = paste(trimws(V1), trimws(V2)),
+    V2 = NULL
   )
   pib2 <- t(pib2)
   pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(1\\)")
@@ -3157,14 +3157,14 @@ pib_gasto_trim <- function(indicador = NULL, metadata = FALSE) {
   pib2 <- as.data.frame(pib2)
   pib2 <- tidyr::fill(pib2, V1)
   pib2 <- dplyr::mutate(pib2,
-                        V2 = dplyr::case_when(
-                          V2 == "E-M" ~ "Q1",
-                          V2 == "E-J" ~ "Q2",
-                          V2 == "E-S" ~ "Q3",
-                          V2 == "E-D" ~ "Q4"
-                        ),
-                        V1 = paste(trimws(V1), trimws(V2)),
-                        V2 = NULL
+    V2 = dplyr::case_when(
+      V2 == "E-M" ~ "Q1",
+      V2 == "E-J" ~ "Q2",
+      V2 == "E-S" ~ "Q3",
+      V2 == "E-D" ~ "Q4"
+    ),
+    V1 = paste(trimws(V1), trimws(V2)),
+    V2 = NULL
   )
   pib2 <- t(pib2)
   pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(1\\)")
@@ -3272,14 +3272,14 @@ pib_gasto_retro <- function(indicador = NULL, metadata = FALSE) {
   pib <- as.data.frame(pib)
   pib <- tidyr::fill(pib, V1)
   pib <- dplyr::mutate(pib,
-                       V2 = dplyr::case_when(
-                         V2 == "E-M" ~ "Q1",
-                         V2 == "A-J" ~ "Q2",
-                         V2 == "J-S" ~ "Q3",
-                         V2 == "O-D" ~ "Q4"
-                       ),
-                       V1 = paste(trimws(V1), trimws(V2)),
-                       V2 = NULL
+    V2 = dplyr::case_when(
+      V2 == "E-M" ~ "Q1",
+      V2 == "A-J" ~ "Q2",
+      V2 == "J-S" ~ "Q3",
+      V2 == "O-D" ~ "Q4"
+    ),
+    V1 = paste(trimws(V1), trimws(V2)),
+    V2 = NULL
   )
   pib <- t(pib)
   pib[1, 1] <- "componente"
@@ -3298,14 +3298,14 @@ pib_gasto_retro <- function(indicador = NULL, metadata = FALSE) {
   pib2 <- as.data.frame(pib2)
   pib2 <- tidyr::fill(pib2, V1)
   pib2 <- dplyr::mutate(pib2,
-                        V2 = dplyr::case_when(
-                          V2 == "E-M" ~ "Q1",
-                          V2 == "A-J" ~ "Q2",
-                          V2 == "J-S" ~ "Q3",
-                          V2 == "O-D" ~ "Q4"
-                        ),
-                        V1 = paste(trimws(V1), trimws(V2)),
-                        V2 = NULL
+    V2 = dplyr::case_when(
+      V2 == "E-M" ~ "Q1",
+      V2 == "A-J" ~ "Q2",
+      V2 == "J-S" ~ "Q3",
+      V2 == "O-D" ~ "Q4"
+    ),
+    V1 = paste(trimws(V1), trimws(V2)),
+    V2 = NULL
   )
   pib2 <- t(pib2)
   pib2[1, 1] <- "componente"
@@ -3327,14 +3327,14 @@ pib_gasto_retro <- function(indicador = NULL, metadata = FALSE) {
   pib2 <- as.data.frame(pib2)
   pib2 <- tidyr::fill(pib2, V1)
   pib2 <- dplyr::mutate(pib2,
-                        V2 = dplyr::case_when(
-                          V2 == "E-M" ~ "Q1",
-                          V2 == "E-J" ~ "Q2",
-                          V2 == "E-S" ~ "Q3",
-                          V2 == "E-D" ~ "Q4"
-                        ),
-                        V1 = paste(trimws(V1), trimws(V2)),
-                        V2 = NULL
+    V2 = dplyr::case_when(
+      V2 == "E-M" ~ "Q1",
+      V2 == "E-J" ~ "Q2",
+      V2 == "E-S" ~ "Q3",
+      V2 == "E-D" ~ "Q4"
+    ),
+    V1 = paste(trimws(V1), trimws(V2)),
+    V2 = NULL
   )
   pib2 <- t(pib2)
   pib2[1, 1] <- "componente"
@@ -3355,14 +3355,14 @@ pib_gasto_retro <- function(indicador = NULL, metadata = FALSE) {
   pib2 <- as.data.frame(pib2)
   pib2 <- tidyr::fill(pib2, V1)
   pib2 <- dplyr::mutate(pib2,
-                        V2 = dplyr::case_when(
-                          V2 == "E-M" ~ "Q1",
-                          V2 == "E-J" ~ "Q2",
-                          V2 == "E-S" ~ "Q3",
-                          V2 == "E-D" ~ "Q4"
-                        ),
-                        V1 = paste(trimws(V1), trimws(V2)),
-                        V2 = NULL
+    V2 = dplyr::case_when(
+      V2 == "E-M" ~ "Q1",
+      V2 == "E-J" ~ "Q2",
+      V2 == "E-S" ~ "Q3",
+      V2 == "E-D" ~ "Q4"
+    ),
+    V1 = paste(trimws(V1), trimws(V2)),
+    V2 = NULL
   )
   pib2 <- t(pib2)
   pib2[1, 1] <- "componente"
@@ -3384,14 +3384,14 @@ pib_gasto_retro <- function(indicador = NULL, metadata = FALSE) {
   pib2 <- as.data.frame(pib2)
   pib2 <- tidyr::fill(pib2, V1)
   pib2 <- dplyr::mutate(pib2,
-                        V2 = dplyr::case_when(
-                          V2 == "E-M" ~ "Q1",
-                          V2 == "A-J" ~ "Q2",
-                          V2 == "J-S" ~ "Q3",
-                          V2 == "O-D" ~ "Q4"
-                        ),
-                        V1 = paste(trimws(V1), trimws(V2)),
-                        V2 = NULL
+    V2 = dplyr::case_when(
+      V2 == "E-M" ~ "Q1",
+      V2 == "A-J" ~ "Q2",
+      V2 == "J-S" ~ "Q3",
+      V2 == "O-D" ~ "Q4"
+    ),
+    V1 = paste(trimws(V1), trimws(V2)),
+    V2 = NULL
   )
   pib2 <- t(pib2)
   pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(1\\)")
@@ -3414,14 +3414,14 @@ pib_gasto_retro <- function(indicador = NULL, metadata = FALSE) {
   pib2 <- as.data.frame(pib2)
   pib2 <- tidyr::fill(pib2, V1)
   pib2 <- dplyr::mutate(pib2,
-                        V2 = dplyr::case_when(
-                          V2 == "E-M" ~ "Q1",
-                          V2 == "A-J" ~ "Q2",
-                          V2 == "J-S" ~ "Q3",
-                          V2 == "O-D" ~ "Q4"
-                        ),
-                        V1 = paste(trimws(V1), trimws(V2)),
-                        V2 = NULL
+    V2 = dplyr::case_when(
+      V2 == "E-M" ~ "Q1",
+      V2 == "A-J" ~ "Q2",
+      V2 == "J-S" ~ "Q3",
+      V2 == "O-D" ~ "Q4"
+    ),
+    V1 = paste(trimws(V1), trimws(V2)),
+    V2 = NULL
   )
   pib2 <- t(pib2)
   pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(1\\)")
@@ -3443,14 +3443,14 @@ pib_gasto_retro <- function(indicador = NULL, metadata = FALSE) {
   pib2 <- as.data.frame(pib2)
   pib2 <- tidyr::fill(pib2, V1)
   pib2 <- dplyr::mutate(pib2,
-                        V2 = dplyr::case_when(
-                          V2 == "E-M" ~ "Q1",
-                          V2 == "A-J" ~ "Q2",
-                          V2 == "J-S" ~ "Q3",
-                          V2 == "O-D" ~ "Q4"
-                        ),
-                        V1 = paste(trimws(V1), trimws(V2)),
-                        V2 = NULL
+    V2 = dplyr::case_when(
+      V2 == "E-M" ~ "Q1",
+      V2 == "A-J" ~ "Q2",
+      V2 == "J-S" ~ "Q3",
+      V2 == "O-D" ~ "Q4"
+    ),
+    V1 = paste(trimws(V1), trimws(V2)),
+    V2 = NULL
   )
   pib2 <- t(pib2)
   pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(1\\)")
@@ -3474,14 +3474,14 @@ pib_gasto_retro <- function(indicador = NULL, metadata = FALSE) {
   pib2 <- as.data.frame(pib2)
   pib2 <- tidyr::fill(pib2, V1)
   pib2 <- dplyr::mutate(pib2,
-                        V2 = dplyr::case_when(
-                          V2 == "E-M" ~ "Q1",
-                          V2 == "E-J" ~ "Q2",
-                          V2 == "E-S" ~ "Q3",
-                          V2 == "E-D" ~ "Q4"
-                        ),
-                        V1 = paste(trimws(V1), trimws(V2)),
-                        V2 = NULL
+    V2 = dplyr::case_when(
+      V2 == "E-M" ~ "Q1",
+      V2 == "E-J" ~ "Q2",
+      V2 == "E-S" ~ "Q3",
+      V2 == "E-D" ~ "Q4"
+    ),
+    V1 = paste(trimws(V1), trimws(V2)),
+    V2 = NULL
   )
   pib2 <- t(pib2)
   pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(1\\)")
@@ -3504,14 +3504,14 @@ pib_gasto_retro <- function(indicador = NULL, metadata = FALSE) {
   pib2 <- as.data.frame(pib2)
   pib2 <- tidyr::fill(pib2, V1)
   pib2 <- dplyr::mutate(pib2,
-                        V2 = dplyr::case_when(
-                          V2 == "E-M" ~ "Q1",
-                          V2 == "E-J" ~ "Q2",
-                          V2 == "E-S" ~ "Q3",
-                          V2 == "E-D" ~ "Q4"
-                        ),
-                        V1 = paste(trimws(V1), trimws(V2)),
-                        V2 = NULL
+    V2 = dplyr::case_when(
+      V2 == "E-M" ~ "Q1",
+      V2 == "E-J" ~ "Q2",
+      V2 == "E-S" ~ "Q3",
+      V2 == "E-D" ~ "Q4"
+    ),
+    V1 = paste(trimws(V1), trimws(V2)),
+    V2 = NULL
   )
   pib2 <- t(pib2)
   pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(1\\)")
@@ -3533,14 +3533,14 @@ pib_gasto_retro <- function(indicador = NULL, metadata = FALSE) {
   pib2 <- as.data.frame(pib2)
   pib2 <- tidyr::fill(pib2, V1)
   pib2 <- dplyr::mutate(pib2,
-                        V2 = dplyr::case_when(
-                          V2 == "E-M" ~ "Q1",
-                          V2 == "E-J" ~ "Q2",
-                          V2 == "E-S" ~ "Q3",
-                          V2 == "E-D" ~ "Q4"
-                        ),
-                        V1 = paste(trimws(V1), trimws(V2)),
-                        V2 = NULL
+    V2 = dplyr::case_when(
+      V2 == "E-M" ~ "Q1",
+      V2 == "E-J" ~ "Q2",
+      V2 == "E-S" ~ "Q3",
+      V2 == "E-D" ~ "Q4"
+    ),
+    V1 = paste(trimws(V1), trimws(V2)),
+    V2 = NULL
   )
   pib2 <- t(pib2)
   pib2[, 1] <- stringr::str_remove(pib2[, 1], "\\(1\\)")
@@ -3898,7 +3898,7 @@ pib_origen_trim <- function(indicador = NULL, metadata = FALSE) {
 #' }
 pib_origen_anual <- function(indicador = NULL, metadata = FALSE) {
   ano <- NULL
-  data <- NULL #Hay que descargar de domar
+  data <- NULL # Hay que descargar de domar
   if (metadata) {
     return(
       tibble::tribble(
@@ -4172,7 +4172,7 @@ pib_deflactor_anual <- function(indicador = NULL, metadata = FALSE) {
 #'  \lifecycle{experimental}
 #'
 #' @param indicador Vea \code{\link{downloader}}
-#' @param metadata indica si se retornan los datos o la metadata del indicador
+#' @param ... 
 #'
 #' @return [data.frame]: los datos del indicador en forma tabular
 #'
@@ -4182,10 +4182,13 @@ pib_deflactor_anual <- function(indicador = NULL, metadata = FALSE) {
 #' \dontrun{
 #' imae_mensual(indicador)
 #' }
-imae_mensual <- function(indicador = NULL, metadata = FALSE) {
+imae_mensual <- function(indicador = NULL, ...) {
   ...2 <- NULL
   . <- NULL
   periodo <- NULL
+  ano <- NULL
+  mes <- NULL
+
   if (is.null(indicador)) {
     indicador <- c(
       name = "Indicador Mensual de Actividad Econ\\u00f3mica (IMAE)",
@@ -4198,33 +4201,30 @@ imae_mensual <- function(indicador = NULL, metadata = FALSE) {
       file_ext = "xlsx"
     )
   }
-  col_info <- tibble::tribble(
-    ~col, ~name, ~unit, ~dtype, ~key,
-    "date", "Fecha", "Mensual", "mdate", 1,
-    "indice", "\\u00EDndice Mensual de Actividad Econ\\u00F3mica (IMAE)", "\\u00EDndice", "f1", 0,
-    "serie", "Serie", "", "text", 1,
-    "variacion_interanual", "Variaci\\u00F3n (%) interanual", "Porcentaje (%)", "f1", 0,
-    "variacion_acumulada", "Variaci\\u00F3n (%) acumulada", "Porcentaje (%)", "f1", 0,
-    "variacion_promedio_12_meses", "Variaci\\u00F3n (%) promedio 12 meses", "Porcentaje (%)", "f1", 0,
-    "variacion_periodo_anterior", "Variaci\\u00F3n (%) periodo anterior", "Porcentaje (%)", "f1", 0
-  )
-  vistas <- '[]'
-  transformaciones <- '[]'
-  ano <- NULL
-  mes <- NULL
-  file <- "/mnt/c/Users/drdsd/Downloads/imae.xlsx"
+
+  file <- "fake_data/imae.xlsx"
   if (!file.exists(file)) {
     file <- downloader(indicador)
   }
+
+  readxl::read_excel(file, col_names = FALSE) %>%
+    head(5) %>%
+    dplyr::mutate(
+      dplyr::across(dplyr::everything(), .fns = tidyr::replace_na, "")
+    ) %>%
+    tidyr::unite("col1", dplyr::everything(), sep = "") %>%
+    dplyr::pull(1) -> notes0
+
   imae <- readxl::read_excel(file, skip = 5)
 
   imae %>%
     dplyr::filter(is.na(...2)) %>%
     stats::setNames(janitor::make_clean_names(names(.))) %>%
     dplyr::filter(!stringr::str_detect(periodo, "Promedio")) %>%
-    dplyr::pull(periodo) -> Notes
+    dplyr::pull(periodo) -> notes1
 
-  # unlink(file_path)
+  Notes <- c(notes0, notes1)
+
   # Serie original
   imaeso <- imae[, 1:6]
   imaeso <- imaeso[-1, ]
@@ -4233,9 +4233,9 @@ imae_mensual <- function(indicador = NULL, metadata = FALSE) {
   imaeso[1, 3] <- "indice"
   names(imaeso) <- imaeso[1, ]
   imaeso <- imaeso[-1, ]
-  names(imaeso)[names(imaeso) == "Interanual"] <- "variacion_interanual"
-  names(imaeso)[names(imaeso) == "Acumulada"] <- "variacion_acumulada"
-  names(imaeso)[names(imaeso) == "Promedio 12 meses"] <- "variacion_promedio_12_meses"
+  names(imaeso)[names(imaeso) == "Interanual"] <- "indice__tci"
+  names(imaeso)[names(imaeso) == "Acumulada"] <- "indice__tca"
+  names(imaeso)[names(imaeso) == "Promedio 12 meses"] <- "indice__tc12meses"
   imaeso <- imaeso[!is.na(imaeso$indice), ]
   imaeso$ano <- stringr::str_remove_all(imaeso$ano, "[^0-9]")
   imaeso <- tidyr::fill(imaeso, ano, .direction = "up")
@@ -4252,13 +4252,11 @@ imae_mensual <- function(indicador = NULL, metadata = FALSE) {
   imaesd[1, 3] <- "indice"
   names(imaesd) <- imaesd[1, ]
   imaesd <- imaesd[-1, ]
-  names(imaesd)[names(imaesd) == "Respecto al per\\u00EDodo anterior"] <- "variacion_periodo_anterior"
-  names(imaesd)[names(imaesd) == "Interanual"] <- "variacion_interanual"
-  names(imaesd)[names(imaesd) == "Acumulada"] <- "variacion_acumulada"
-  names(imaesd)[names(imaesd) == "Promedio 12 meses"] <- "variacion_promedio_12_meses"
-  imaesd <- dplyr::mutate(imaesd,
-    ano = stringr::str_remove_all(ano, "[^0-9]")
-  )
+  names(imaesd)[names(imaesd) == "Respecto al per\u00EDodo anterior"] <- "indice__tc"
+  names(imaesd)[names(imaesd) == "Interanual"] <- "indice__tci"
+  names(imaesd)[names(imaesd) == "Acumulada"] <- "indice__tca"
+  names(imaesd)[names(imaesd) == "Promedio 12 meses"] <- "indice__tc12meses"
+  imaesd <- dplyr::mutate(imaesd, ano = stringr::str_remove_all(ano, "[^0-9]"))
   imaesd <- imaesd[!is.na(imaesd$indice), ]
   imaesd <- tidyr::fill(imaesd, ano, .direction = "up")
   imaesd <- tidyr::fill(imaesd, ano)
@@ -4274,28 +4272,79 @@ imae_mensual <- function(indicador = NULL, metadata = FALSE) {
   imaest[1, 3] <- "indice"
   names(imaest) <- imaest[1, ]
   imaest <- imaest[-1, ]
-  names(imaest)[names(imaest) == "Respecto al per\\u00EDodo anterior"] <- "variacion_periodo_anterior"
-  names(imaest)[names(imaest) == "Interanual"] <- "variacion_interanual"
-  names(imaest)[names(imaest) == "Acumulada"] <- "variacion_acumulada"
-  names(imaest)[names(imaest) == "Promedio 12 meses"] <- "variacion_promedio_12_meses"
+  names(imaest)[names(imaest) == "Respecto al per\u00EDodo anterior"] <- "indice__tc"
+  names(imaest)[names(imaest) == "Interanual"] <- "indice__tci"
+  names(imaest)[names(imaest) == "Acumulada"] <- "indice__tca"
+  names(imaest)[names(imaest) == "Promedio 12 meses"] <- "indice__tc12meses"
   imaest <- imaest[!is.na(imaest$indice), ]
-  imaest <- dplyr::mutate(imaest,
-    ano = stringr::str_remove_all(ano, "[^0-9]")
-  )
+  imaest <- dplyr::mutate(imaest, ano = stringr::str_remove_all(ano, "[^0-9]"))
   imaest <- tidyr::fill(imaest, ano, .direction = "up")
   imaest <- tidyr::fill(imaest, ano)
   imaest <- imaest[!is.na(imaest$mes), ]
   imaest <- Dmisc::vars_to_date(imaest, year = 1, month = 2)
   imaest$serie <- "Serie Tendencia-Ciclo"
 
-  #
-  meta <- make_metadata()
-  if (metadata) {
-    return(meta)
-  }
-  write_metadata(indicador, meta)
-  dplyr::bind_rows(imaeso, imaesd, imaest) %>%
+  datos <- dplyr::bind_rows(imaeso, imaesd, imaest) %>%
     utils::type.convert(as.is = T)
+
+  # Metadata
+  col_info <- list(
+    date = list(
+      name = "Fecha",
+      unit = "Mensual",
+      format = "mdate",
+      class = 0
+    ),
+    indice = list(
+      name = "Indicador Mensual de Actividad Econ\\u00F3mica (IMAE)",
+      unit = "\\u00EDndice",
+      format = "f1",
+      class = 1
+    ),
+    serie = list(
+      name = "Serie",
+      unit = "",
+      format = "text",
+      class = 0
+    ),
+    indice__tci = list(
+      name = "Variaci\\u00F3n (%) interanual",
+      unit = "Porcentaje (%)",
+      format = "f1",
+      class = 2
+    ),
+    indice__tca = list(
+      name = "Variaci\\u00F3n (%) acumulada",
+      unit = "Porcentaje (%)",
+      format = "f1",
+      class = 2
+    ),
+    indice__tc12meses = list(
+      name = "Variaci\\u00F3n (%) promedio 12 meses",
+      unit = "Porcentaje (%)",
+      format = "f1",
+      class = 2
+    ),
+    indice__tc = list(
+      name = "Variaci\\u00F3n (%) periodo anterior",
+      unit = "Porcentaje (%)",
+      format = "f1",
+      class = 2
+    )
+  )
+  vistas <- list(
+    Tabular = NULL,
+    Resumida = list(
+      name = "Resumida",
+      index = c("date"),
+      columns = c("serie")
+    )
+  )
+
+  meta <- make_metadata(indicador, NULL, col_info, vistas, NULL)
+  write_metadata(indicador, meta, .token = list(...)[["token"]])
+  
+  set_metadata(datos, meta)
 }
 
 

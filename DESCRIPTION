@@ -13,8 +13,7 @@ Authors@R: c(
            )
 Maintainer@R: Daniel E. de la Rosa <drdsdaniel@gmail.com>
 Description: Este paquete provee funciones que obtienen archivos de datos de la
-    web y los devuelve en formato tabular. Tambien proporciona funciones para
-    almacenar estos datos en Google Sheets o una base de datos de forma programatica.
+    web y los devuelve en formato tabular.
 License: CC BY 4.0
 Encoding: UTF-8
 LazyData: true
@@ -53,6 +52,6 @@ Suggests:
 VignetteBuilder: knitr
 RdMacros: lifecycle
 Remotes: 
-    drdsdaniel/Dmisc
+    dnldelarosa/Dmisc
 Depends: 
     R (>= 2.10)

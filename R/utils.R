@@ -18,7 +18,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' downloader(pib_gasto)
+#'    downloader(pib_gasto)
 #' }
 downloader <- function(indicador) {
   file_ext <- as.character(indicador[["file_ext"]])
@@ -180,10 +180,12 @@ nivelador <- function(tbl) {
 #' @return Un vector con nombres que se pasa a la funci\\u00F3n del indicador.
 #'
 #' @export
-from_python <- function(keys, values) {
+from_python <- function(keys, values, ...) {
   indicador <- values
   names(indicador) <- keys
-  get(stringr::str_replace_all(indicador$id, "-", "_"))(indicador)
+  res <- get(stringr::str_replace_all(indicador$id, "-", "_"))(indicador, ...)
+  attr(res, "meta") <- NULL
+  res
 }
 
 
@@ -205,7 +207,7 @@ download_domar <- function(id) {
   tryCatch(
     {
       id2 <- stringr::str_replace_all(id, "_", "-")
-      readr::read_csv(url(glue::glue("{info$domar_url}/appA/datos/{id2}/d?out=csv&t={info$token}"))) %>%
+      readr::read_csv(url(glue::glue("{info$domar_url}/app/datos/{id2}/d?out=csv&t={info$token}"))) %>%
         utils::type.convert(as.is = T)
     },
     error = function(e) {
@@ -229,26 +231,35 @@ docker_stop <- function(docker_id) {
 }
 
 
-make_metadata <- function(indicador, preliminar, col_info, vistas, transformaciones, notas) {
-  meta <- as.list(indicador)
+make_metadata <- function(indicador, preliminar, col_info, vistas, notas) {
+  meta <- list()
+  meta$id <- indicador[["id"]]
+  #meta <- as.list(indicador)
   meta$preliminar <- preliminar
   meta$col_info <- col_info
   meta$vistas <- vistas
-  meta$transformaciones <- transformaciones
   meta$notas <- notas
   meta
 }
 
 
-write_metadata <- function(indicador, metadata) {
-  # json_body <- jsonlite::toJSON(list(token = domar::info$token, notas = append(notes, ""), preliminariry = preliminarity), auto_unbox = TRUE)
-  # httr::POST(glue::glue("{domar::info$domar_url}/app/datos/metadata/{id}"), body = json_body, encode = "raw")
+set_metadata <- function(datos, meta){
+  attr(datos, "metadata") <- meta
+  datos
+}
+
+
+write_metadata <- function(indicador, metadata, .token = NULL) {
+  id <- indicador["id"]
+  if (!is.null(.token)) {
   tryCatch(
     {
-
+      json_body <- jsonlite::toJSON(list(token = .token, meta = metadata), auto_unbox = TRUE)
+      print(httr::POST(glue::glue("{domar::info$domar_url}/app/datos/metadata/{id}"), body = json_body, encode = "raw"))
     },
     error = function(e) {
-
+      #print(e)
     }
   )
+  }
 }
