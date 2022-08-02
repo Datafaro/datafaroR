@@ -4341,8 +4341,7 @@ imae_mensual <- function(indicador = NULL, ...) {
     )
   )
 
-  meta <- make_metadata(indicador, NULL, col_info, vistas, NULL)
-  write_metadata(indicador, meta, .token = list(...)[["token"]])
+  meta <- make_metadata(indicador, NULL, col_info, vistas, Notes)
   
   set_metadata(datos, meta)
 }

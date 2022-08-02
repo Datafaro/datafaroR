@@ -244,7 +244,7 @@ make_metadata <- function(indicador, preliminar, col_info, vistas, notas) {
 
 
 set_metadata <- function(datos, meta){
-  attr(datos, "metadata") <- meta
+  attr(datos, "metadata") <- jsonlite::toJSON(meta, auto_unbox = TRUE)
   datos
 }
 

@@ -3,7 +3,7 @@ lh = TRUE
 if (lh){
   info <- list(
     domar_url = "http://localhost:8000",
-    token = "e834b8ce-edd7-44bc-ba08-cee955c4a365"
+    token = "0f225a04-4540-40c5-bd8c-ed31fd8da36b"
   )
 } else {
   info <- list(
