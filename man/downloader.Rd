@@ -28,6 +28,6 @@ contener por lo menos:
 }
 \examples{
 \dontrun{
-downloader(pib_gasto)
+   downloader(pib_gasto)
 }
 }

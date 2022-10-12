@@ -4207,7 +4207,7 @@ imae_mensual <- function(indicador = NULL) {
   }
 
   readxl::read_excel(file, col_names = FALSE) %>%
-    head(5) %>%
+    utils::head(5) %>%
     dplyr::mutate(
       dplyr::across(dplyr::everything(), .fns = tidyr::replace_na, "")
     ) %>%

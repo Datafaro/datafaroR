@@ -10,3 +10,4 @@
 ^db_con\.R$
 ^data-raw$
 ^Levels$
+^fake_data$
