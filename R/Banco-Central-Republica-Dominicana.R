@@ -4172,7 +4172,6 @@ pib_deflactor_anual <- function(indicador = NULL, metadata = FALSE) {
 #'  \lifecycle{experimental}
 #'
 #' @param indicador Vea \code{\link{downloader}}
-#' @param ... 
 #'
 #' @return [data.frame]: los datos del indicador en forma tabular
 #'
@@ -4182,7 +4181,7 @@ pib_deflactor_anual <- function(indicador = NULL, metadata = FALSE) {
 #' \dontrun{
 #' imae_mensual(indicador)
 #' }
-imae_mensual <- function(indicador = NULL, ...) {
+imae_mensual <- function(indicador = NULL) {
   ...2 <- NULL
   . <- NULL
   periodo <- NULL
@@ -4235,7 +4234,7 @@ imae_mensual <- function(indicador = NULL, ...) {
   imaeso <- imaeso[-1, ]
   names(imaeso)[names(imaeso) == "Interanual"] <- "indice__tci"
   names(imaeso)[names(imaeso) == "Acumulada"] <- "indice__tca"
-  names(imaeso)[names(imaeso) == "Promedio 12 meses"] <- "indice__tc12meses"
+  names(imaeso)[names(imaeso) == "Promedio 12 meses"] <- "indice__tcam"
   imaeso <- imaeso[!is.na(imaeso$indice), ]
   imaeso$ano <- stringr::str_remove_all(imaeso$ano, "[^0-9]")
   imaeso <- tidyr::fill(imaeso, ano, .direction = "up")
@@ -4255,7 +4254,7 @@ imae_mensual <- function(indicador = NULL, ...) {
   names(imaesd)[names(imaesd) == "Respecto al per\u00EDodo anterior"] <- "indice__tc"
   names(imaesd)[names(imaesd) == "Interanual"] <- "indice__tci"
   names(imaesd)[names(imaesd) == "Acumulada"] <- "indice__tca"
-  names(imaesd)[names(imaesd) == "Promedio 12 meses"] <- "indice__tc12meses"
+  names(imaesd)[names(imaesd) == "Promedio 12 meses"] <- "indice__tcam"
   imaesd <- dplyr::mutate(imaesd, ano = stringr::str_remove_all(ano, "[^0-9]"))
   imaesd <- imaesd[!is.na(imaesd$indice), ]
   imaesd <- tidyr::fill(imaesd, ano, .direction = "up")
@@ -4275,7 +4274,7 @@ imae_mensual <- function(indicador = NULL, ...) {
   names(imaest)[names(imaest) == "Respecto al per\u00EDodo anterior"] <- "indice__tc"
   names(imaest)[names(imaest) == "Interanual"] <- "indice__tci"
   names(imaest)[names(imaest) == "Acumulada"] <- "indice__tca"
-  names(imaest)[names(imaest) == "Promedio 12 meses"] <- "indice__tc12meses"
+  names(imaest)[names(imaest) == "Promedio 12 meses"] <- "indice__tcam"
   imaest <- imaest[!is.na(imaest$indice), ]
   imaest <- dplyr::mutate(imaest, ano = stringr::str_remove_all(ano, "[^0-9]"))
   imaest <- tidyr::fill(imaest, ano, .direction = "up")
@@ -4319,8 +4318,8 @@ imae_mensual <- function(indicador = NULL, ...) {
       format = "f1",
       class = 2
     ),
-    indice__tc12meses = list(
-      name = "Variaci\\u00F3n (%) promedio 12 meses",
+    indice__tcam = list(
+      name = "Variaci\\u00F3n (%) promedio 12 meses (a\\u00F1o m\\u00F3vil)",
       unit = "Porcentaje (%)",
       format = "f1",
       class = 2
@@ -4333,15 +4332,12 @@ imae_mensual <- function(indicador = NULL, ...) {
     )
   )
   vistas <- list(
-    Tabular = NULL,
-    Resumida = list(
-      name = "Resumida",
-      index = c("date"),
-      columns = c("serie")
-    )
+    rows = 'date',
+    cols = 'serie',
+    vals = 'indice'
   )
 
-  meta <- make_metadata(indicador, NULL, col_info, vistas, Notes)
+  meta <- make_metadata(indicador, col_info, vistas, Notes)
   
   set_metadata(datos, meta)
 }

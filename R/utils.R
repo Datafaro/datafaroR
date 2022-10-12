@@ -231,11 +231,11 @@ docker_stop <- function(docker_id) {
 }
 
 
-make_metadata <- function(indicador, preliminar, col_info, vistas, notas) {
+make_metadata <- function(indicador, col_info, vistas, notas) {
   meta <- list()
   meta$id <- indicador[["id"]]
   #meta <- as.list(indicador)
-  meta$preliminar <- preliminar
+  # meta$preliminar <- preliminar
   meta$col_info <- col_info
   meta$vistas <- vistas
   meta$notas <- notas
