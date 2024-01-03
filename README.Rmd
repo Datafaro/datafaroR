@@ -1,0 +1,49 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# datafaro <img src="man/figures/logo.png" align="right" height="120" alt="" />
+
+<!-- badges: start -->
+[![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![R build status](https://github.com/datafaro/datafaroR/workflows/R-CMD-check/badge.svg)](https://github.com/datafaro/datafaroR/actions)
+[![Codecov test coverage](https://codecov.io/gh/datafaro/datafaroR/branch/master/graph/badge.svg)](https://codecov.io/gh/datafaro/datafaroR?branch=main)
+[![CRAN status](https://www.r-pkg.org/badges/version/datafaro)](https://CRAN.R-project.org/package=datafaro)
+[![R-CMD-check](https://github.com/Datafaro/datafaroR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Datafaro/datafaroR/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+
+> DataFaro ofrece acceso a datos recurrentes de una variedad de fuentes. Abstrae las preocupaciones relacionadas con la frecuencia de los datos, el formato y el calendario de publicación. Este paquete proporciona un envoltorio conveniente para interactuar con la API de DataFaro, facilitando a los usuarios de R el aprovechamiento del poder de DataFaro.
+
+## Instalación
+
+Puedes instalar `datafaro` desde el repositorio r-universe de Adatar:
+
+``` r
+install.packages('datafaro', repos = 'https://adatar-do.r-universe.dev')
+```
+
+## Ejemplo
+
+Aquí tienes un ejemplo básico para comenzar con datafaro:
+
+```{r example}
+library(datafaro)
+
+list_indicators(area = 'ECONREAL')
+
+list_datasets(area = 'ECONREAL')
+
+get_data(.dataset = 'imae-original')
+```

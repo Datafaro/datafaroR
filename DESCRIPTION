@@ -1,0 +1,24 @@
+Package: datafaro
+Title: Interact with the Datafaro API Seamlessly
+Version: 0.1.0.9000
+Authors@R: 
+    c(person("Daniel E.", "de la Rosa", , "me@dnldelarosa.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-5965-5277")),
+    person(given = "Datafaro",
+           role = "cph"))
+Description: DataFaro offers access to recurrent data from a variety of sources. 
+    It abstracts concerns related to data frequency, format, and publication calendar. 
+    This package provides a convenient wrapper for interacting with the Datafaro API, 
+    making it easier for R users to harness the power of DataFaro.
+License: CC BY 4.0
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Imports: 
+    glue,
+    httr2,
+    magrittr,
+    readr
+Depends: 
+    R (>= 2.10)
+LazyData: true
