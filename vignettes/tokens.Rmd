@@ -1,0 +1,116 @@
+---
+title: "Configuración del Token de Acceso en `datafaro`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Configuración del Token de Acceso en `datafaro`}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(datafaro)
+```
+
+
+El paquete `datafaro` permite a los usuarios acceder a una variedad de datasets y funciones analíticas. Para utilizar ciertas funciones, es necesario configurar un token de acceso. Este documento explica cómo configurar tu token de acceso utilizando diferentes métodos: archivo `variables de entorno`, `keyring`, y como argumento de función.
+
+## Variables de entorno
+
+> Antes que nada es importante mencionar que si estableces tu token en una variable de entorno llamada `DATAFARO_TOKEN` no es necesario que hagas nada más. Las funciones de `datafaroR` están diseñadas para buscar el token en esta variable de entorno de manera predeterminada.
+
+### Estableciendo la variable entorno por sesión
+
+Una forma segura y rápida de almacenar tu token de acceso es a través de una variable de entorno. Puedes configurar esta variable en tu sistema y `datafaroR` la leerá automáticamente.
+
+Para configurar una variable de entorno en sistemas Unix/Linux o Mac:
+  
+  ```bash
+export DATAFARO_TOKEN="tu_token_aqui"
+```
+
+En Windows:
+  
+  ```cmd
+set DATAFARO_TOKEN=tu_token_aqui
+```
+
+O puedes utilizar directamente la función `Sys.setenv` en R:
+
+```R
+Sys.setenv(DATAFARO_TOKEN = "tu_token_aqui")
+```
+
+Para acceder al token dentro de R, puedes usar:
+
+```R
+token <- Sys.getenv("DATAFARO_TOKEN")
+```
+
+### Uso del Archivo `.Renviron`
+
+Una forma más conveniente de almacenar tu token de acceso sin exponerlo en tu script es a través del archivo `.Renviron`.
+
+Para agregar tu token al archivo `.Renviron`, sigue estos pasos:
+
+1. Localiza tu directorio de inicio de R ejecutando `normalizePath("~/")` en R.
+2. Crea o edita el archivo `.Renviron` en este directorio agregando la siguiente línea:
+
+```
+DATAFARO_TOKEN=tu_token_aqui
+```
+
+3. Reinicia tu sesión de R para que los cambios tengan efecto.
+
+Ahora puedes acceder al token dentro de R con:
+
+```R
+token <- Sys.getenv("DATAFARO_TOKEN")
+```
+
+## Uso de `keyring`
+
+`keyring` es un paquete R que proporciona una forma segura de almacenar y acceder a credenciales. Para usar `keyring` para almacenar tu token de acceso:
+
+Primero, instala y carga el paquete `keyring`:
+
+```R
+install.packages("keyring")
+library(keyring)
+```
+
+Luego, almacena tu token en el llavero utilizando un nombre descriptivo para el token:
+
+```R
+keyring::key_set("datafaro_token", "nombre_descriptivo_del_token")
+```
+
+Cuando se te solicite, ingresa tu token. 
+
+Para acceder al token almacenado en el script:
+
+```R
+token <- keyring::key_get("datafaro_token", "nombre_descriptivo_del_token")
+```
+
+Para más información sobre el paquete `keyring`, consulta la [documentación oficial](https://keyring.r-lib.org/).
+
+## Uso como argumento de función
+
+También puedes optar por proporcionar tu token directamente como un argumento al llamar a funciones específicas en `datafaro`. Aunque este método es menos seguro, puede ser útil para pruebas rápidas o scripts de uso único.
+
+```R
+resultado <- funcion_datafaro(argumento1, argumento2, token = "tu_token_aqui")
+```
+
+> Ten en cuenta que de esta forma tu token se almacenará en el historial de comandos de R, lo que puede ser un riesgo de seguridad.
+
+## Recomendaciones
+
+Para un uso regular, recomendamos utilizar el archivo `.Renviron` o `keyring` para una mayor seguridad. Evita incluir tokens directamente en tus scripts para prevenir la exposición accidental de tus credenciales. Utilizar un nombre descriptivo para el token en `keyring` facilita la gestión de múltiples tokens.
