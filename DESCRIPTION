@@ -1,6 +1,6 @@
 Package: datafaro
 Title: Interact with the Datafaro API Seamlessly
-Version: 0.1.2
+Version: 0.9.0
 Authors@R: 
     c(person("Daniel E.", "de la Rosa", , "me@dnldelarosa.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-5965-5277")),
@@ -13,17 +13,23 @@ Description: DataFaro offers access to recurrent data from a variety of sources.
 License: CC BY 4.0
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Imports: 
-    glue,
-    httr2,
+    pins,
     magrittr,
-    readr
-Depends: 
-    R (>= 2.10)
-LazyData: true
-URL: https://datafaro.github.io/datafaroR/
+    httr2,
+    jsonlite,
+    readr,
+    glue,
+    sodium,
+    uuid
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
+    renviron
+Depends: 
+    R (>= 2.10),
+    tibble,
+LazyData: true
+URL: https://datafaro.github.io/datafaroR/
 VignetteBuilder: knitr

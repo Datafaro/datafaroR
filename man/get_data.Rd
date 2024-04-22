@@ -4,23 +4,24 @@
 \alias{get_data}
 \title{Obtener la última actualización de un conjunto de datos de Datafaro}
 \usage{
-get_data(.dataset, .token = Sys.getenv("DATAFARO_TOKEN"))
+get_data(code, .token = .get_valid_token(), .cached = TRUE)
 }
 \arguments{
-\item{.dataset}{\link{character} Código del conjunto de datos}
+\item{code}{\link{character} Código del conjunto de datos}
 
-\item{.token}{\link{character} Token de acceso a la API. Por defecto se utiliza el
-token guardado en la variable de entorno \code{DATAFARO_TOKEN}. Si no se ha
+\item{.token}{\link{character} Token de acceso a la API. Si no se ha
 guardado un token, se debe especificar el token manualmente.}
+
+\item{.cached}{\link{logical} Si se debe utilizar la caché. Por defecto es \code{TRUE}.}
 }
 \value{
-Un data.frame con la última actualización del conjunto de datos.
+Un datalight con la última actualización del conjunto de datos.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \examples{
 \dontrun{
-  get_data("imae")
+get_data("NCP_XDC")
 }
 }
