@@ -13,6 +13,13 @@ knitr::opts_chunk$set(
 )
 ```
 
+```{r}
+#| include=FALSE
+
+devtools::load_all()
+```
+
+
 # datafaro <img src="man/figures/logo.png" align="right" height="120" alt="" />
 
 <!-- badges: start -->
@@ -40,10 +47,5 @@ Aquí tienes un ejemplo básico para comenzar con datafaro:
 
 ```{r example}
 library(datafaro)
-
-list_indicators(area = 'ECONREAL')
-
-list_datasets(area = 'ECONREAL')
-
-get_data(.dataset = 'imae-original')
+get_data('NC_XDC')
 ```
