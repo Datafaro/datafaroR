@@ -16,6 +16,7 @@
 #' get_data("NC_XDC")
 #' }
 get_data <- function(code, .token = auth(), .cached = TRUE) {
+  .token # Esto asegura que el token se valide antes de realizar cualquier solicitud.
   metadata <- .fetch_metadata(code, .token)
 
   # Safe check if metadata is not NULL
