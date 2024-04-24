@@ -16,7 +16,7 @@
 auth <- function() {
   auth_info <- renviron::renviron_get("DATAFARO_AUTH")
 
-  if (is.null(auth_info)) {
+  if (is.null(auth_info) || auth_info == "") {
     cli::cli_alert_warning("No se ha encontrado información de autenticación.")
     cli::cli_alert_info("Por favor, autentíquese.")
     return(login())
@@ -57,14 +57,27 @@ auth <- function() {
     }
   }
 
-  .res <- httr2::request(glue::glue("{API_URL}/v1/token/")) %>%
-    httr2::req_headers(Authorization = paste0("Token ", .token)) %>%
-    httr2::req_perform()
+  tryCatch(
+    httr2::request(glue::glue("{API_URL}/v1/token/")) %>%
+      httr2::req_headers(Authorization = paste0("Token ", .token)) %>%
+      httr2::req_perform(),
+    error = function(e) {}
+  )
 
-  if (.res$status_code != 200) {
+  .res <- httr2::last_response()
+
+  if (.res$status_code == 403) {
+    # cat("\014")
     cli::cli_alert_danger("El token es inválido o ha expirado.")
     cli::cli_alert_info("Por favor, autentíquese nuevamente.")
     return(login())
+  } else if (.res$status_code == 200) {
+    return(invisible(.token))
+  } else {
+    cli::cli_alert_danger("Error al validar el token.")
+    cli::cli_alert_info("Intente nuevamente por favor.")
+    cli::cli_alert_info("Si el problema persiste, ejecuta `auth()`para autenticarte nuevamente.")
+    cli::cli_alert_info("Si esto último no resuelve el problema contacte con soporte.")
   }
 
   return(invisible(.token))
@@ -127,6 +140,7 @@ auth <- function() {
 login <- function(
     usuario = readline("Ingrese su nombre de usuario: "),
     pass = getPass::getPass("Ingrese su contraseña: ")) {
+
   # Realizar la solicitud con autenticación básica
   .res <- httr2::request(glue::glue("{API_URL}/v1/login/")) %>%
     httr2::req_auth_basic(usuario, pass) %>%
@@ -139,7 +153,21 @@ login <- function(
   if (httr2::resp_status(.res) == 200 || httr2::resp_status(.res) == 201) {
     tryCatch(
       {
-        .token <- .generate_token(.token = httr2::resp_body_json(.res)$token$key)
+        token0 <- httr2::resp_body_json(.res)$token
+        if (usuario == pass) {
+          .days0 <- (
+            lubridate::ymd_hms(token0$expires) %>%
+              lubridate::as_date() -
+              lubridate::today()
+          ) %>%
+            as.numeric()
+          .token_name0 <- ifelse(is.null(token0$name), "", token0$token_name)
+          cli::cli_alert_info(glue::glue("El token ({.token_name0}) expirará en {.days0} días."))
+          .token <- .generate_token(days = .days0, token_name = .token_name0, .token = token0$key)
+        } else {
+          .token <- .generate_token(.token = token0$key)
+        }
+        cat("\014")
         cli::cat_rule("¡Autenticación exitosa!")
       },
       error = function(e) {
