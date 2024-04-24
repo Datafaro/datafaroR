@@ -30,7 +30,7 @@ Suggests:
 Depends: 
     R (>= 2.10),
     tibble,
-Remotes: https://adatar-do.r-universe.dev
+Remotes: url::https://adatar-do.r-universe.dev/renviron
 LazyData: true
 URL: https://datafaro.github.io/datafaroR/
 VignetteBuilder: knitr
