@@ -16,7 +16,7 @@
 auth <- function() {
 
   if (!requireNamespace("renviron", quietly = TRUE)) {
-    install.packages("renviron", repos = "https://adatar-do.r-universe.dev")
+    utils::install.packages("renviron", repos = "https://adatar-do.r-universe.dev")
   }
 
   auth_info <- renviron::renviron_get("DATAFARO_AUTH")

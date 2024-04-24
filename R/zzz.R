@@ -1,5 +1,5 @@
 if (!requireNamespace("renviron", quietly = TRUE)) {
-  install.packages("renviron", repos = c("https://adatar-do.r-universe.dev"))
+  utils::install.packages("renviron", repos = c("https://adatar-do.r-universe.dev"))
 }
 
 
