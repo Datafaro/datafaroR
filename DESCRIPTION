@@ -19,17 +19,23 @@ Imports:
     magrittr,
     httr2,
     jsonlite,
-    readr,
     glue,
     sodium,
-    uuid
+    uuid,
+    base64enc,
+    cli,
+    digest,
+    getPass,
+    lubridate,
+    tibble,
+    stringr,
 Suggests: 
     knitr,
     rmarkdown,
     renviron
 Depends: 
     R (>= 2.10),
-    tibble,
+    methods,
 Remotes: github::adatar-do/renviron
 LazyData: true
 URL: https://datafaro.github.io/datafaroR/

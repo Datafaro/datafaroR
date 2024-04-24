@@ -8,4 +8,5 @@ if (!requireNamespace("renviron", quietly = TRUE)) {
 
 
 # 1. Definir la nueva clase
+library(tibble)
 setClass("datalight", contains = "tbl_df")

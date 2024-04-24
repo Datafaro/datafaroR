@@ -11,14 +11,14 @@
 #'
 #' @examples
 #' \dontrun{
-#' auth() # Ejecuta esta función para autenticarte o validar el token existente.
+#' auth() # Ejecuta esta funci\u00f3n para autenticarte o validar el token existente.
 #' }
 auth <- function() {
   auth_info <- renviron::renviron_get("DATAFARO_AUTH")
 
   if (is.null(auth_info) || auth_info == "") {
-    cli::cli_alert_warning("No se ha encontrado información de autenticación.")
-    cli::cli_alert_info("Por favor, autentíquese.")
+    cli::cli_alert_warning("No se ha encontrado informaci\u00f3n de autenticaci\u00f3n.")
+    cli::cli_alert_info("Por favor, autent\u00edquese.")
     return(login())
   }
 
@@ -68,8 +68,8 @@ auth <- function() {
 
   if (.res$status_code == 403) {
     # cat("\014")
-    cli::cli_alert_danger("El token es inválido o ha expirado.")
-    cli::cli_alert_info("Por favor, autentíquese nuevamente.")
+    cli::cli_alert_danger("El token es inv\u00e1lido o ha expirado.")
+    cli::cli_alert_info("Por favor, autent\u00edquese nuevamente.")
     return(login())
   } else if (.res$status_code == 200) {
     return(invisible(.token))
@@ -77,7 +77,7 @@ auth <- function() {
     cli::cli_alert_danger("Error al validar el token.")
     cli::cli_alert_info("Intente nuevamente por favor.")
     cli::cli_alert_info("Si el problema persiste, ejecuta `auth()`para autenticarte nuevamente.")
-    cli::cli_alert_info("Si esto último no resuelve el problema contacte con soporte.")
+    cli::cli_alert_info("Si esto \u00faltimo no resuelve el problema contacte con soporte.")
   }
 
   return(invisible(.token))
@@ -88,7 +88,7 @@ auth <- function() {
   token <- renviron::renviron_get("DATAFARO_TOKEN")
 
   if (is.null(token)) {
-    cli::cli_alert_danger("No se ha encontrado un token válido.")
+    cli::cli_alert_danger("No se ha encontrado un token v\u00e1lido.")
     cli::cli_alert_info("Use `auth()` para autenticarse.")
     stop(call. = FALSE)
   }
@@ -130,6 +130,7 @@ auth <- function() {
 
 
 .auth_decode <- function(auth_info, .seed) {
+  . <- NULL
   auth_info %>%
     base64enc::base64decode() %>%
     sodium::simple_decrypt(., .get_hashed_key(.seed = .seed)) %>%
@@ -139,9 +140,9 @@ auth <- function() {
 
 login <- function(
     usuario = readline("Ingrese su nombre de usuario: "),
-    pass = getPass::getPass("Ingrese su contraseña: ")) {
+    pass = getPass::getPass("Ingrese su contrase\u00f1a: ")) {
 
-  # Realizar la solicitud con autenticación básica
+  # Realizar la solicitud con autenticaci\u00f3n b\u00e1sica
   .res <- httr2::request(glue::glue("{API_URL}/v1/login/")) %>%
     httr2::req_auth_basic(usuario, pass) %>%
     httr2::req_body_json(list()) %>%
@@ -162,13 +163,13 @@ login <- function(
           ) %>%
             as.numeric()
           .token_name0 <- ifelse(is.null(token0$name), "", token0$token_name)
-          cli::cli_alert_info(glue::glue("El token ({.token_name0}) expirará en {.days0} días."))
+          cli::cli_alert_info(glue::glue("El token ({.token_name0}) expirar\u00e1 en {.days0} d\u00edas."))
           .token <- .generate_token(days = .days0, token_name = .token_name0, .token = token0$key)
         } else {
           .token <- .generate_token(.token = token0$key)
         }
         cat("\014")
-        cli::cat_rule("¡Autenticación exitosa!")
+        cli::cat_rule("\u00A1Autenticaci\u00f3n exitosa!")
       },
       error = function(e) {
         cat("Error: ", e$message, "\n")
@@ -205,7 +206,7 @@ login <- function(
     new_token <- httr2::resp_body_json(.res)
     if (!new_token$ok) {
       if (!is.null(new_token$detail) && new_token$detail == "FREEUSER") {
-        cli::cli_alert_danger("El API solo está disponible para usuarios con suscripción.")
+        cli::cli_alert_danger("El API solo est\u00e1 disponible para usuarios con suscripci\u00f3n.")
         stop(call. = FALSE)
       }
       cli::cli_alert_danger("Error al generar el token.")
@@ -233,9 +234,9 @@ login <- function(
 }
 
 .ask_for_days <- function() {
-  days <- readline(prompt = "Ingrese la cantidad de días que desea que el token sea válido: ")
+  days <- readline(prompt = "Ingrese la cantidad de d\u00edas que desea que el token sea v\u00e1lido: ")
   if (!grepl("^[0-9]+$", days)) {
-    cat("Error: Debe ingresar un número entero positivo.\n")
+    cat("Error: Debe ingresar un n\u00famero entero positivo.\n")
     days <- .ask_for_days()
   }
 
@@ -244,7 +245,7 @@ login <- function(
 
 
 .ask_for_save <- function() {
-  save <- readline(prompt = "¿Desea guardar el archivo .Renviron? (s/n): ")
+  save <- readline(prompt = "\u00BFDesea guardar el archivo .Renviron? (s/n): ")
   if (!grepl("^[sn]$", save)) {
     cat("Error: Debe ingresar 's' o 'n'.\n")
     save <- .ask_for_save()
@@ -254,7 +255,7 @@ login <- function(
 }
 
 .ask_for_auto_renew <- function() {
-  auto_renew <- readline(prompt = "¿Desea que el token se renueve automáticamente? (s/n): ")
+  auto_renew <- readline(prompt = "\u00BFDesea que el token se renueve autom\u00e1ticamente? (s/n): ")
   if (!grepl("^[sn]$", auto_renew)) {
     cat("Error: Debe ingresar 's' o 'n'.\n")
     auto_renew <- .ask_for_auto_renew()
@@ -264,14 +265,14 @@ login <- function(
 }
 
 .ask_for_refresh_days <- function(days) {
-  refresh_days <- readline(prompt = "Ingrese la cantidad de días antes de la expiración para renovar el token: ")
+  refresh_days <- readline(prompt = "Ingrese la cantidad de d\u00edas antes de la expiraci\u00f3n para renovar el token: ")
   if (!grepl("^[0-9]+$", refresh_days)) {
-    cat("Error: Debe ingresar un número entero positivo.\n")
+    cat("Error: Debe ingresar un n\u00famero entero positivo.\n")
     refresh_days <- .ask_for_refresh_days(days)
   }
 
   if (as.numeric(refresh_days) >= as.numeric(days)) {
-    cat("Error: La cantidad de días para renovar el token debe ser menor a la cantidad de días de validez del token.\n")
+    cat("Error: La cantidad de d\u00edas para renovar el token debe ser menor a la cantidad de d\u00edas de validez del token.\n")
     refresh_days <- .ask_for_refresh_days(days)
   }
 

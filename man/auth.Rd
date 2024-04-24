@@ -2,19 +2,22 @@
 % Please edit documentation in R/auth.R
 \name{auth}
 \alias{auth}
-\title{Authenticate and Retrieve Access Token}
+\title{Autenticar y obtener token de acceso}
 \usage{
 auth()
 }
 \value{
-Does not explicitly return a value, but stores the obtained access token for future use.
+Retorna el token de acceso si la autenticación es exitosa o el token almacenado sigue siendo válido.
+En otros casos, guía al usuario para realizar una nueva autenticación.
 }
 \description{
-This function prompts the user for their username and password to authenticate against an external service.
-If authentication is successful, it generates and stores an access token for future requests.
+Esta función verifica si existe información de autenticación previa almacenada y válida.
+Si no encuentra información válida o el token ha expirado, solicita al usuario que se autentique nuevamente.
+Si la autenticación es exitosa, genera y almacena un nuevo token de acceso para solicitudes futuras.
+En caso de encontrar un token válido y no expirado, lo retorna para su uso inmediato.
 }
 \examples{
 \dontrun{
-  auth()  # Follow the prompts in the console to authenticate
+auth() # Ejecuta esta funci\u00f3n para autenticarte o validar el token existente.
 }
 }

@@ -95,7 +95,7 @@ get_data <- function(code, .token = auth(), .cached = TRUE) {
       if (!is.null(dl)) {
         dl$Cached <- Sys.Date()
         . <- suppressMessages(
-          capture.output(
+          utils::capture.output(
             pins::pin_write(.DatafaroBoard, dl, pins_id, "json")
           )
         )
@@ -111,10 +111,10 @@ get_data <- function(code, .token = auth(), .cached = TRUE) {
 
 .handle_error <- function(pins_id) {
   if (pins::pin_exists(.DatafaroBoard, pins_id)) {
-    message("Ocurrió un error al intentar obtener los datos. Se utilizará la versión en caché.")
+    message("Ocurri\u00f3 un error al intentar obtener los datos. Se utilizar\u00e1 la versi\u00f3n en cach\u00e9.")
     as_datalight(pins::pin_read(.DatafaroBoard, pins_id))
   } else {
-    message("Ocurrió un error al intentar obtener los datos. No se encontró una versión en caché.")
+    message("Ocurri\u00f3 un error al intentar obtener los datos. No se encontr\u00f3 una versi\u00f3n en cach\u00e9.")
     NULL
   }
 }

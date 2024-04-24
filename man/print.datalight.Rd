@@ -19,7 +19,15 @@ Print a datalight object
 }
 \examples{
 \dontrun{
-  .res <- jsonlite::toJSON(list(data = mtcars, dictionary = list(), metadata = list(next_update = Sys.Date() + 30), cached = Sys.Date(), slug = "mtcars"))
+  .res <- jsonlite::toJSON(
+      list(
+          data = mtcars,
+          dictionary = list(),
+          metadata = list(next_update = Sys.Date() + 30),
+          cached = Sys.Date(),
+          slug = "mtcars"
+       )
+   )
   mi_tibble <- as_datalight(.res)
   print(mi_tibble)
 }

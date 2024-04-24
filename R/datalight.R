@@ -8,14 +8,20 @@
 #'
 #' @examples
 #' \dontrun{
-#'   .res <- list(data = mtcars, dictionary = list(), metadata = list(next_update = Sys.Date() + 30), cached = Sys.Date(), slug = "mtcars")
+#'   .res <- list(
+#'       data = mtcars,
+#'        dictionary = list(),
+#'        metadata = list(next_update = Sys.Date() + 30),
+#'        cached = Sys.Date(),
+#'        slug = "mtcars"
+#'      )
 #'   mi_tibble <- as_datalight(.res)
 #'   print(mi_tibble)
 #'}
 as_datalight <- function(data) {
   json_data <- jsonlite::toJSON(data, auto_unbox = TRUE)
   parsed_data <- jsonlite::fromJSON(json_data, simplifyDataFrame = TRUE)
-  new_data <- as_tibble(parsed_data$data) %>% type.convert(as.is = TRUE)
+  new_data <- tibble::as_tibble(parsed_data$data) %>% utils::type.convert(as.is = TRUE)
   if ('date' %in% names(new_data)) new_data$date <- lubridate::as_date(new_data$date)
   class(new_data) <- c("datalight", class(new_data))
   if (!is.null(data$dictionary)) attr(new_data, "dict") <- data$dictionary
@@ -33,12 +39,21 @@ as_datalight <- function(data) {
 #' @param ... Other arguments passed on to methods
 #'
 #' @return a print of the object. Invisible x
+#' @import methods
 #'
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#'   .res <- jsonlite::toJSON(list(data = mtcars, dictionary = list(), metadata = list(next_update = Sys.Date() + 30), cached = Sys.Date(), slug = "mtcars"))
+#'   .res <- jsonlite::toJSON(
+#'       list(
+#'           data = mtcars,
+#'           dictionary = list(),
+#'           metadata = list(next_update = Sys.Date() + 30),
+#'           cached = Sys.Date(),
+#'           slug = "mtcars"
+#'        )
+#'    )
 #'   mi_tibble <- as_datalight(.res)
 #'   print(mi_tibble)
 #'}

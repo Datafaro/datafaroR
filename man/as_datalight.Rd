@@ -17,7 +17,13 @@ Convert a Datafaro's datalight list object to a datalight object
 }
 \examples{
 \dontrun{
-  .res <- list(data = mtcars, dictionary = list(), metadata = list(next_update = Sys.Date() + 30), cached = Sys.Date(), slug = "mtcars")
+  .res <- list(
+      data = mtcars,
+       dictionary = list(),
+       metadata = list(next_update = Sys.Date() + 30),
+       cached = Sys.Date(),
+       slug = "mtcars"
+     )
   mi_tibble <- as_datalight(.res)
   print(mi_tibble)
 }

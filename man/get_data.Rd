@@ -4,7 +4,7 @@
 \alias{get_data}
 \title{Obtener la última actualización de un conjunto de datos de Datafaro}
 \usage{
-get_data(code, .token = .get_valid_token(), .cached = TRUE)
+get_data(code, .token = auth(), .cached = TRUE)
 }
 \arguments{
 \item{code}{\link{character} Código del conjunto de datos}
@@ -22,6 +22,6 @@ Un datalight con la última actualización del conjunto de datos.
 }
 \examples{
 \dontrun{
-get_data("NCP_XDC")
+get_data("NC_XDC")
 }
 }
