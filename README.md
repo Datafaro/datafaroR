@@ -10,13 +10,12 @@ has not yet been a stable, usable release suitable for the
 public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-[![R build
-status](https://github.com/datafaro/datafaroR/workflows/R-CMD-check/badge.svg)](https://github.com/datafaro/datafaroR/actions)
 [![Codecov test
 coverage](https://codecov.io/gh/datafaro/datafaroR/branch/master/graph/badge.svg)](https://codecov.io/gh/datafaro/datafaroR?branch=main)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/datafaro)](https://CRAN.R-project.org/package=datafaro)
 [![R-CMD-check](https://github.com/Datafaro/datafaroR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Datafaro/datafaroR/actions/workflows/R-CMD-check.yaml)
+![r-universe](https://adatar-do.r-universe.dev/badges/renviron)
 <!-- badges: end -->
 
 > DataFaro ofrece acceso a datos recurrentes de una variedad de fuentes.
@@ -31,7 +30,7 @@ status](https://www.r-pkg.org/badges/version/datafaro)](https://CRAN.R-project.o
 Puedes instalar `datafaro` desde el repositorio r-universe de Adatar:
 
 ``` r
-install.packages('datafaro', repos = 'https://adatar-do.r-universe.dev')
+install.packages("datafaro", repos = c("https://adatar-do.r-universe.dev", "https://cran.r-project.org"))
 ```
 
 ## Ejemplo
@@ -41,7 +40,7 @@ Aquí tienes un ejemplo básico para comenzar con datafaro:
 ``` r
 library(datafaro)
 get_data('NC_XDC')
-#> ✔ Setting active project to 'C:/Users/drdsd/Documents/Projects/DOMAR/datafaroR'
+#> ✔ Setting active project to 'C:/Users/ddela/Documents/Datafaro/datafaroR'
 #> # A tibble: 132 × 2
 #>    date        value
 #>    <date>      <dbl>
@@ -58,5 +57,6 @@ get_data('NC_XDC')
 #> # ℹ 122 more rows
 #> Datafaro's datalight: NC_XDC
 #> Full name: PIB Gasto > Consumo final total nominal (RD$)
-#> Next update: 2024-04-13T12:44:08-04:00
+#> Cached: 2024-04-24
+#> Next update: 2024-06-11T22:20:08-04:00
 ```
