@@ -5,10 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="DataFaro offers access to recurrent data from a variety of sources. 
-    It abstracts concerns related to data frequency, format, and publication calendar. 
-    This package provides a convenient wrapper for interacting with the Datafaro API, 
-    making it easier for R users to harness the power of DataFaro.">
+<meta name="description" content="DataFaro offers access to recurrent data from a variety of sources. It abstracts concerns related to data frequency, format, and publication calendar. This package provides a convenient wrapper for interacting with the Datafaro API, making it easier for R users to harness the power of DataFaro.">
 <title>Interact with the Datafaro API Seamlessly • datafaro</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -20,11 +17,8 @@
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Interact with the Datafaro API Seamlessly">
-<meta property="og:description" content="DataFaro offers access to recurrent data from a variety of sources. 
-    It abstracts concerns related to data frequency, format, and publication calendar. 
-    This package provides a convenient wrapper for interacting with the Datafaro API, 
-    making it easier for R users to harness the power of DataFaro.">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js" integrity="sha512-7O5pXpc0oCRrxk8RUfDYFgn0nO1t+jLuIOQdOMRp4APB7uZ4vSjspzp5y6YDtDs4VzUSTbWzBFZ/LKJhnyFOKw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Interact with the Datafaro API Seamlessly">
+<meta property="og:description" content="DataFaro offers access to recurrent data from a variety of sources. It abstracts concerns related to data frequency, format, and publication calendar. This package provides a convenient wrapper for interacting with the Datafaro API, making it easier for R users to harness the power of DataFaro.">
 <meta property="og:image" content="https://datafaro.github.io/datafaroR/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -35,11 +29,11 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light" data-bs-theme="light"><div class="container">
     
     <a class="navbar-brand me-2" href="index.html">datafaro</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,12 +44,6 @@
       <ul class="navbar-nav me-auto">
 <li class="nav-item">
   <a class="nav-link" href="reference/index.html">Reference</a>
-</li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="articles/tokens.html">Configuración del Token de Acceso en `datafaro`</a>
-  </div>
 </li>
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
@@ -92,130 +80,25 @@
 <p>Aquí tienes un ejemplo básico para comenzar con datafaro:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://datafaro.github.io/datafaroR/">datafaro</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="reference/list_indicators.html">list_indicators</a></span><span class="op">(</span>area <span class="op">=</span> <span class="st">'ECONREAL'</span><span class="op">)</span></span>
-<span><span class="co">#&gt;           id                                                  name description</span></span>
-<span><span class="co">#&gt; 1       imae       Indicador Mensual de Actividad Económica (IMAE)         ...</span></span>
-<span><span class="co">#&gt; 2  pib-gasto Producto Interno Bruto (PIB) por el enfoque del gasto         ...</span></span>
-<span><span class="co">#&gt; 3 pib-origen   Producto Interno Bruto (PIB) por sectores de origen         ...</span></span>
-<span><span class="co">#&gt;       area</span></span>
-<span><span class="co">#&gt; 1 ECONREAL</span></span>
-<span><span class="co">#&gt; 2 ECONREAL</span></span>
-<span><span class="co">#&gt; 3 ECONREAL</span></span>
-<span></span>
-<span><span class="fu"><a href="reference/list_datasets.html">list_datasets</a></span><span class="op">(</span>area <span class="op">=</span> <span class="st">'ECONREAL'</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                                       id  indicator institution</span></span>
-<span><span class="co">#&gt; 1                imae-desestacionalizado       imae        BCRD</span></span>
-<span><span class="co">#&gt; 2                          imae-original       imae        BCRD</span></span>
-<span><span class="co">#&gt; 3                    imae-tedencia-ciclo       imae        BCRD</span></span>
-<span><span class="co">#&gt; 4   pib-origen-incidencia-acumulado-2007 pib-origen        BCRD</span></span>
-<span><span class="co">#&gt; 5    pib-gasto-incidencia-acumulado-2007  pib-gasto        BCRD</span></span>
-<span><span class="co">#&gt; 6              pib-gasto-incidencia-2007  pib-gasto        BCRD</span></span>
-<span><span class="co">#&gt; 7             pib-origen-incidencia-2007 pib-origen        BCRD</span></span>
-<span><span class="co">#&gt; 8           pib-gasto-ive-acumulado-2007  pib-gasto        BCRD</span></span>
-<span><span class="co">#&gt; 9          pib-origen-ive-acumulado-2007 pib-origen        BCRD</span></span>
-<span><span class="co">#&gt; 10                    pib-gasto-ive-2007  pib-gasto        BCRD</span></span>
-<span><span class="co">#&gt; 11                   pib-origen-ive-2007 pib-origen        BCRD</span></span>
-<span><span class="co">#&gt; 12 pib-origen-ponderacion-acumulado-2007 pib-origen        BCRD</span></span>
-<span><span class="co">#&gt; 13  pib-gasto-ponderacion-acumulado-2007  pib-gasto        BCRD</span></span>
-<span><span class="co">#&gt; 14           pib-origen-ponderacion-2007 pib-origen        BCRD</span></span>
-<span><span class="co">#&gt; 15            pib-gasto-ponderacion-2007  pib-gasto        BCRD</span></span>
-<span><span class="co">#&gt; 16          pib-origen-tc-acumulado-2007 pib-origen        BCRD</span></span>
-<span><span class="co">#&gt; 17           pib-gasto-tc-acumulado-2007  pib-gasto        BCRD</span></span>
-<span><span class="co">#&gt; 18                     pib-gasto-tc-2007  pib-gasto        BCRD</span></span>
-<span><span class="co">#&gt; 19                    pib-origen-tc-2007 pib-origen        BCRD</span></span>
-<span><span class="co">#&gt; 20      pib-gasto-nominal-acumulado-2007  pib-gasto        BCRD</span></span>
-<span><span class="co">#&gt; 21     pib-origen-nominal-acumulado-2007 pib-origen        BCRD</span></span>
-<span><span class="co">#&gt; 22               pib-origen-nominal-2007 pib-origen        BCRD</span></span>
-<span><span class="co">#&gt; 23                pib-gasto-nominal-2007  pib-gasto        BCRD</span></span>
-<span><span class="co">#&gt;                                                            name description</span></span>
-<span><span class="co">#&gt; 1                                 IMAE Serie Desestacionalizada         ...</span></span>
-<span><span class="co">#&gt; 2                                           IMAE Serie Original         ...</span></span>
-<span><span class="co">#&gt; 3                                    IMAE Serie Tendencia-Ciclo         ...</span></span>
-<span><span class="co">#&gt; 4           Incidencia IVE acumulado por componente (base 2007)         ...</span></span>
-<span><span class="co">#&gt; 5           Incidencia IVE acumulado por componente (base 2007)         ...</span></span>
-<span><span class="co">#&gt; 6                     Incidencia IVE por componente (base 2007)         ...</span></span>
-<span><span class="co">#&gt; 7                     Incidencia IVE por componente (base 2007)         ...</span></span>
-<span><span class="co">#&gt; 8    Índices de Volumen Encadenados (IVE) acumulado (base 2007)         ...</span></span>
-<span><span class="co">#&gt; 9    Índices de Volumen Encadenados (IVE) acumulado (base 2007)         ...</span></span>
-<span><span class="co">#&gt; 10             Índices de Volumen Encadenados (IVE) (base 2007)         ...</span></span>
-<span><span class="co">#&gt; 11             Índices de Volumen Encadenados (IVE) (base 2007)         ...</span></span>
-<span><span class="co">#&gt; 12             Ponderación por componente acumulada (base 2007)         ...</span></span>
-<span><span class="co">#&gt; 13             Ponderación por componente acumulada (base 2007)         ...</span></span>
-<span><span class="co">#&gt; 14                       Ponderacion por componente (base 2007)         ...</span></span>
-<span><span class="co">#&gt; 15                       Ponderacion por componente (base 2007)         ...</span></span>
-<span><span class="co">#&gt; 16 Tasa de crecimiento IVE acumulado por componente (base 2007)         ...</span></span>
-<span><span class="co">#&gt; 17 Tasa de crecimiento IVE acumulado por componente (base 2007)         ...</span></span>
-<span><span class="co">#&gt; 18           Tasa de crecimiento IVE por componente (base 2007)         ...</span></span>
-<span><span class="co">#&gt; 19           Tasa de crecimiento IVE por componente (base 2007)         ...</span></span>
-<span><span class="co">#&gt; 20                          Valor nominal acumulado (base 2007)         ...</span></span>
-<span><span class="co">#&gt; 21                          Valor nominal acumulado (base 2007)         ...</span></span>
-<span><span class="co">#&gt; 22                                    Valor nominal (base 2007)         ...</span></span>
-<span><span class="co">#&gt; 23                                    Valor nominal (base 2007)         ...</span></span>
-<span><span class="co">#&gt;    status                      last_update                      next_update</span></span>
-<span><span class="co">#&gt; 1       A 2024-01-03T08:57:53.269010-04:00 2024-01-31T20:57:53.268979-04:00</span></span>
-<span><span class="co">#&gt; 2       A 2024-01-03T09:05:53.380853-04:00 2024-01-31T21:05:53.380831-04:00</span></span>
-<span><span class="co">#&gt; 3       A 2024-01-03T09:07:53.279877-04:00 2024-01-31T21:07:53.279862-04:00</span></span>
-<span><span class="co">#&gt; 4       A                             NULL 2024-01-04T01:11:53.290734-04:00</span></span>
-<span><span class="co">#&gt; 5       A                             NULL        2024-01-04T01:14:53-04:00</span></span>
-<span><span class="co">#&gt; 6       A                             NULL 2024-01-04T01:25:53.285891-04:00</span></span>
-<span><span class="co">#&gt; 7       A 2024-01-03T09:19:53.383051-04:00 2024-03-28T21:19:53.383024-04:00</span></span>
-<span><span class="co">#&gt; 8       A                             NULL 2024-01-04T01:37:53.189194-04:00</span></span>
-<span><span class="co">#&gt; 9       A 2024-01-03T09:36:53.321087-04:00 2024-03-28T21:36:53.321069-04:00</span></span>
-<span><span class="co">#&gt; 10      A 2024-01-03T09:41:53.275367-04:00 2024-03-28T21:41:53.275342-04:00</span></span>
-<span><span class="co">#&gt; 11      A 2024-01-03T09:39:53.571136-04:00 2024-03-28T21:39:53.571112-04:00</span></span>
-<span><span class="co">#&gt; 12      A 2024-01-03T09:49:53.406109-04:00 2024-03-28T21:49:53.406084-04:00</span></span>
-<span><span class="co">#&gt; 13      A 2024-01-03T09:53:53.210197-04:00 2024-03-28T21:53:53.210183-04:00</span></span>
-<span><span class="co">#&gt; 14      A 2024-01-03T09:56:53.433427-04:00 2024-03-28T21:56:53.433405-04:00</span></span>
-<span><span class="co">#&gt; 15      A 2024-01-03T09:57:53.292347-04:00 2024-03-28T21:57:53.292330-04:00</span></span>
-<span><span class="co">#&gt; 16      A 2024-01-03T09:58:53.404192-04:00 2024-03-28T21:58:53.404167-04:00</span></span>
-<span><span class="co">#&gt; 17      A                             NULL 2024-01-04T01:59:53.181702-04:00</span></span>
-<span><span class="co">#&gt; 18      A                             NULL 2024-01-04T02:01:53.193628-04:00</span></span>
-<span><span class="co">#&gt; 19      A 2024-01-03T10:00:53.347051-04:00 2024-03-28T22:00:53.347033-04:00</span></span>
-<span><span class="co">#&gt; 20      A 2024-01-03T10:06:53.277705-04:00 2024-03-28T22:06:53.277690-04:00</span></span>
-<span><span class="co">#&gt; 21      A 2024-01-03T10:05:53.355480-04:00 2024-01-03T17:09:53.395643-04:00</span></span>
-<span><span class="co">#&gt; 22      A 2024-01-03T10:08:53.480933-04:00 2024-03-28T22:08:53.480916-04:00</span></span>
-<span><span class="co">#&gt; 23      A 2024-01-03T10:09:53.201126-04:00 2024-03-28T22:09:53.201103-04:00</span></span>
-<span><span class="co">#&gt;    frequency interval</span></span>
-<span><span class="co">#&gt; 1          M        1</span></span>
-<span><span class="co">#&gt; 2          M        1</span></span>
-<span><span class="co">#&gt; 3          M        1</span></span>
-<span><span class="co">#&gt; 4          M        3</span></span>
-<span><span class="co">#&gt; 5          M        3</span></span>
-<span><span class="co">#&gt; 6          M        3</span></span>
-<span><span class="co">#&gt; 7          M        3</span></span>
-<span><span class="co">#&gt; 8          M        3</span></span>
-<span><span class="co">#&gt; 9          M        3</span></span>
-<span><span class="co">#&gt; 10         M        3</span></span>
-<span><span class="co">#&gt; 11         M        3</span></span>
-<span><span class="co">#&gt; 12         M        3</span></span>
-<span><span class="co">#&gt; 13         M        3</span></span>
-<span><span class="co">#&gt; 14         M        3</span></span>
-<span><span class="co">#&gt; 15         M        3</span></span>
-<span><span class="co">#&gt; 16         M        3</span></span>
-<span><span class="co">#&gt; 17         M        3</span></span>
-<span><span class="co">#&gt; 18         M        3</span></span>
-<span><span class="co">#&gt; 19         M        3</span></span>
-<span><span class="co">#&gt; 20         M        3</span></span>
-<span><span class="co">#&gt; 21         M        3</span></span>
-<span><span class="co">#&gt; 22         M        3</span></span>
-<span><span class="co">#&gt; 23         M        3</span></span>
-<span></span>
-<span><span class="fu"><a href="reference/get_data.html">get_data</a></span><span class="op">(</span>.dataset <span class="op">=</span> <span class="st">'imae-original'</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 203 × 5</span></span>
-<span><span class="co">#&gt;    date        imae imae__tci imae__tca imae__tcp</span></span>
-<span><span class="co">#&gt;    &lt;date&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt;  1 2007-01-01  94.0        NA        NA        NA</span></span>
-<span><span class="co">#&gt;  2 2007-02-01  96.9        NA        NA        NA</span></span>
-<span><span class="co">#&gt;  3 2007-03-01 101.         NA        NA        NA</span></span>
-<span><span class="co">#&gt;  4 2007-04-01  95.7        NA        NA        NA</span></span>
-<span><span class="co">#&gt;  5 2007-05-01 103.         NA        NA        NA</span></span>
-<span><span class="co">#&gt;  6 2007-06-01  98.0        NA        NA        NA</span></span>
-<span><span class="co">#&gt;  7 2007-07-01 101.         NA        NA        NA</span></span>
-<span><span class="co">#&gt;  8 2007-08-01 102.         NA        NA        NA</span></span>
-<span><span class="co">#&gt;  9 2007-09-01  97.7        NA        NA        NA</span></span>
-<span><span class="co">#&gt; 10 2007-10-01 103.         NA        NA        NA</span></span>
-<span><span class="co">#&gt; # ℹ 193 more rows</span></span></code></pre></div>
+<span><span class="fu"><a href="reference/get_data.html">get_data</a></span><span class="op">(</span><span class="st">'NC_XDC'</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ✔ Setting active project to 'C:/Users/drdsd/Documents/Projects/DOMAR/datafaroR'</span></span>
+<span><span class="co">#&gt; # A tibble: 132 × 2</span></span>
+<span><span class="co">#&gt;    date        value</span></span>
+<span><span class="co">#&gt;    &lt;date&gt;      &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 1991-03-01 25592.</span></span>
+<span><span class="co">#&gt;  2 1991-06-01 25884.</span></span>
+<span><span class="co">#&gt;  3 1991-09-01 26270.</span></span>
+<span><span class="co">#&gt;  4 1991-12-01 28863.</span></span>
+<span><span class="co">#&gt;  5 1992-03-01 29160.</span></span>
+<span><span class="co">#&gt;  6 1992-06-01 30660.</span></span>
+<span><span class="co">#&gt;  7 1992-09-01 31504.</span></span>
+<span><span class="co">#&gt;  8 1992-12-01 36430.</span></span>
+<span><span class="co">#&gt;  9 1993-03-01 32681.</span></span>
+<span><span class="co">#&gt; 10 1993-06-01 34340.</span></span>
+<span><span class="co">#&gt; # ℹ 122 more rows</span></span>
+<span><span class="co">#&gt; Datafaro's datalight: NC_XDC</span></span>
+<span><span class="co">#&gt; Full name: PIB Gasto &gt; Consumo final total nominal (RD$)</span></span>
+<span><span class="co">#&gt; Next update: 2024-04-13T12:44:08-04:00</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="license">
@@ -250,6 +133,7 @@
 <li><a href="https://github.com/datafaro/datafaroR/actions" class="external-link"><img src="https://github.com/datafaro/datafaroR/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
 <li><a href="https://codecov.io/gh/datafaro/datafaroR?branch=main" class="external-link"><img src="https://codecov.io/gh/datafaro/datafaroR/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
 <li><a href="https://CRAN.R-project.org/package=datafaro" class="external-link"><img src="https://www.r-pkg.org/badges/version/datafaro" alt="CRAN status"></a></li>
+<li><a href="https://github.com/Datafaro/datafaroR/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/Datafaro/datafaroR/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
 </ul>
 </div>
 
@@ -258,13 +142,11 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p>
-<p>Developed by Daniel E. de la Rosa.</p>
+  <p>Developed by Daniel E. de la Rosa.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
 </div>
 
     </footer>

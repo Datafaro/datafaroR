@@ -7,39 +7,27 @@
     <loc>https://datafaro.github.io/datafaroR/LICENSE.html</loc>
   </url>
   <url>
-    <loc>https://datafaro.github.io/datafaroR/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://datafaro.github.io/datafaroR/articles/tokens.html</loc>
-  </url>
-  <url>
     <loc>https://datafaro.github.io/datafaroR/authors.html</loc>
   </url>
   <url>
     <loc>https://datafaro.github.io/datafaroR/index.html</loc>
   </url>
   <url>
-    <loc>https://datafaro.github.io/datafaroR/reference/get_data.html</loc>
+    <loc>https://datafaro.github.io/datafaroR/reference/as_datalight.html</loc>
   </url>
   <url>
-    <loc>https://datafaro.github.io/datafaroR/reference/get_metadata.html</loc>
+    <loc>https://datafaro.github.io/datafaroR/reference/auth.html</loc>
+  </url>
+  <url>
+    <loc>https://datafaro.github.io/datafaroR/reference/get_data.html</loc>
   </url>
   <url>
     <loc>https://datafaro.github.io/datafaroR/reference/index.html</loc>
   </url>
   <url>
-    <loc>https://datafaro.github.io/datafaroR/reference/list_areas.html</loc>
-  </url>
-  <url>
-    <loc>https://datafaro.github.io/datafaroR/reference/list_datasets.html</loc>
-  </url>
-  <url>
-    <loc>https://datafaro.github.io/datafaroR/reference/list_indicators.html</loc>
-  </url>
-  <url>
-    <loc>https://datafaro.github.io/datafaroR/reference/list_institutions.html</loc>
-  </url>
-  <url>
     <loc>https://datafaro.github.io/datafaroR/reference/pipe.html</loc>
+  </url>
+  <url>
+    <loc>https://datafaro.github.io/datafaroR/reference/print.datalight.html</loc>
   </url>
 </urlset>
