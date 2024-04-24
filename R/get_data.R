@@ -96,7 +96,7 @@ get_data <- function(code, .token = auth(), .cached = TRUE) {
         dl$Cached <- Sys.Date()
         . <- suppressMessages(
           utils::capture.output(
-            pins::pin_write(.DatafaroBoard, dl, pins_id, "json")
+            pins::pin_write(.DatafaroBoard, dl, pins_id, type = "json")
           )
         )
         dl$Cached <- NULL
