@@ -14,6 +14,11 @@
 #' auth() # Ejecuta esta funci\u00f3n para autenticarte o validar el token existente.
 #' }
 auth <- function() {
+
+  if (!requireNamespace("renviron", quietly = TRUE)) {
+    install.packages("renviron", repos = "https://adatar-do.r-universe.dev")
+  }
+
   auth_info <- renviron::renviron_get("DATAFARO_AUTH")
 
   if (is.null(auth_info) || auth_info == "") {
@@ -245,6 +250,7 @@ login <- function(
 
 
 .ask_for_save <- function() {
+  return("s")
   save <- readline(prompt = "\u00BFDesea guardar el archivo .Renviron? (s/n): ")
   if (!grepl("^[sn]$", save)) {
     cat("Error: Debe ingresar 's' o 'n'.\n")
