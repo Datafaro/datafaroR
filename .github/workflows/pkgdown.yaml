@@ -30,13 +30,16 @@ jobs:
         with:
           use-public-rspm: true
 
-      - name: Install renviron package
-        run: Rscript -e 'install.packages("renviron", repos = "https://adatar-do.r-universe.dev")'
+#      - name: Install renviron package
+#        run: Rscript -e 'install.packages("renviron", repos = "https://adatar-do.r-universe.dev")'
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: any::pkgdown, local::.
           needs: website
+          repos:
+            CRAN: https://cloud.r-project.org
+            adatar-do: https://adatar-do.r-universe.dev
 
       - name: Build site
         run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
