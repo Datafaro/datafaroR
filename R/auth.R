@@ -5,6 +5,11 @@
 #' Si la autenticación es exitosa, genera y almacena un nuevo token de acceso para solicitudes futuras.
 #' En caso de encontrar un token válido y no expirado, lo retorna para su uso inmediato.
 #'
+#' @param scope [character] Alcance de la autenticación. Por defecto es \code{"user"}.
+#'  Opciones válidas son \code{"user"} y \code{"project"}. \code{"user"} estará
+#'  disponible para todas las sesiones de R, mientras que \code{"project"} solo
+#'  estará disponible para las sesiones de R en el proyecto actual.
+#'
 #' @return Retorna el token de acceso si la autenticación es exitosa o el token almacenado sigue siendo válido.
 #'         En otros casos, guía al usuario para realizar una nueva autenticación.
 #' @export
@@ -13,18 +18,17 @@
 #' \dontrun{
 #' auth() # Ejecuta esta funci\u00f3n para autenticarte o validar el token existente.
 #' }
-auth <- function() {
-
+auth <- function(scope = "user") {
   if (!requireNamespace("renviron", quietly = TRUE)) {
     utils::install.packages("renviron", repos = "https://adatar-do.r-universe.dev")
   }
 
-  auth_info <- renviron::renviron_get("DATAFARO_AUTH")
+  auth_info <- renviron::renviron_get("DATAFARO_AUTH", scope = scope)
 
   if (is.null(auth_info) || auth_info == "") {
     cli::cli_alert_warning("No se ha encontrado informaci\u00f3n de autenticaci\u00f3n.")
     cli::cli_alert_info("Por favor, autent\u00edquese.")
-    return(login())
+    return(login(scope = scope))
   }
 
   auth_info_list <- auth_info %>%
@@ -33,7 +37,7 @@ auth <- function() {
     unlist()
 
   if (length(auth_info_list) != 7) {
-    return(login())
+    return(login(scope = scope))
   }
 
   .token <- auth_info_list[[1]]
@@ -56,7 +60,8 @@ auth <- function() {
           "s",
           "s",
           .refresh_days,
-          .token
+          .token,
+          scope = scope
         )
       )
     }
@@ -75,7 +80,7 @@ auth <- function() {
     # cat("\014")
     cli::cli_alert_danger("El token es inv\u00e1lido o ha expirado.")
     cli::cli_alert_info("Por favor, autent\u00edquese nuevamente.")
-    return(login())
+    return(login(scope = scope))
   } else if (.res$status_code == 200) {
     return(invisible(.token))
   } else {
@@ -88,41 +93,8 @@ auth <- function() {
   return(invisible(.token))
 }
 
-
-.get_valid_token <- function() {
-  token <- renviron::renviron_get("DATAFARO_TOKEN")
-
-  if (is.null(token)) {
-    cli::cli_alert_danger("No se ha encontrado un token v\u00e1lido.")
-    cli::cli_alert_info("Use `auth()` para autenticarse.")
-    stop(call. = FALSE)
-  }
-
-  auth <- renviron::renviron_get("DATAFARO_AUTH") %>%
-    strsplit("|", fixed = TRUE) %>%
-    unlist()
-
-  if (!is.null(auth) && length(auth) == 3) {
-    expires <- lubridate::ymd_hms(auth[1])
-    if (expires < lubridate::now()) {
-      cli::cli_alert_danger("El token ha expirado.")
-      cli::cli_alert_info("Use `auth()` para autenticarse nuevamente.")
-      stop(call. = FALSE)
-    }
-
-    auto_renew <- auth[2]
-    refresh_days <- as.numeric(auth[3])
-    if (auto_renew == "1" && (lubridate::now() + lubridate::days(refresh_days)) > expires) {
-      return(.generate_token(.token = token))
-    }
-  }
-
-  return(token)
-}
-
-
-.get_auth <- function(.name) {
-  .auth_decode(renviron::renviron_get("DATAFARO_AUTH"), Sys.info()[["nodename"]]) %>%
+.get_auth <- function(.name, scope = 'user') {
+  .auth_decode(renviron::renviron_get("DATAFARO_AUTH", scope = scope), Sys.info()[["nodename"]]) %>%
     .auth_encode(.name)
 }
 
@@ -145,8 +117,8 @@ auth <- function() {
 
 login <- function(
     usuario = readline("Ingrese su nombre de usuario: "),
-    pass = getPass::getPass("Ingrese su contrase\u00f1a: ")) {
-
+    pass = getPass::getPass("Ingrese su contrase\u00f1a: "),
+    scope = "user") {
   # Realizar la solicitud con autenticaci\u00f3n b\u00e1sica
   .res <- httr2::request(glue::glue("{API_URL}/v1/login/")) %>%
     httr2::req_auth_basic(usuario, pass) %>%
@@ -169,9 +141,9 @@ login <- function(
             as.numeric()
           .token_name0 <- ifelse(is.null(token0$name), "", token0$token_name)
           cli::cli_alert_info(glue::glue("El token ({.token_name0}) expirar\u00e1 en {.days0} d\u00edas."))
-          .token <- .generate_token(days = .days0, token_name = .token_name0, .token = token0$key)
+          .token <- .generate_token(days = .days0, token_name = .token_name0, .token = token0$key, scope = scope)
         } else {
-          .token <- .generate_token(.token = token0$key)
+          .token <- .generate_token(.token = token0$key, scope = scope)
         }
         cat("\014")
         cli::cat_rule("\u00A1Autenticaci\u00f3n exitosa!")
@@ -197,7 +169,8 @@ login <- function(
     save = .ask_for_save(),
     auto_renew = .ask_for_auto_renew(),
     refresh_days = if (auto_renew == "s") .ask_for_refresh_days(days) else 0,
-    .token) {
+    .token,
+    scope = 'user') {
   .res <- httr2::request(glue::glue("{API_URL}/v1/token/")) %>%
     httr2::req_headers(Authorization = paste0("Token ", .token)) %>%
     httr2::req_body_json(list(
@@ -230,7 +203,8 @@ login <- function(
       ) %>%
         .auth_encode(.seed = Sys.info()[["nodename"]]),
       in_place = save == "s",
-      confirm = FALSE
+      confirm = FALSE,
+      scope = scope
     )
     return(invisible(new_token$token$key))
   } else {

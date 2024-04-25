@@ -4,7 +4,13 @@
 \alias{auth}
 \title{Autenticar y obtener token de acceso}
 \usage{
-auth()
+auth(scope = "user")
+}
+\arguments{
+\item{scope}{\link{character} Alcance de la autenticación. Por defecto es \code{"user"}.
+Opciones válidas son \code{"user"} y \code{"project"}. \code{"user"} estará
+disponible para todas las sesiones de R, mientras que \code{"project"} solo
+estará disponible para las sesiones de R en el proyecto actual.}
 }
 \value{
 Retorna el token de acceso si la autenticación es exitosa o el token almacenado sigue siendo válido.
