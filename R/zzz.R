@@ -4,7 +4,6 @@ if (!requireNamespace("renviron", quietly = TRUE)) {
 
 
 .DatafaroSessionID <- uuid::UUIDgenerate()
-.DatafaroBoard <- pins::board_folder(path.expand("~/.DatafaroCache"))
 
 
 # 1. Definir la nueva clase

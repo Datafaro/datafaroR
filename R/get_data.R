@@ -60,8 +60,8 @@ get_data <- function(code, .token = auth(), .cached = TRUE) {
     )
   }
 
-  if (.cached && pins::pin_exists(.DatafaroBoard, pins_id)) {
-    cached_metadata <- pins::pin_read(.DatafaroBoard, pins_id)$metadata
+  if (.cached && pins::pin_exists(.get_cache_board(), pins_id)) {
+    cached_metadata <- pins::pin_read(.get_cache_board(), pins_id)$metadata
     if (is.null(last_update) || last_update == cached_metadata$last_update) {
       data_url <- glue::glue("{url}&cached={stringr::str_replace(cached_metadata$last_update, ' ', 'T')}")
       return(.cache_fetch(data_url, pins_id, .token))
@@ -77,7 +77,7 @@ get_data <- function(code, .token = auth(), .cached = TRUE) {
     {
       data_url %>%
         .make_request(.token)
-      as_datalight(pins::pin_read(.DatafaroBoard, pins_id))
+      as_datalight(pins::pin_read(.get_cache_board(), pins_id))
     },
     error = function(e) {}
   )
@@ -96,7 +96,7 @@ get_data <- function(code, .token = auth(), .cached = TRUE) {
         dl$Cached <- Sys.Date()
         . <- suppressMessages(
           utils::capture.output(
-            pins::pin_write(.DatafaroBoard, dl, pins_id, type = "json")
+            pins::pin_write(.get_cache_board(), dl, pins_id, type = "json")
           )
         )
         dl$Cached <- NULL
@@ -110,9 +110,9 @@ get_data <- function(code, .token = auth(), .cached = TRUE) {
 }
 
 .handle_error <- function(pins_id) {
-  if (pins::pin_exists(.DatafaroBoard, pins_id)) {
+  if (pins::pin_exists(.get_cache_board(), pins_id)) {
     message("Ocurri\u00f3 un error al intentar obtener los datos. Se utilizar\u00e1 la versi\u00f3n en cach\u00e9.")
-    as_datalight(pins::pin_read(.DatafaroBoard, pins_id))
+    as_datalight(pins::pin_read(.get_cache_board(), pins_id))
   } else {
     message("Ocurri\u00f3 un error al intentar obtener los datos. No se encontr\u00f3 una versi\u00f3n en cach\u00e9.")
     NULL

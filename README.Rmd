@@ -44,8 +44,14 @@ install.packages("datafaro", repos = c("https://adatar-do.r-universe.dev", "http
 ## Ejemplo
 
 Aquí tienes un ejemplo básico para comenzar con datafaro:
-
+``` r
+library(datafaro)
+get_data('NC_XDC')
+```
 ```{r example}
+#| echo=FALSE
+
+
 library(datafaro)
 get_data('NC_XDC')
 ```

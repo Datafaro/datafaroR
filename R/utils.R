@@ -29,3 +29,7 @@ NULL
     })
   }
 }
+
+.get_cache_board <- function(){
+  pins::board_folder(path.expand("~/.DatafaroCache"))
+}
