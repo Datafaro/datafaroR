@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="index.html">datafaro</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -80,25 +80,25 @@
 <p>Aquí tienes un ejemplo básico para comenzar con datafaro:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://datafaro.github.io/datafaroR/">datafaro</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/get_data.html">get_data</a></span><span class="op">(</span><span class="st">'NC_XDC'</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 132 × 2</span></span>
-<span><span class="co">#&gt;    date        value</span></span>
-<span><span class="co">#&gt;    &lt;date&gt;      &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt;  1 1991-03-01 25592.</span></span>
-<span><span class="co">#&gt;  2 1991-06-01 25884.</span></span>
-<span><span class="co">#&gt;  3 1991-09-01 26270.</span></span>
-<span><span class="co">#&gt;  4 1991-12-01 28863.</span></span>
-<span><span class="co">#&gt;  5 1992-03-01 29160.</span></span>
-<span><span class="co">#&gt;  6 1992-06-01 30660.</span></span>
-<span><span class="co">#&gt;  7 1992-09-01 31504.</span></span>
-<span><span class="co">#&gt;  8 1992-12-01 36430.</span></span>
-<span><span class="co">#&gt;  9 1993-03-01 32681.</span></span>
-<span><span class="co">#&gt; 10 1993-06-01 34340.</span></span>
-<span><span class="co">#&gt; # ℹ 122 more rows</span></span>
-<span><span class="co">#&gt; Datafaro's datalight: NC_XDC</span></span>
-<span><span class="co">#&gt; Full name: PIB Gasto &gt; Consumo final total nominal (RD$)</span></span>
-<span><span class="co">#&gt; Cached: 2024-04-25</span></span>
-<span><span class="co">#&gt; Next update: 2024-06-11T22:20:08-04:00</span></span></code></pre></div>
+<span><span class="fu"><a href="reference/get_data.html">get_data</a></span><span class="op">(</span><span class="st">'NC_XDC'</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co">#&gt; # A tibble: 132 × 2</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="co">#&gt;    date        value</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co">#&gt;    &lt;date&gt;      &lt;dbl&gt;</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co">#&gt;  1 1991-03-01 25592.</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co">#&gt;  2 1991-06-01 25884.</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="co">#&gt;  3 1991-09-01 26270.</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="co">#&gt;  4 1991-12-01 28863.</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="co">#&gt;  5 1992-03-01 29160.</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="co">#&gt;  6 1992-06-01 30660.</span></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="co">#&gt;  7 1992-09-01 31504.</span></span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="co">#&gt;  8 1992-12-01 36430.</span></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="co">#&gt;  9 1993-03-01 32681.</span></span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="co">#&gt; 10 1993-06-01 34340.</span></span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="co">#&gt; # ℹ 122 more rows</span></span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="co">#&gt; Datafaro's datalight: NC_XDC</span></span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="co">#&gt; Full name: PIB Gasto &gt; Consumo final total nominal (RD$)</span></span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="co">#&gt; Cached: 2024-04-25</span></span>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a><span class="co">#&gt; Next update: 2024-06-11T22:20:08-04:00</span></span></code></pre></div>
 <p><strong>Nota:</strong> Si ejecutas esto en un notebook (RMarkdown o Quarto), presta atención a la consola para obtener instrucciones sobre cómo autenticarte.</p>
 <!-- Testing the package
 ```r
