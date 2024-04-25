@@ -20,10 +20,10 @@
 #' }
 auth <- function(scope = "user") {
   if (!requireNamespace("renviron", quietly = TRUE)) {
-    utils::install.packages("renviron", repos = "https://adatar-do.r-universe.dev")
+    utils::install.packages("renviron", repos = c("https://adatar-do.r-universe.dev", 'https://cloud.r-project.org'))
   }
 
-  auth_info <- renviron::renviron_get("DATAFARO_AUTH", scope = scope)
+  auth_info <- renviron::renviron_get("DATAFARO_AUTH", scope = scope, verbosity = 0)
 
   if (is.null(auth_info) || auth_info == "") {
     cli::cli_alert_warning("No se ha encontrado informaci\u00f3n de autenticaci\u00f3n.")
@@ -93,6 +93,32 @@ auth <- function(scope = "user") {
   return(invisible(.token))
 }
 
+
+#' Cerrar sesión y eliminar el token de acceso
+#'
+#' Esta función elimina la información de autenticación almacenada para el alcance especificado,
+#' efectivamente cerrando la sesión del usuario. Esto es útil para garantizar que la información
+#' sensible no permanezca accesible en sesiones no autenticadas posteriormente.
+#'
+#' @param scope [character] Alcance de la autenticación para la que se desea cerrar sesión.
+#'                          Por defecto es \code{"user"}. Las opciones válidas son \code{"user"}
+#'                          y \code{"project"}. \code{"user"} afecta todas las sesiones de R,
+#'                          mientras que \code{"project"} solo afecta a la sesión de R en el
+#'                          proyecto actual.
+#'
+#' @return No retorna valores. Invoca un mensaje que informa al usuario que la sesión
+#'         ha sido cerrada correctamente.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' log_out() # Ejecuta esta funci\u00f3n para cerrar la sesión y eliminar el token de acceso.
+#' }
+log_out <- function(scope = "user") {
+  renviron::renviron_delete("DATAFARO_AUTH", scope = scope)
+  cli::cli_alert_info("Se ha cerrado la sesi\u00f3n.")
+}
+
 .get_auth <- function(.name, scope = 'user') {
   .auth_decode(renviron::renviron_get("DATAFARO_AUTH", scope = scope), Sys.info()[["nodename"]]) %>%
     .auth_encode(.name)
@@ -117,18 +143,29 @@ auth <- function(scope = "user") {
 
 login <- function(
     usuario = readline("Ingrese su nombre de usuario: "),
-    pass = getPass::getPass("Ingrese su contrase\u00f1a: "),
+    pass = .ask_for_pass(),
     scope = "user") {
+
+  tryCatch(
   # Realizar la solicitud con autenticaci\u00f3n b\u00e1sica
   .res <- httr2::request(glue::glue("{API_URL}/v1/login/")) %>%
     httr2::req_auth_basic(usuario, pass) %>%
     httr2::req_body_json(list()) %>%
-    httr2::req_perform()
+    httr2::req_perform(),
+
+    error = function (e) {
+      .res <- httr2::last_response()
+    }
+  )
 
   .token <- NULL
-
-  # Verificar el estado de la solicitud
-  if (httr2::resp_status(.res) == 200 || httr2::resp_status(.res) == 201) {
+  if (httr2::resp_status(.res) == 401) {
+    cli::cli_alert_danger("Usuario o contrase\u00f1a incorrectos.")
+    return(login(scope = scope))
+  } else if (httr2::resp_status(.res) == 403) {
+    cli::cli_alert_danger("El usuario no tiene permisos para acceder a este recurso.")
+    return(login(scope = scope))
+  } else if (httr2::resp_status(.res) == 200 || httr2::resp_status(.res) == 201) {
     tryCatch(
       {
         token0 <- httr2::resp_body_json(.res)$token
@@ -153,10 +190,26 @@ login <- function(
       }
     )
   } else {
-    cat("Error en la solicitud \n")
+    cli::cli_alert_danger("Error al autenticar.")
+    cli::cli_alert_info("Intente nuevamente por favor.")
+    cli::cli_alert_info("Si el problema persiste, contacte con soporte.")
   }
 
   return(invisible(.token))
+}
+
+
+.ask_for_pass <- function() {
+  tryCatch(
+    {
+      pass <- getPass::getPass("Ingrese su contrase\u00f1a: ")
+    },
+    error = function(e) {
+      cli::cli_alert_info("No se pudo enmascarar la contrase\u00f1a en este entorno.")
+      cli::cli_alert_info("Esta y ser\u00e1 visible y pudiera quedar almacenada en el historial de la sesi\u00f3n R.")
+      pass <- readline("Ingrese su contrase\u00f1a (ser\u00e1 visible): ")
+    }
+  )
 }
 
 .get_hashed_key <- function(.seed = Sys.info()[["nodename"]]) {
@@ -204,7 +257,8 @@ login <- function(
         .auth_encode(.seed = Sys.info()[["nodename"]]),
       in_place = save == "s",
       confirm = FALSE,
-      scope = scope
+      scope = scope,
+      verbosity = 0
     )
     return(invisible(new_token$token$key))
   } else {

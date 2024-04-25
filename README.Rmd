@@ -28,7 +28,7 @@ devtools::load_all()
 [![Codecov test coverage](https://codecov.io/gh/datafaro/datafaroR/branch/master/graph/badge.svg)](https://codecov.io/gh/datafaro/datafaroR?branch=main)
 [![CRAN status](https://www.r-pkg.org/badges/version/datafaro)](https://CRAN.R-project.org/package=datafaro)
 [![R-CMD-check](https://github.com/Datafaro/datafaroR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Datafaro/datafaroR/actions/workflows/R-CMD-check.yaml)
-![r-universe](https://adatar-do.r-universe.dev/badges/renviron)
+![r-universe](https://adatar-do.r-universe.dev/badges/datafaro)
 <!-- badges: end -->
 
 > DataFaro ofrece acceso a datos recurrentes de una variedad de fuentes. Abstrae las preocupaciones relacionadas con la frecuencia de los datos, el formato y el calendario de publicación. Este paquete proporciona un envoltorio conveniente para interactuar con la API de DataFaro, facilitando a los usuarios de R el aprovechamiento del poder de DataFaro.
@@ -49,3 +49,15 @@ Aquí tienes un ejemplo básico para comenzar con datafaro:
 library(datafaro)
 get_data('NC_XDC')
 ```
+
+**Nota:** Si ejecutas esto en un notebook (RMarkdown o Quarto), presta atención a la consola para obtener instrucciones sobre cómo autenticarte.
+
+
+
+<!-- Testing the package
+```r
+docker build -t datafaror .
+docker run -it datafaror
+``` 
+-->
+

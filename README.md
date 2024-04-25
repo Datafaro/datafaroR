@@ -15,7 +15,7 @@ coverage](https://codecov.io/gh/datafaro/datafaroR/branch/master/graph/badge.svg
 [![CRAN
 status](https://www.r-pkg.org/badges/version/datafaro)](https://CRAN.R-project.org/package=datafaro)
 [![R-CMD-check](https://github.com/Datafaro/datafaroR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Datafaro/datafaroR/actions/workflows/R-CMD-check.yaml)
-![r-universe](https://adatar-do.r-universe.dev/badges/renviron)
+![r-universe](https://adatar-do.r-universe.dev/badges/datafaro)
 <!-- badges: end -->
 
 > DataFaro ofrece acceso a datos recurrentes de una variedad de fuentes.
@@ -40,7 +40,6 @@ Aquí tienes un ejemplo básico para comenzar con datafaro:
 ``` r
 library(datafaro)
 get_data('NC_XDC')
-#> ✔ Setting active project to 'C:/Users/ddela/Documents/Datafaro/datafaroR'
 #> # A tibble: 132 × 2
 #>    date        value
 #>    <date>      <dbl>
@@ -57,6 +56,17 @@ get_data('NC_XDC')
 #> # ℹ 122 more rows
 #> Datafaro's datalight: NC_XDC
 #> Full name: PIB Gasto > Consumo final total nominal (RD$)
-#> Cached: 2024-04-24
+#> Cached: 2024-04-25
 #> Next update: 2024-06-11T22:20:08-04:00
 ```
+
+**Nota:** Si ejecutas esto en un notebook (RMarkdown o Quarto), presta
+atención a la consola para obtener instrucciones sobre cómo
+autenticarte.
+
+<!-- Testing the package
+```r
+docker build -t datafaror .
+docker run -it datafaror
+``` 
+-->
