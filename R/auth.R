@@ -154,17 +154,17 @@ login <- function(
     httr2::req_perform(),
 
     error = function (e) {
-      .res <- httr2::last_response()
     }
   )
 
+  .res <- httr2::last_response()
+
   .token <- NULL
-  if (httr2::resp_status(.res) == 401) {
+  if (httr2::resp_status(.res) == 403) {
     cli::cli_alert_danger("Usuario o contrase\u00f1a incorrectos.")
     return(login(scope = scope))
-  } else if (httr2::resp_status(.res) == 403) {
-    cli::cli_alert_danger("El usuario no tiene permisos para acceder a este recurso.")
-    return(login(scope = scope))
+#  } else if (httr2::resp_status(.res) == 403) {
+#    cli::cli_alert_danger("El usuario no tiene permisos para acceder a este recurso.")
   } else if (httr2::resp_status(.res) == 200 || httr2::resp_status(.res) == 201) {
     tryCatch(
       {
